@@ -1,0 +1,587 @@
+v1.60 (Final) (2022-06-23)
+- Added Force manifest for decompiling
+- Removed unused checkbox "v4 no merkle tree" because it wasn't available for apksigner.jar
+- Upgraded to .NET Framework 4.8
+- Print Java version
+- Bring back click on launch activity to open file explorer
+- Disabled update check
+- Cleaned up the codes
+- Updated Apktool to 2.6.1
+- Updated adb to 33.0.2
+- Updated aapt, zipalign, apksigner to 32.0.0
+- Updated some languages
+- Removed dialog of sign password.Password will always remember
+- Other improvements
+
+-------------------------------------------------
+
+v1.59.2 (2021-04-03)
+- Fixed that it opens log window when you open APK infomation
+- Updated polish language
+
+-------------------------------------------------
+
+v1.59.1 (2021-03-25)
+- Fixed config.xml not saving
+- Re-write CMD execution code from scratch. Now it will work for all system, and it support real time logging
+- Log output cleanup
+- Removed code page, it is no longer needed
+- Language updated
+
+Installer is no longer released due to an unknown error with Microsoft Visual Studio Installer Projects. It is always buggy, so I gave up. Please use portable version, it's easy to extract and you can easly see the content before you extract
+
+-------------------------------------------------
+
+
+v1.59 (2021-03-16)
+
+- Fixed decompile, compile and signing that does nothing on some systems
+- No longer show error message due to peoples reporing me useless screenshot
+- No longer show update dialog if update is available. Click on the logo to show it
+- Setting Java heap size is no longer needed but now has option to enable it. I realized that Java auto set heap size to maximum as possible. Java 32-bit: 1.5GB, and Java 64-bit: 4GB, if i'm right
+- Hide some unused options
+- Updated SDK tools, adb, zipalign, aapt, apksigner to 30.0.3
+- Updated smali/baksmali to 2.5.2
+- Removed donation due to privacy issues 
+- Updated languages
+
+-------------------------------------------------
+
+
+v1.58 (2020-12-03)
+
+Note:
+- The tool has become a bit too advanced so we remove some features to keep it simple and to proper maintaining
+- As of apktool.jar 2.5.0, 32 bit support is deprecated. Once 32 bit support is removed from apktool, APK Easy Tool will also have 32 bit support removed. 32 bit is dead now
+
+Changelog:
+- Updated apktool.jar to 2.5.0
+- Language improvements
+- Updated adb, zipalign, aapt, apksigner from Android SDK 30.0.2
+- Logs and history now stored in temp folder C:\Users\(username)\AppData\Local\Temp\AET. They should be stored temporary, not permanently. You can also use any disk cleaner to clear your temp folder which also clears APK Easy Tool's icon cache, logs and history
+- Added signature signing options. v4 signing disabled by default so it doesn't create useless .idsig file
+- "Only disassemble the main dex classes" is on by default due to annoying smali_assets/assets.dex error on some APKs
+in the root. [v2.4.1+]
+- Switched back to aapt 1 due to some issues getting APK info
+- Default heap is 2048m
+- Fix icon loading for decompiled APK
+- Fix framework installation path
+- Temporary disabled CMD mode, may be removed in next updated. New way to execute CMD is being improved. 
+- For more privacy, logs will only save if an error occured. You can still clear the log anytime
+- Portable Java path has changed. Select java.exe instead the bin folder
+- You can press ESC to cancel which would kill process of java.exe, adb.exe, zipalign.exe and 7z.exe. This is not recommended to do
+- Added status bar. It's easier to work with it than custom yellow notice bar
+- Removed log date. I don't think anyone will ever look back of their logs
+- Removed log level
+- Removed replace spaces with underscore. You can use PowerToys which has PowerRename that does the job
+- Removed signapk.jar since it's too old and slow
+- Removed ZIP signing since not many using this much. APK Easy Tool should be more focused on APK. Please use an alternative tool for ZIP signing https://forum.xda-developers.com/android/software-hacking/tool-zip-builder-v4-2-1-build-sign-t3739556
+- Removed quick options because the UI looking bit awkward. It should be simple and more space for multi-languages
+- Removed disable tooltip checkbox. Now it is always shown
+
+-------------------------------------------------
+
+v1.57 (2020-06-12)
+
+[Notes]
+Executeable is no longer signed due to an error.
+Some DLLs are merged into an executeable file
+Your security software may detect APK Easy Tool as an unwanted or malcious software. Please ask your vendor to check APK Easy Tool again
+
+If you use portable version, please EXTRACT ALL FILES AND FOLDERS, not just only .exe file
+
+[New features]
+- Added option to set code page to be able to use any foreign characters in the file path. By default, it is set based on your system language configuration. See this page for more infomation https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
+- New icons with high DPI support
+- Addded more XML languages
+
+[Enhancements]
+- Dropped x64 only executeable because it is now target as AnyCPU, means that the executeable will run natively on the CPU it is currently running on. Meaning, it will run as 64-bit on a 64-bit machine and 32-bit on a 32-bit machine. 
+- Updated Apktool to apktool 2.4.1
+- UI improvements for high DPI 125%, 150%, and 250% (untested)
+- UI improvements for multi languages
+- Expanded log window separated in order to support high DPI screens
+- Some improvements
+- Updated to aapt2 (getting APK infomation) to eliminate encoding problem
+
+[Removed features]
+- Removed Enable log output checkbox. Logs are very important because there are many common apk errors so it makes no sense to disable it
+
+[Fixed issues]
+- Fixing some language related issues
+- Doesn't sign after compile when using context menu
+
+-------------------------------------------------
+
+v1.57 Beta-1 Changelog (2019-11-29)
+
+[New features]
+- Added --only-main-classes (Only disassemble the main dex classes (classes[0-9]*.dex) in the root.) (apktool 2.4.1)
+
+[Enhancements]
+- Updated Apktool to apktool-2.4.1-b05f19-11.20.2019.jar (Thanks to Cerberus007 https://forum.xda-developers.com/sho...&postcount=606)
+- Add Hungarian and Simplified Chinese language XML
+- Refine UI a bit so it fits for multi languages
+- Removed timeout for loading icon. It will take quite longer to load icon but more accurate
+- Language: Removed DOWN2_NOTE_LBL because the bitbucket server with TLS 1.2 enforced is already secure
+- Update check for beta version is separate
+
+[Removed features]
+- Compression-level and java-heap labels removed because it's unnecessary. They don't change it often. The options are not removed
+
+v1.56 Changelog (2019-11-21)
+
+[New Features]
+- Flash taskbar icon (Can be disabled in options)
+- High DPI support
+- Count instances in form title if 2 or more instance are open "APK Easy Tool - Instance (number)"
+- Sign selected APK if the APK is not compiled yet (does not overwrite)
+- The long awaited feature, XML based multi-language support
+
+[Enhancements]
+- Force TLS 1.2 connection due to Win10 issue that always use TLS 1.0 by default
+- Loading APK infomation no longer lags
+- Delay loading icon by 0.2 seconds to avoid no icon error
+- "legacytemplog(time)" changed to "RecentLog-Instance(number)" so it makes more sense for multiple instances
+- Updated aapt, zipalign and apksigner executeable to 29.0.2 from Android SDK (Google)
+- Updated adb executeable to 1.0.41 from Android SDK (Google)
+- Updated smali.jar/baksmali.jar (JesusFreke) to 2.3.4
+- Downgraded apktool.jar to 2.3.4 for stability
+- Updated SharpShell to 2.7.2.0 https://github.com/dwmkerr/sharpshell
+- srm.exe renamed to ServerRegistrationManager.exe so it makes sense and doesn't look suspecious
+- Code optimizations to fix false positive issues. Finally 0/68 detection on Virustotal. Keep in mind any anti-virus may  falsely detect as malcious anytime
+apkeasytool.exe: https://www.virustotal.com/gui/file/974ba1f2124861ae54e0190f0acd3abb1dea3971eaf1f479a7acd0310647c9e8/detection
+apkeasytool-x64.exe: https://www.virustotal.com/gui/file/dc756b5a2a065b9d7b74e0cb29421e12a4d2b6ecb956329399c0ccdab463735a/detection
+
+[Fixed issues]
+- Log file were not found if clearing framework
+- Freezes when dropping APK with very long filename
+- Couldn't decompile dex using Rigt-click (AETShellExt.dll)
+- Couldn't launch activity path with explorer.exe
+- Stuck if using CMD mode - Arguments (Still unable to fully get the log)
+
+[Removed features]
+- FAQ tab. We use text file for that instead
+- Auto size notice box (Unnecessary)
+- Remove "Disable reading APK info (Improve performance)" as the lag was fixed
+
+
+v1.55 Changelog (2019-05-11)
+
+[New Features]
+- Show Launch activity on APK info box. Useful to know what smali is the main activity. Click on it to open the file directly if decompiled directory exist
+- --use-aapt2 and other apktool options added https://ibotpeaches.github.io/Apktool/documentation/#options
+- Set API levels for decompiling and compiling
+
+[Fixed issues]
+- Fixed SharpShell and Server Registration Manager (Replaced sharpshell.dll and srm.exe from release version https://github.com/dwmkerr/sharpshell/releases)
+- Double slashes when changing all directories in root path
+- Some buttons were disabled for no reason
+- Didn't log anything if CMD WriteLine mode (Legacy mode) is selected
+- Trying to load icon as xml instead png. Added workaround to avoid it.
+
+[Enhancements]
+- On C drive, if the program is stored on system location that would require admin rights, it will create folders and write files on user Documents instead.
+- Updated apktool.jar (ibotpeaches) to 2.4.0
+- Updated 7-Zip libs (Igor Pavlov) to (2019-02-21)
+- Updated aapt.exe and adb.exe (Android NDK) to 28.0.3 
+- Updated smali.jar/baksmali.jar (JesusFreke) to 2.2.6 
+- Ask before decompiling if decompile folder exists
+- Replace spaces with underscore now for target file path in order to use with other tools that doesn't support spaces
+- Some UI changes
+- CMD WriteLine mode (Legacy mode) is now default since the arguments mode (Normal mode) is buggy and cause stuck in progess sometimes
+- For cancelling, it will only kill one process that it is currently using instead killing all, java, adb, 7z and zipalign. Killing is the only way to cancel at the moment
+- AETShellExt.dll will use apkeasytool-x64.exe if the system is x64
+
+[Removed features]
+- Removed prompt "Do you want APK Easy Tool to setup following work directories?" that caused config.xml to be locked for no reason
+- srm-x64.exe is no longer necessary
+
+
+v1.541 Changelog (2018-09-16)
+
+[Fixed issues]
+- Fixed wrong path of config.xml. 
+- Compile name textbox places wrong location when using high DPI (Removed auto new location point)
+- File not found when installing framework
+- Added exception of copying to clipboard to avoid crash.
+- APK info and icon does not load on startup
+
+[Enhancements]
+config.xml will always save on Documents folder if the tool is stored on C drive. Implement of path on C drive is working in progress
+
+-------------------------------------------------
+
+v1.54 Changelog (2018-09-11)
+
+[New Features]
+- Option to disable APK reading for better performance
+- Open to replace spaces with underscore for compiled apk
+- Ability to get version of signature scheme. Just to know if APK have new signature or not.
+- Added Server Registration Manager for 64-bit OS (srm-64.exe) since srm.exe for any CPU causes problem on 64-bit OS on some machines.
+- Build 64-bit version of APK Easy Tool. Useful to avoid out of memory error when working with heavy APK that require huge amoumt of memory
+
+[Fixed issues]
+- Names not renamed when selecting APK on drop down
+- File path of Pem and pk8 reverts to default even file exists
+- Apktool selection reset to default or become blank
+
+[Enhancements]
+- Update apktool.jar to 2.3.4
+- Be able to use APK Easy Tool without WindowsAPICodePack. Following features will be disabled if Microsoft.WindowsAPICodePack.dll and Microsoft.WindowsAPICodePack.Shell.dll does not exist: JumpList and Taskbar progress
+- Improve performance of reading APK
+- Icons will load from temp cache if icon file exists
+- Icons will be extracted to each folder of package name to avoid loading wrong icon.
+- Show SDK version with Android version
+- Updated apksigner.jar (0.8)(by Android NDK) to 28.0.1
+- Updated aapt.exe (by Android NDK) to 28.0.1
+- Updated baksmali/smali (by JesusFreke) to 2.5.5 
+- Updated adb (by Android NDK) to 1.0.40
+- Updated zipalign to 28.0.1
+- Resetting to default no longer delete xml file but override xml file to default
+- Renamed sign1.pk8 and sign2.pem to apkeasytool.pk8 and apkeasytool.pem just to have cool alias name (APKEASYT.RSA and APKEASYT.SF). To rename file alias name, you can rename existing keys or create your own jks key with your own alias name
+- Another clean up to avoid false positive
+- UI changes
+
+[Removed features]
+- Removed loading configuration from registry in favor of xml (To import your registry, use 1.53, close to save xml file, then upgrade to 1.54)
+
+------------------------------------------
+
+v1.53 Changelog (2018-08-04)
+
+As APK Easy Tool getting higher change to get detected as malcious (called false positive), I work harder clean up the code and remove some codes and features in order to reduce the change of getting detected. And no, I'm not removing features for no reason like big companies do.
+
+You may read Bitdefender's article why anti-virus detected a clean file as malcious https://www.bitdefender.com/support/what-to-do-when-bitdefender-detected-a-clean-file-as-infected-(false-positive)-851.html
+
+[New Features]
+- Support Decompile/Compile JAR file, with JAR detection in drag and drop
+- Option to set custom path of java executeable
+- [AETShellExt.dll 1.0.0.1] Added .dex and .jar extension
+- Your config will be saved as config.xml beside APK Easy Tool instead in registry. If config.xml is not found beside APK Easy Tool, it will load your config from registry. Registry saving/loading feature will be removed in next version in favor of XML.
+- Remember if Log output was opened or closed
+
+[Fixed issues]
+- File access error when mass signing APKs
+- Fail to load APK infomation
+- Other small bug fixes
+
+[Enhancements]
+- Some code improvements and removed some useless codes to get rid of false positive
+- Signed the assembly (Virustotal will still report it as unsigned). It might also get rid of false positive
+
+[Removed features]
+- Removed CMD from jumplist
+- Removed option to Unlock textboxes and unlocked all textboxes. It is unnecessary to make them read only.
+- Removed auto save log after actions due to false positive (Bad programming practices)
+- Removed AES encryption due to false positive. The password can't be restored and it will be stored as base64 instead. I recommended you to update and secure your computer as much as possible if you don't want your password stolen
+- Removed embedded DLL due to false positive. Now you need Microsoft.WindowsAPICodePack.dll and Microsoft.WindowsAPICodePack.Shell.dll placed beside apkeasytool.exe file
+
+
+v1.52 Changelog (18 july 2018)
+
+[New Features]
+- Jumplist to open work folders
+- Link to Play Store (https://play.google.com)
+- Icon can be loaded if opened with decompiled folder
+- Indeterminate Taskbar ProgressBar 
+- Check alignment of APK file
+- Shell Context Menu (Windows Explorer integration), must enable it on option. If enabled, you can right-click of APK file or Decompiled directory to perform action with APK Easy Tool (AETShellExt.dll). It uses following CMD arguments:
+	-d Decompile APK
+	-c Compile APK
+	-s Sign APK
+	-a Zipalign APK
+	-ca CheckAlign APK
+	-i Install APK
+	-e Extract APK
+	-z Zip APK
+	Usage: ./apkeasytool.exe <arg> "path with quotes"
+	You can open APK with APK Easy Tool if you change standard program or use CMD argument: ./apkeasytool.exe "APK file path with quotes"
+	APK Easy Tool menu only appear if androidmanifest.xml exist
+- Option to disable completed message box
+
+[Fixed issues]
+- Didn't check if update is available (Was removed by accident)
+- Didn't check if java is installed (Was removed by accident)
+
+[Enhancements]
+- Improvement of legacy CMD mode and now it works on everything
+- Some UI changes
+- Added "no icon" icon if icon fails to load
+
+[Removed features]
+- News tab
+
+v1.51 Changelog (22 june 2018)
+
+This version should be more stable now :)
+
+[New Features]
+- Option to clear framework cache
+- A blue down arrow button to visit apktool website to download
+- CMD modes: Normal, Legacy and Batch scripting. Useful to temporary fix tool getting stuck. Legacy mode is now default. This feature is still under testing
+    Normal: Execute CMD normally using .NET Process
+    Legacy: Execute CMD using WriteLine. It works excatly as AET v1.39 and below. 
+    Batch scripting: Generate .bat file and execute it
+- Log Level: Verbose (default) and Warn & Error. Useful to temporary fix tool getting stuck. This feature is still under testing
+    Verbose: Default logging
+    Warn & Error: Only log warning and errors. Reduces buffer size to avoid tool getting stuck during decompilation/compilation
+- New update dialog with changelog. It will popup instead showing update notice below
+- Dropdown history of APK path and APK names
+- Options to disable history and clear history
+- Sided Log output window. The button will only appear for screen resolution that have higher width than 1250.
+
+[Fixed Issues]
+- Image duplicating if using high DPI 125%
+- Zipaligned APK is placed within the decompiled directory
+- Wrong command usage of signapk.jar
+- apktool.jar were not auto selected when using it first time or after reset
+- Signing ZIP file does nothing or executes wrong command
+- Wrong path when compiling selected decompiled APK
+- File extension recognized incorrectly which caused missing characters after dot if the file/folder name contains dot symbol
+
+[Enhancements]
+- Anti-virus false positives fixed (Gen:Variant.Ursu). If such happens again, please contact.
+- APK Easy Tool will warn if anti-virus have blocked it from file changes.
+- A bit smaller window size
+- Owner email changed. The previous email is no longer active
+- Some text changes
+- Some UI changes
+- Automatically delete existing directory before baksmaling
+- Updated 7-Zip binary to 18.05 (Author of 7-Zip: Igor Pavlov https://www.7-zip.org)
+- Updated Baksmali/smali to 2.2.4 (Author of Baksmali/smali: JesusFreke https://github.com/JesusFreke/smali)
+
+[Removed features]
+- Embedded browser in News section has been removed due to false positives, issues with Wine-HQ and critical security issue with Internet Explorer on outdated systems.
+
+-------------------------------------------------
+
+v1.50 (2017-02-13)
+
+[New Features]
+- Signing APK with keystore. Must be enabled in options.
+- Remember password of keystore. Password will be AES encrypted on exit
+- Added restart button
+- Added copy context menu in Apk Infomation Dialog
+- Added framework tagging (ROM developing)
+- Added option to change framework installation directory (ROM developing)
+- Added option to select framework directory to (ROM developing)
+- Added Smali/Baksmali (BETA)
+- Added button to change all output directories
+- Added button to select decompiled folder so you can select folder decompiled from other tools
+- Option to disable news and log
+- Mass signing (drag and drop on Sign APK button)
+
+[Enhancements]
+- Open framework directory will open Temp folder if apktool folder not found
+- Redesigned Options, Framework, News and About page
+- Some UI changes
+- Disabled zip signing if using apksigner.jar. It is not supported yet.
+- Quick options added to options
+- Changed orders from Compile-Sign-Zipalign-Install to Compile-Zipalign-Sign-Install
+
+[Fixed Issues]
+- Pressing cancel still continue the task
+- Drag and drop to sign apk was forced to sign with signapk.jar
+- Same icon appear when selecting other apk
+- Tells you to compile apk first even dropped apk file to zipalign. 
+- Minor text fixes
+
+[Removed features]
+- Removed aapt dumping in logs. It is no longer needed.
+- Removed framework counter.
+- Removed Sign Selected APK in favor of drag and dropping.
+
+[Known bugs]
+- Stuck when decompiling Google Maps
+
+-------------------------------------------------
+
+v1.41 (2017-12-01)
+- Added News tab. It requires an internet connection
+- Added options to change path of signing keys .pem and .pk8
+- Added donation button
+- Added Full APK Infomation.
+- Added options to select your own .pk8 and .pem file for signing
+- Improved apktool version check.
+- Fixed wrong directory when the program auto create them
+- Removed changelogs from the tool. You can see them in news and online
+- Removed WS_EX_COMPOSITED to get rid of some UI glitches. Weird UI drawing may occur but looks cool for me :).
+- Changed transparent BackColor to write to improve UI performance a bit
+- .NET framework target is 4.6
+- Some UI changes
+- Some fixes
+
+-------------------------------------------------
+
+1.40 (2017-11-05)
+- Added package infomation with icon. Icon cache is stored at %AppData%\Local\Temp\AET and it's automatically cleared
+- Added copy to clipboard on package name. Just click on package name to copy to clipboard.
+- Added extract/zip APK button with drag and drop support. (Requested)
+- Added an option to remember window position. Useful for multiple monitors. Press SHIFT + Q to reset position if window is out of screen. (Requested)
+- Added 7zip binary to extract / zip file. Why because it's faster and better than crappy .NET version.
+- Added background workers to remove lags.
+- Added framework file counter to check how many framework is installed
+- Added "copy" context menu on Logs fields. Select the text, right click and click "copy" to copy to clipboard
+- Added option to enable dump APK infomation using aapt.
+- Added option to change extracted APK / zipped APK
+- Added apksigner.jar for Java 9 and an option to switch between apksigner and signapk
+- Options to change path are moved to Options. 
+- False positives fixed. Buisness and crappy unpopular anti-virus that nobody uses it, still detect this tool as a malware
+- Update check improved.
+- Updated adb to 1.0.39, and aapt and zipalign to 27.0.0 (SDK 27) (Android 8.1.0)
+- Re-written CMD arguments code from scratch. Signing issue aka 0 KB should be gone forever
+- Zipalign verbose output disabled by default.
+- New waiting UI.
+- Improved UI.
+- Improved checks.
+- Inplemented log system. It will create log files everyday and it will continue to load/save logs if the file is created and the date still match.
+- Removed exe downloader.
+- Removed Kill adb button. It is not necessary.
+- Removed setup directories for me button. The program automatically create directories if they are not set.
+- German (üöä), danish (æøå) and some other foreign characters are supported. Chinese, japanese, etc are ONLY supported IF system locale is correctly set. See more: https://www.top-password.com/blog/tag/change-system-locale-windows-command-line/
+- Uncheck "Sign APK after compile" no longer uncheck and grey out "Install APK after compile". Now you can install unsigned APK for rooted devices only.
+- Check "Keep original signature" no longer uncheck "Install APK after compile" and disable "Zipalign"
+- Fixed tab orders
+- Drag and drop APK on framework install button now supported
+- Java heap size is 1024 MB by default
+
+1.39 (2017-09-10)
+- Changed "Setup directories for me" behavior. If you place the tool in C disk and you click on that button, it will create folders in your documents folder. If placed in different disk, it will create folders in the same place where the tool is located
+- Added more tooltips for detailed explanations
+- Added Quick Help tab
+- Quickly added apktool version file check on main page
+- Fixed 0 kb .apk signing bug
+- Removed update.exe. It was not necessary
+- Some UI improvements
+- Some text fixes
+
+1.38 (2017-06-24)
+- Added an X button to dismiss update
+- Added a button to open APKTool folder
+- Fixed all directories. This tool no longer looking for wrong directories in system32 when executing this tool via CMD or RUN.
+- Fixed ADB APK installation.
+- Improved logs
+- Improved UI
+- Improved update system. Update.exe that is located in Resource folder is no longer needed 
+- Removed ADB kill-server. It wasn't needed anyway
+- Extra: Added 2 .dll for ADB support on Win7 in ZIP file. Please extract them from ZIP file and place it in Resource folder if you come from previous version
+
+
+1.37 (2017-04-13)
+- Fixed sign APK after compile
+- Support signing flashable ZIP for ROM developers. You can drag and drop ZIP file on Sign APK button to sign a ZIP file
+- Some minor fixes
+
+1.36 (2017-03-19)
+- Fixed very slow startup on some Win7 system
+- Fixed tab orders
+- Faster startup. Java and update check are delayed by 2 seconds
+- Tool will not quit if Java is not installed. Tool will not quit if Java is not installed. You can only zipalign or install an APK file, but Java still required for other features
+- Added an option to enable/disable tips and ToolTips
+- Added an option to enable/disable check for updates
+- Logo changes.
+- Removed unused checkbox
+- Improved update check
+- Minor text and bug fixes
+
+1.35 (2017-03-10)
+- Critical fix: Checkboxes does not apply even they are checked.
+- Minor text fixes
+
+1.34 (2017-02-18)
+- Fixed path error for compiling APK
+- Added icon for Framework directory button
+- Minor text fixes
+
+1.33 (2017-02-14) (Hotfix)
+- Fixed sign APK that couldn't sign correctly because the file name was wrong
+- Fixed path of Framework directory
+
+1.32 (2017-02-14) (Hotfix)
+- Add a timer in update.exe to prevent it launching the tool twice. This tool will replace Update.exe on Resourced folder
+- Fixed Update.exe trying to place downloaded file in wrong location when logged in as administrator
+- Fixed form size bug when a new update is avaliable
+
+1.31 (2017-02-14) (hotfix)
+- Disabled checks for Sign selected APK
+- Improved signing APK functions. Overwrite APK applies to Sign APK and Sign selected APK
+- Fixed update function
+- Debug commands in log file
+- Minor text fixes
+
+1.3 (2017-02-12)
+- Quick release
+- Drag and drop file support
+- More options to decompile and compile
+- Added cancel button in waiting dialog box
+- Added Clear logs when exit
+- Added Allow path changes in textbox
+- Added Java heap option. Default 512m
+- Added ZipAlign
+- Added options to rename the apk file
+- Added options to select apktool version.
+- Added some tooltips
+- Code cleanup
+- Better font
+- Removed help tab. I will create a PDF help file when i have time
+- Path options moved back to main tab
+- This tool no longer extract resources to appdata. Now we have installer
+- Minor text fixes
+and more...
+
+1.2 (2016-08-10)
+- Better UI with icons in buttons
+- Fixed framework installer
+- Disabled maximize button and resize window
+- APK installer (beta)
+- Configs are stored in registry
+- Add reset button
+- Code cleanup
+
+v1.14 (2016-04-05)
+- Added an option to disable debug info to prevents baksmali from writing out debug info (.local, .param, .line, etc).
+
+v1.13 (2016-04-01)
+- Fixed decompile apk detection
+- "Please wait" popup now shown in the task bar
+
+v1.12 (2016-03-28)
+- Updated apktool.jar to 2.1.0
+- Using XML to save the configuration instead using Windows settings.
+- Bug fixes
+
+v1.11 (2016-03-21)
+- Fixed APK signer (compiled APK and selected APK)
+- Added an option to overwrite the selected APK file
+- Fixed app icon
+- Updated assembly infomation.
+
+v1.1 (2016-03-18)
+- Removed sign APK from re-compile APK
+- Added a checkbox of signing APK, and it will remember if you checked it
+- Framework installer now using apktool commands to install frameworks. You can install multiple frameworks
+- Added Sign compiled APK
+- Added more checks and error messages
+- Added open log button
+- The tool will extract its resources to personal documents (C:\Users\your name\Documents) instead
+- Removed auto setup directories when running the tool.
+- Added a button to setup directories. Use this if you are lazy
+- Removed framework check. I will work with the new framework check
+- Added icon
+- Bug fixes
+
+v1.03 (2016-03-11)
+- Fixed APK signer that is signing selected APK instead compiled APK after re-compiling. Don't think that your recompiled APK was broken :)
+
+v1.02 (2016-03-10)
+- Reduced timeout of waiting popup
+- Added more error messages to prevent .NET framework crash
+- Code cleanup
+
+v1.01 (2016-03-08)
+- Hide console box
+- Fixed stuck in please wait when signing an APK
+
+v1.0 (2016-03-06)
+- First release

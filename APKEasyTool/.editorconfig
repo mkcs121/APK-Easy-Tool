@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CA2211: Non-constant fields should not be visible
+dotnet_diagnostic.CA2211.severity = none
+
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = silent

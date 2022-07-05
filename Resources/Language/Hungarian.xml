@@ -1,0 +1,381 @@
+<!-- Magyar nyelv: gidano | sympda.blog.hu -->
+<!-- Template updated for 1.59. Use notepad++ compare plugin or Code Compare to compare changes -->
+<!-- If something does not translate, check the log. Create new line using [(new-line)]. Do not modify the "name" values. Otherwise it will not load xml at all -->
+<!-- Shorten the words or sentences as possible -->
+<!-- Some strings has been removed as they were no longer need and a part of clean up -->
+<!-- Feel free to credit your name or username here -->
+<Language name="APK Easy Tool HU">
+	<!-- Credit your name here if you want. It will be shown in About page -->
+	<Localized name="translated_by_lbl" value="Translated by:"/> <!-- Translated by: -->
+	<Localized name="translation_credit_lbl" value="gidano | sympda.blog.hu"/>
+	<!-- ================== -->
+	<!-- Global - These strings are used anywhere -->
+	<!-- ================== -->
+	<Localized name="decompile" value="Kibont"/>
+	<Localized name="compile" value="Újraépít"/>
+	<Localized name="sign" value="Aláír"/>
+	<Localized name="framework" value="Framework"/>
+	<Localized name="change_btn" value="Módosít..."/>
+	<Localized name="select_btn" value="Tallóz..."/>
+	<Localized name="cancel_btn" value="(ESC ha mégsem)"/>
+	<Localized name="ok_btn" value="OK"/>
+	<Localized name="general" value="Általános"/>
+	<Localized name="dec_force_del_dir_chk" value="Célkönyvtár kényszerített törlése"/>
+	<Localized name="dec_force_del_dir_tip" value="Célkönyvtár kényszerített törlése. Akkor használd, ha dekódoláskor a célmappa már létezik"/>
+	<Localized name="com_keep_orig_sig_chk" value="Eredeti aláírást megtart"/>
+	<Localized name="com_keep_orig_sig_tip" value="Eredeti AndroidManifest.xml és META-INF másolása.[(new-line)]Több infó itt, https://ibotpeaches.github.io/Apktool/"/> <!-- URL is hardcoded -->
+	<Localized name="com_skip_changes_chk" value="Változás felismerést kihagy"/>
+	<Localized name="com_skip_changes_tip" value="Változás felismerést kihagy és újraépít minden fájlt."/>
+	<Localized name="com_use_appt2_tip" value="Apktool frissítése a kísérleti aapt2 bináris használatához."/>
+	<Localized name="resource_missing_notice" value="Hiányzik az Apktool vagy a Resources mappa. Ellenőrizd, hogy az apkeasytool.exe mellett megvannak-e"/>
+	<Localized name="instance_title" value="Példa"/>
+	<Localized name="java_not_installed_notice" value="A Java nincs telepítve. Kérjük, telepítsd a Java SE alkalmazást, vagy add meg az opcióknál a hordozható Java elérését"/>
+	<Localized name="apktool_not_sel_mbox" value="Az Apktool.jar verzió nincs kiválasztva. Lépj a beállításokhoz és válaszd ki."/>
+	
+	<!-- ================== -->
+	<!-- Status -->
+	<!-- ================== -->
+	<Localized name="read_apk" value="APK olvasása..."/>
+	<Localized name="done" value="Kész"/>
+	<Localized name="error_read_apk" value="Hiba történt az APK fájl olvasása közben"/>
+	<Localized name="apk_not_sel_mbox" value="Az APK fájl nincs kiválasztva. Válassz egy APK fájlt."/>
+	<Localized name="chk_for_update" value="Frissítések ellenőrzése..."/>
+	<!-- ================== -->
+	<!-- Main Tab -->
+	<!-- ================== -->
+	<!-- -->
+	<Localized name="tab_name_main" value="Kezdőlap"/>
+	<Localized name="sel_dec_folder" value="Kibontott APK mappája ..."/>
+	<Localized name="sel_dec_folder_tip" value="Válassz egy kibontott APK-mappát"/>
+    <Localized name="file_folder_lbl" value="Fájl / mappa:"/>
+    <Localized name="decompile_name_lbl" value="Eredeti név:"/>
+	<Localized name="compile_name_lbl" value="Újraépítési név:"/>
+	<Localized name="tip_drop_apk_lbl" value="Tipp: Dobd az APK/JAR/Decompiled mappát ide. A szóközök, szimbólumok és speciális karakterek részben támogatottak. Ha könyvtárhiba történt, távolítsd el ezeket a fájlnévből"/>
+	<Localized name="decode_api_lvl_lbl" value="Dekódolási API szint:"/>
+	<Localized name="rebuild_api_lvl_lbl" value="Újraépítési API szint:"/>
+	<Localized name="api_tip" value="A fájl numerikus api-szintje a generáláshoz, pl. 14 az ICS-hez."/>
+	
+	<!-- Buttons -->
+	<Localized name="sign_apk_btn" value="APK szignó"/>
+	<Localized name="zipalign__btn" value="ZipAlign"/>
+	<Localized name="extract_apk_btn" value="APK kitömörítés"/>
+	<Localized name="zip_apk_btn" value="APK Zippelés"/>
+	<Localized name="install_apk_btn" value="APK telepítés"/>
+	<Localized name="check_align_btn" value="Align. ellenőrzés"/>
+	<Localized name="dec_apk_dir_btn" value="Kibontott APK könyvtára"/>
+	<Localized name="com_apk_dir_btn" value="Újraépített APK könyvtára"/>
+	<Localized name="ext_apk_dir_btn" value="Kicsomagolt APK könyvtára"/>
+	<Localized name="zip_apk_dir_btn" value="Zippelt APK könyvtára"/>
+	
+	<!-- Quick Options -->
+	<Localized name="fw_use_tag_lbl" value="Címke haszn.:"/>
+	<Localized name="fw_use_tag_tip" value="Frameworks címke"/>
+	
+	<!-- Info -->
+	<Localized name="package_name_lbl" value="Csomag név:"/>
+	<Localized name="launch_activity_lbl" value="Indító activity:"/>
+	<Localized name="min_sdk_ver_lbl" value="Min. SDK verzió:"/>
+	<Localized name="target_sdk_ver_lbl" value="Cél SDK verzió:"/>
+	<Localized name="version_name_lbl" value="Verzió név:"/>
+	<Localized name="version_code_lbl" value="Verzió kód:"/>
+	<Localized name="signature_scheme_lbl" value="Aláírási módszer:"/>
+	<Localized name="ps_link" value="Beszerzés, Play Áruház"/>
+	<Localized name="apkcombo_link" value="Beszerzés, Apkcombo"/>
+	<Localized name="apkpure_link" value="Beszerzés, Apkpure"/>
+	<Localized name="full_apk_info_btn" value="Teljes APK Infó"/>
+	
+	<!-- In code -->
+	<Localized name="not_a_dec_notice" value="Nem egy eredeti APK mappa"/>
+	<Localized name="sel_files_diag" value="Válassz APK, JAR vagy ZIP fájlt"/>
+	<Localized name="invalid_notice" value="Érvénytelen fájl v. mappa útvonal"/>
+	<Localized name="pak_id_copy_notice" value="Csomagnév vágólapra másolva."/>
+	<Localized name="launch_copy_notice" value="Launch activity vágólapra másolva."/>
+	<Localized name="sel_dec_diag" value="Válaszd ki a dekompilált mappát, amellyel együtt dolgozol"/>
+	<Localized name="not_a_dec_2_notice" value="A kiválasztott mappa nem egy dekompilált APK mappa"/>´
+	<Localized name="dir_dec_not_set_notice" value="A dekompilált mappa nincs beállítva."/>
+	<Localized name="plz_name_dec_mbox" value="Írd be a fájlnevet a dekompiláláshoz."/>
+	<Localized name="dec_again_mbox" value="Biztos, hogy újra akarod dekompilálni?"/>
+	<Localized name="apk_dec_not_set_mbox" value="A dekompilált könyvtár nincs beállítva"/>
+	<Localized name="apk_dex_not_sel_mbox" value="Az APK fájl vagy a dekompilált mappa nincs beállítva."/>
+	<Localized name="enter_name_com_mbox" value="Adj meg egy fájl nevet a fordításhoz"/>
+	<Localized name="dec_apk_first_mbox" value="Előbb a dekompilált APK fájl felépítése"/>
+	<Localized name="com_apk_first_mbox" value="Előbb az APK fájl felépítése."/>
+	<Localized name="adb_busy_mbox" value="Az ADB foglalt. Akarod az ADB újraindítását?"/>
+	<Localized name="zipalign_first_mbox" value="Előbb az APK fájl zipalignálása"/>
+	<Localized name="ext_apk_first_mbox" value="Előbb az APK kicsomagolása."/>
+	<Localized name="cancel_mbox" value="Biztosan meg akarod szakítani?"/>
+	<!-- ================== -->
+	<!-- Smali/baksmali tab -->
+	<!-- ================== -->
+	<Localized name="smali_bak_tab" value="Smali/baksmali"/>
+	<Localized name="baksmali_lbl" value="Baksmali"/>
+	<Localized name="dex_files_lbl" value="Dex/odex/oat fájl:"/>
+	<Localized name="bak_out_dir_lbl" value="Baksmali kimeneti könyvtár:"/>
+	<Localized name="name_dec_smali_lbl" value="A kibontott smali neve:"/>
+	<Localized name="deodex_lbl" value="Deodex"/>
+	<Localized name="smali_lbl" value="Smali"/>
+	<Localized name="dis_dir_lbl" value="Disassembled mappa:"/>
+	<Localized name="smali_out_dir_lbl" value="Smali kimenő könyvtár:"/>
+	<Localized name="name_of_com_smali_lbl" value="A kompilált smali neve:"/>
+	<Localized name="dec_smali_btn" value="Smali dekompilálás"/>
+	<Localized name="com_smali_btn" value="Smali kompilálás"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dex_odex_diag" value="Válassz dex vagy odex fájlt"/>
+	<Localized name="sel_dis_dir_diag" value="Válaszd ki az disassembled smali tároló mappát"/>
+	<Localized name="dex_not_sel_mbox" value="Dex/odex fájl nincs kiválasztva."/>
+	<Localized name="dir_not_set_mbox" value="Nincs könyvtár beállítva."/>
+	<Localized name="plz_enter_dis_name_mbox" value="Add meg a dekompilált smali nevét"/>
+	<Localized name="sel_dis_folder_diag" value="Válaszd ki a disassembled smali mappát"/>
+	<Localized name="sel_sma_dir_diag" value="Válaszd ki az assembled smali tároló mappát"/>
+	<Localized name="plz_enter_sma_name_mbox" value="Add meg a kompilált smali nevét"/>
+
+	<!-- ================== -->
+	<!-- Log output tab -->
+	<!-- ================== -->
+	<Localized name="log_output_tab" value="Napló kimenet"/>
+	<Localized name="enable_log_out_check" value="Napló készítés"/>
+	<Localized name="open_log_btn" value="Napló könyvtárt megnyit"/>
+	<Localized name="clr_this_log_btn" value="Napló törlése"/>
+	
+	<!-- In code -->
+	<Localized name="clear_logs_mbox" value="Biztosan törölsz minden naplót?"/>
+	<Localized name="clear_logs_mbox_err" value="Hiba történt az összes napló törlésekor"/>
+	<Localized name="log_dir_mbox_err" value="Napló könyvtár nem található"/>
+	<Localized name="file_write_err" value="Hiba történt a napló szövegfájlba mentése alatt."/>
+
+	
+	<!-- ================== -->
+	<!-- Framework tab -->
+	<!-- ================== -->
+	<Localized name="framework_file_lbl" value="Framework fájl:"/>
+	<Localized name="install_dir_lbl" value="Telepítési könyvtár:"/>
+	<Localized name="tag_fw_lbl" value="Framework címke:"/>
+	<Localized name="fw_dir_lbl" value="Framework könyvtár:"/>
+	<Localized name="fw_dir_note_lbl" value="A könyvtárban található framework fájlokat használja a dekódoláshoz és a fordításhoz. Ha a könyvtár[(new-line)]üres,ezt fogja használni: %appdata%/local/apktool/framework vagy %appdata%/local/temp 3"/>
+	<Localized name="fw_dir_note2_lbl" value="Általában az eszköz /system/framework mappájában lesz a framework fájl. Egyes készülékeken itt lehetnek[(new-line)]/data/system-framework, sőt ügyesen elrejtve itt, /system/app vagy /system/priv-app.[(new-line)]Általában ezen a néven 'resources', 'res' vagy 'framework'. "/>
+	<Localized name="fw_dir_note3_lbl" value="Megj.: Az Apktoolnak a telepítés után nincs ellenőrzése a framewok-ök felett, de szabadon kezelheted ezeket a fájlokat."/>
+	<Localized name="sel_fw_btn" value="Framework kiválasztás"/>
+	<Localized name="install_fw_btn" value="FW APK telepítés"/>
+	<Localized name="open_fw_dir_btn" value="FW mappa megnyitás"/>
+	<Localized name="clr_fw_btn" value="FW cache törlés"/>
+	
+	<!-- In code -->
+	<Localized name="and_fw_pack_lbl" value="Android Framework Csomag"/>
+	<Localized name="sel_fw_diag" value="Válaszd ki a Framework APK fájlt"/>
+	<Localized name="fw_not_sel_mbox" value="A framework nincs kiválasztva. Válassz egy framework-öt."/>
+	<Localized name="sel_fw_folder_diag" value="Válassz ki egy framework APK-t tartalmazó mappát"/>
+	<Localized name="sel_fw_stored_diag" value="Válassz ki egy mappát, amely tartalmazza a framework APK-kat"/>
+
+	<!-- ================== -->
+	<!-- Options tab -->
+	<!-- ================== -->
+	<Localized name="com_use_appt2_chk" value="aapt2 használata"/>
+	<!-- General child tab -->
+	<Localized name="options_tab" value="Opciók"/>
+	<Localized name="apktool_ver_lbl" value="Apktool verzió:"/>
+	<Localized name="apktool_ver_tip" value="Ne felejtsd el a framework törlését verzió váltás után"/>
+	<Localized name="comp_lvl_lbl" value="Tömörítési sziont:"/>
+	<Localized name="java_heap_lbl" value="Java fejléc méret:"/>
+	<Localized name="java_heap_tip" value="Növeld a fejléc méretét, ha megszűnik az 'elfogyott a memória' hiba (java.lang.OutOfMemoryError)"/>
+	<Localized name="chk_update_chk" value="Frissítések ellenőrzése"/>
+	<Localized name="rem_win_pos_chk" value="Emlékezzen az ablak pozícióra (SHIFT + Q alaphelyzet)"/>
+	<Localized name="rem_win_pos_tip" value="Kilépéskor emlékezzen az ablak pozícióra. Ha az ablak képernyőn kívülre kerül, töröld a config.xml-t"/>
+	<Localized name="ena_tips_chk" value="Eszköztippek be"/>
+	<Localized name="ena_tips_tip" value="Kapcsold ki, ha bosszantóak"/>
+	<Localized name="dis_dropdown_his_chk" value="A legördülő előzmények ki"/>
+	<Localized name="clr_his_btn" value="Előzmény törlés"/>
+	<Localized name="con_menu_lbl" value="Környezeti menü integrálás"/>
+	<Localized name="ins_lbl" value="Telepít"/>
+	<Localized name="unins_lbl" value="Eltávolít"/>
+	<Localized name="task_bar_chk" value="Mutassa a folyamatot a tálcán"/>
+	
+	<Localized name="restart_btn" value="Újraindít"/>
+	<Localized name="lang_lbl" value="Nyelv:"/>
+	<Localized name="use_java_por_lbl" value="Hordozható Java környezet használata"/>
+	<Localized name="mb_lbl" value="MB"/>
+	<Localized name="dir_lbl" value="Könyvtár"/>
+	<Localized name="dec_dir_lbl" value="Dekompilált APK könyvtár:"/>
+	<Localized name="com_dir_lbl" value="Kompilált APK könyvtár:"/>
+	<Localized name="ext_dir_lbl" value="Kicsomag. APK könyvtár:"/>
+	<Localized name="zip_dir_lbl" value="Zippelt APK könyvtár:"/>
+	<Localized name="setup_all_dir_btn" value="Az összes könyvtár beállítása"/>
+	<Localized name="other_lbl" value="Egyéb"/>
+	<Localized name="reset_btn" value="Alapért. visszaállítás"/>
+	<Localized name="temp_folder_btn" value="Temp mappát megnyit"/>
+	<Localized name="reset_note_lbl" value="A munkamappát nem törli"/>
+	
+	<!-- Apktool child tab -->
+	<Localized name="dont_write_info_lbl" value="Ne írja ki a hibakeresési információkat"/>
+	<Localized name="dont_write_info_tip" value="Megakadályozza, hogy a baksmali kiírja a hibakeresési információkat (.local, .param, .line, stb.).[(new-line)][(new-line)]Akkor hasznos, ha összehasonlítod a különböző verziók ugyanazon APK smaliját.[(new-line)]A sorok és a hibakeresés változnak a verziók között, ami fájdalmat okozhat a DIFF jelentésekben."/>
+	<Localized name="dont_dec_res_lbl" value="Ne dekódoja a resources.arsc fájlt"/>
+	<Localized name="dont_dec_res_tip" value="Ez megakadályozza az erőforrások dekompilációját. Megőrzi a resources.arsc fájlt dekódolás nélkül.[(new-line)]Ha csak a Java (smali) szerkesztését végezzük, akkor ez az ajánlott művelet a gyorsabb dekompilációhoz és az újraépítéshez"/>
+	<Localized name="dont_dec_dex_lbl" value="Ne dekódoja a classes.dex-et"/>
+	<Localized name="dont_dec_dex_tip" value="Ez megakadályozza a dex fájl(ok) kibontását.[(new-line)]Megőrzi az apk .dex fájl(oka)t és egyszerűen mozgatja azokat az összeállítás során.[(new-line)]Ha csak az erőforrásokat szerkeszted.[(new-line)]Ez az ajánlott lépés a gyorsabb kibontáshoz és összeépítéshez"/>
+	<Localized name="dont_copy_unk_asset_lbl" value="Megelőzi ismeretlen asset fájlok dekódolását/másolását."/>
+	<Localized name="keep_file_orig_lbl" value="A fájlokat az eredetihez legközelebb tartja"/>
+	<Localized name="keep_file_orig_tip" value="Megfelel az eredetihez legközelebb álló fájloknak, de megakadályozza az újraépítést."/>
+	<Localized name="keep_bro_res_lbl" value="Sérült res. megtartása"/>
+	<Localized name="only_dis_main_dex" value="Csak a gyökérben szedje szét a fő dex osztályokat[(new-line)](classes[0-9]*.dex). [v2.4.1+]"/>
+	
+	<Localized name="keep_bro_res_tip" value="Ha olyan hiba van, mint 'Invalid Config Flags Detected. Dropping Resources...'.[(new-line)]Ez azt jelenti, hogy az APK szerkezete más, mint amit az Apktool képes kezelni.[(new-line)]Lehet ez egy újabb Android verzió vagy egy véletlenszerű APK, amely nem felel meg a szabványoknak.[(new-line)]Ennek futtatása lehetővé teszi a dekódolást, de aztán manuálisan kell javítani a mappákat az -ERR beillesztéssel."/>
+	<Localized name="set_apk_debug_lbl" value="APK hibakeresés beállítása"/>
+	<Localized name="set_apk_debug_tip" value="Hozzáteszi a debuggable=''true''-t az AndroidManifest fájlhoz.[(new-line)]A SmaliDebugging a 2.0.3-ban elavultként lett megjelölve, a 2.1-ben pedig eltávolítva.[(new-line)]Jelöld be a SmaliIdea-t hibakeresőként."/>
+	<Localized name="dis_cru_res_lbl" value="Letiltja a resource fájlok összeroppanását az újraépítés[(new-line)]során."/>
+	<Localized name="use_aapt2_lbl" value="Az appt helyett használja az aapt2 bináris fájlt"/>
+	<Localized name="use_aapt_path" value="Aapt használata a megadott helyről:"/>
+
+	<!-- Signer child tab -->
+	<Localized name="signer_tab" value="Aláíró"/>
+	<Localized name="ins_apk_sign_lbl" value="APK telepítés aláírás után"/>
+	<Localized name="over_apk_lbl" value="APK felülírása (fogd-és-vidd)"/>
+	<Localized name="use_key_lbl" value="Használjon keystore-t az aláíráshoz (csak az apksigner számára elérhető)."/>
+	<Localized name="key_pw_lbl" value="Jelszó"/>
+	<Localized name="rem_key_pw_lbl" value="Emlékezzen a jelszóra"/>
+	<Localized name="pri_keys_lbl" value="Privát kulcs és tanúsítvány:"/>
+	<Localized name="pk8_lbl" value=".pk8 fájl:"/>
+	<Localized name="pem_lbl" value=".pem fájl:"/>
+	<Localized name="sign_apk_after_com_chk" value="Fordítás után írja alá az APK-t"/>
+	<!-- More info about signing https://developer.android.com/studio/command-line/apksigner#options-sign-general -->
+	<Localized name="signing_note" value="Alapértelmezés szerint az apksigner.jar a min sdk version és a max sdk version értékeit használja annak eldöntésére, hogy az [(new-line)] mikor alkalmazza az aláírási sémát."/>
+	<Localized name="v2_signing_enabled_lbl" value="v2 aláírás engedélyezve"/>
+	<Localized name="v3_signing_enabled_lbl" value="v3 aláírás engedélyezve"/>
+	<Localized name="v4_signing_enabled_lbl" value="v4 aláírás engedélyezve"/>
+	<Localized name="default_str" value="Alapérték"/>
+	<Localized name="false_str" value="Hamis"/>
+	<Localized name="true_str" value="Igaz"/>
+	<Localized name="only_str" value="Csak"/>
+	
+	<!-- Zipalign child tab -->
+	<Localized name="page_align_lbl" value="Oldaligazítás a tárolt megosztott objektum fájlokon"/>
+	<Localized name="verbose_lbl" value="Teljes kimenet"/>
+	<Localized name="zip_after_com_lbl" value="ZipAlign kompilálás után"/>
+	<Localized name="over_exist_zip_lbl" value="Létező outfile.zip felülírása"/>
+	<Localized name="recom_zopfil_lbl" value="A Zopfli-val tömörítse újra"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dec_dir_diag" value="Válaszd ki a tárolt dekompilált apk mappáját"/>
+	<Localized name="sel_com_dir_diag" value="Válaszd ki a tárolt kompilált apk mappáját"/>
+	<Localized name="sel_ext_dir_diag" value="Válaszd ki a tárolt kicsomagolt apk mappáját"/>
+	<Localized name="sel_zip_dir_diag" value="Válaszd ki a tárolt zippelt apk mappáját"/>
+	<Localized name="sel_pk8_file_diag" value="Válaszd ki a .pk8 kulcs fájlt"/>
+	<Localized name="sel_pem_file_diag" value="Válaszd ki a .pem kulcs fájlt"/>
+	<Localized name="sel_key_file_diag" value="Válaszd ki a .jks vagy .keystore kulcs fájlt"/>
+	<Localized name="sel_aapt_file_diag" value="Válaszd ki az aapt futtatható fájlt"/>
+	<Localized name="sel_all_dir_diag" value="Válaszd ki a mappát a könyvtárak működéséhez"/>
+	<Localized name="his_clear_mbox" value="Előzmény törölve"/>
+	<Localized name="sel_java_diag" value="Válaszd ki a java.exe fájlt"/>
+	<Localized name="res_diag" value="Biztosan visszaállítod az alaphelyzetet?"/>
+	
+	<!-- ================== -->
+	<!-- About tab -->
+	<!-- ================== -->
+	<Localized name="about_tab" value="Rólunk"/>
+	<Localized name="software_lbl" value="Szoftver verzió:"/>
+	<Localized name="credits_lbl" value="Köszönet:"/>
+	<Localized name="softpedia_lbl" value="A 100% CLEAN díjat a Softpedia ítélte oda"/>
+	<Localized name="softpedia_link_lbl" value="A Softpedia oldal"/>
+	<Localized name="contact_lbl" value="Kapcsolat"/>
+	<Localized name="email_lbl" value="Email:"/>
+	<Localized name="disclaimer_lbl" value="Nyilatkozat"/>
+	<Localized name="disnote_lbl" value="Amint az apktool, az APK Easy Tool sem szolgál kalózkodásra, sem más törvénytelen célra.[(new-line)]Lokalizálás, funkció bővítés, platform támogatás, elemzés lehet a célja."/>
+	
+	<!-- ================== -->
+	<!-- APK Infomation form -->
+	<!-- ================== -->
+	<Localized name="apk_info_title" value="APK információ"/>
+	<Localized name="save_as_btn" value="Mentés másként..."/>
+	<Localized name="save_file_filter" value="Szöveg fájl"/>
+	
+	<!-- ================== -->
+	<!-- Keystore password form -->
+	<!-- ================== -->
+	<Localized name="keypass_title" value="Keystore jelszó"/>
+	<Localized name="input_keypass_lbl" value="Add meg a keystore jelszót:"/>
+	
+	<!-- ================== -->
+	<!-- Update form -->
+	<!-- ================== -->
+	<Localized name="update_title" value="Frissítés"/>
+	<Localized name="update_lbl" value="Egy új verzió érhető el:"/>
+	<Localized name="update_error" value="Nem lehet csatlakozni a szerverhez"/>
+	<Localized name="update_svr_ver" value="A friss verzió:"/>
+	<Localized name="update_cli_ver" value="Saját verziód:"/>
+	<Localized name="visit_xda_link" value="XDA fórum"/>
+	<Localized name="changelog_lbl" value="Változások"/>
+	<Localized name="down_lbl" value="Letöltés"/>
+	<Localized name="down_note_lbl" value="A fájlokat biztonságos Bitbucket szerveren tároljuk"/>
+	<Localized name="ready_stat_lbl" value="Kész."/>
+	<Localized name="close_btn" value="Bezár"/>
+	<Localized name="downloading_lbl" value="Letöltés..."/>
+	<Localized name="down_ok_lbl" value="Letöltve."/>
+	
+	<!-- ================== -->
+	<!-- Other -->
+	<!-- ================== -->
+	<!-- Jump list -->
+	<Localized name="open_dec_apk_dir" value="Dekompilált APK könyvtárt megnyit"/>
+	<Localized name="open_com_apk_dir" value="Kompilált APK könyvtárt megnyit"/>
+	<Localized name="open_ext_apk_dir" value="Kicsomagolt APK könyvtárt megnyit"/>
+	<Localized name="open_zip_apk_dir" value="Zippelt APK könyvtárt megnyit"/>
+	<Localized name="open_baksmali_apk_dir" value="Baksmali könyvtárt megnyit"/>
+	<Localized name="open_smali_apk_dir" value="Smali könyvtárt megnyit"/>
+	
+	<!-- CMD execution -->
+	<Localized name="dec_apk_file_notice" value="APK fájl dekompilálás..."/>
+	<Localized name="dec_jar_file_notice" value="JAR fájl dekompilálás..."/>
+	<Localized name="dec_success_mbox" value="A dekompilálás sikeres"/>
+	<Localized name="dec_fail_mbox" value="A dekompilálás sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="com_apk_file_notice" value="APK fájl kompilálás..."/>
+	<Localized name="com_jar_file_notice" value="JAR fájl kompilálás..."/>
+	<Localized name="com_success_mbox" value="A kompilálás sikeres"/>
+	<Localized name="com_fail_mbox" value="A kompilálás sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="key_not_sel_mbox" value="Keystore fájl nincs kiválasztva"/>
+	<Localized name="sign_apk_file_notice" value="APK fájl szignózás..."/>
+	<Localized name="sign_success_mbox" value="A szignózás sikeres"/>
+	<Localized name="sign_fail_mbox" value="A szignózás sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="ins_apk_file_log" value="APK telepítés az eszközre..."/>
+	<Localized name="ins_apk_file_notice" value="APK telepítés az eszközre... Ha elakad, nyomd meg a Mégse gombot"/>
+	<Localized name="ins_success_mbox" value="APK telepítés sikeres"/>
+	<Localized name="ins_fail_mbox" value="APK telepítés sikertelen. Nézd meg a naplót"/>
+	
+	<Localized name="cant_zipalign_mbox" value="Az APK-fájl nem tömöríthető. Nevezd át vagy töröld a fájlt, majd próbálkozz újra."/>
+	<Localized name="zipalign_apk_file_notice" value="Zipalignálás..."/>
+	<Localized name="zipalign_success_mbox" value=" A Zipalign sikeres"/>
+	<Localized name="zipalign_fail_mbox" value="A Zipalign sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="veri_apk_file_log" value="Az alignment igazolása"/>
+	<Localized name="zipalign_output_dis_log" value="A Zipalign belsõ kimenet le van tiltva"/>
+	<Localized name="zipalign_apk_file_notice" value="Zipalignálás..."/>
+	<Localized name="zipalign_success_mbox" value="A zipalignálás sikeres"/>
+	<Localized name="zipalign_fail_mbox" value="A zipalignálás sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="veri_apk_file_log" value="Az alignálás ellenőrzése"/>
+	<Localized name="veri_success_mbox" value="Az ellenőrzés sikeres"/>
+	<Localized name="veri_fail_mbox" value="Az ellenőrzés sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="fw_clr_apk_file_log" value="Framework cache törlés..."/>
+	<Localized name="fw_clr_success_mbox" value="Framework cache törölve"/>
+	<Localized name="fw_clr_fail_mbox" value="Framework cache törlése sikertelen"/>
+
+	<Localized name="ext_apk_file_log" value="APK fájl kicsomagolás..."/>
+	<Localized name="ext_success_mbox" value="Az APK fájl kicsomagolása sikeres"/>
+	<Localized name="ext_fail_mbox" value="Az APK fájl kicsomagolása sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="zip_apk_file_log" value="Zippelés vissza APK fájlba..."/>
+	<Localized name="zip_success_mbox" value="A Zippelés sikeres"/>
+	<Localized name="zip_fail_mbox" value="A Zippelés sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="baksmali_file_log" value="Baksmaling..."/>
+	<Localized name="baksmali_success_mbox" value="A Baksmaling sikeres"/>
+	<Localized name="baksmali_fail_mbox" value="A Baksmaling sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="smali_file_log" value="Smaling vissza APK fájlba..."/>
+	<Localized name="smali_success_mbox" value="A Smaling sikeres"/>
+	<Localized name="smali_fail_mbox" value="A Smaling sikertelen. Olvasd el a naplót"/>
+	
+	<Localized name="cancelled_log" value="Megszakítva"/>
+</Language>

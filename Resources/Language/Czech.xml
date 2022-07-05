@@ -1,0 +1,378 @@
+<Language name="Czech">
+	<Localized name="translated_by_lbl" value="Translated by: Ota"/> <!-- Translated by: -->
+	<!-- ================== -->
+	<!-- Global - These strings are used anywhere -->
+	<!-- ================== -->
+	<Localized name="decompile" value="Dekompilovat"/>
+	<Localized name="compile" value="Kompilovat"/>
+	<Localized name="sign" value="Podepsat"/>
+	<Localized name="framework" value="Framework"/>
+	<Localized name="change_btn" value="Změnit..."/>
+	<Localized name="select_btn" value="Procházet..."/>
+	<Localized name="cancel_esc" value="(Stisknutím klávesy ESC akci zrušíte)"/>
+	<Localized name="ok_btn" value="OK"/>
+	<Localized name="apktool_ver_lbl" value="Verze Apktool:"/>
+	<Localized name="comp_lvl_lbl" value="Úroveň komprese:"/>
+	<Localized name="java_heap_lbl" value="Velikost Java heap:"/>
+	<Localized name="general" value="Všeobecné"/>
+	<Localized name="dec_force_del_dir_chk" value="Vynutit odstranění cílového adresáře"/>
+	<Localized name="dec_force_del_dir_tip" value="Vynutit odstranění cílového adresáře. Použijte při pokusu o dekódování do složky, která již existuje "/>
+	<Localized name="com_keep_orig_sig_chk" value="Ponechat originální podpis"/>
+	<Localized name="com_keep_orig_sig_tip" value="Zkopíruje původní soubory AndroidManifest.xml a META-INF. [(new-line)] Další informace naleznete na https://ibotpeaches.github.io/Apktool /"/> <!-- URL is hardcoded -->
+	<Localized name="com_skip_changes_chk" value="Přeskočit detekci změn"/>
+	<Localized name="com_skip_changes_tip" value="Přeskočit detekci změn a vytvořit všechny soubory."/>
+	<Localized name="com_use_appt2_tip" value="Vylepšuje apktool tak, aby používal experimentální binární soubor aapt2."/>
+	<Localized name="resource_missing_notice" value="Chybí složka Apktool nebo Resources. Ujistěte se, že jsou umístěny spolu s apkeasytool.exe "/>
+	<Localized name="instance_title" value="Instance"/>
+	<Localized name="java_not_installed_notice" value="Java není nainstalována. Nainstalujte prosím Java SE nebo vyberte cestu ke spustitelnému Java v možnostech "/>
+	<Localized name="apktool_not_sel_mbox" value="Verze Apktool.jar není vybrána. Přejděte na možnosti a vyberte ji."/>
+	
+	<!-- ================== -->
+	<!-- Status -->
+	<!-- ================== -->
+	<Localized name="read_apk" value="Čtu APK..."/>
+	<Localized name="done" value="Hotovo"/>
+	<Localized name="error_read_apk" value="Při čtení souboru APK došlo k chybě"/>
+	<Localized name="apk_not_sel_mbox" value="Soubor APK není vybrán. Vyberte soubor APK ."/>
+	<Localized name="chk_for_update" value="Probíhá kontrola aktualizace..."/>
+	
+	<!-- ================== -->
+	<!-- Main Tab -->
+	<!-- ================== -->
+	<!-- -->
+	<Localized name="tab_name_main" value="Hlavní"/>
+	<Localized name="sel_dec_folder_tip" value="Vyberte dekompilovaný soubor APK"/>
+    <Localized name="file_folder_lbl" value="Soubor/Složka:"/>
+    <Localized name="decompile_name_lbl" value="Název dekompilace:"/>
+	<Localized name="compile_name_lbl" value="Název kompilace:"/>
+	<Localized name="tip_drop_apk_lbl" value="Tip: Sem přetáhněte složku APK/JAR/Dekompilace"/>
+	<Localized name="decode_api_lvl_lbl" value="Úroveň dekódování API:"/>
+	<Localized name="rebuild_api_lvl_lbl" value="Úroveň API nového sestavení:"/>
+	<Localized name="api_tip" value="Číselná úroveň rozhraní API souboru, který se má generovat, např. 14 pro ICS. "/>
+
+	<!-- Buttons -->
+	<Localized name="sign_apk_btn" value="Podepsat APK"/>
+	<Localized name="zipalign__btn" value="ZipAlign"/>
+	<Localized name="extract_apk_btn" value="Extrahovat APK"/>
+	<Localized name="zip_apk_btn" value="Zipovat APK"/>
+	<Localized name="install_apk_btn" value="Instalovat APK"/>
+	<Localized name="check_align_btn" value="Zkontrolovat zarovnání"/>
+	<Localized name="dec_apk_dir_btn" value="Adresář dekompilovaných APK"/>
+	<Localized name="com_apk_dir_btn" value="Adresář kompilovaných APK"/>
+	<Localized name="ext_apk_dir_btn" value="Adresář extrahovaných APK"/>
+	<Localized name="zip_apk_dir_btn" value="Adresář zazipovaných APK"/>
+	
+	<!-- Quick Options -->
+	<Localized name="fw_use_tag_lbl" value="Tag:"/>
+	<Localized name="fw_use_tag_tip" value="Tagy frameworků"/>
+	
+	<!-- Info -->
+	<Localized name="package_name_lbl" value="Název balíčku:"/>
+	<Localized name="launch_activity_lbl" value="Spustit aktivitu:"/>
+	<Localized name="min_sdk_ver_lbl" value="Minimální verze SDK:"/>
+	<Localized name="target_sdk_ver_lbl" value="Cílová verze SDK:"/>
+	<Localized name="version_name_lbl" value="Název verze:"/>
+	<Localized name="version_code_lbl" value="Kód verze:"/>
+	<Localized name="signature_scheme_lbl" value="Podpisové schéma:"/>
+	<Localized name="ps_link" value="Získat v obchodě Play"/>
+	<Localized name="apkcombo_link" value="Získat v Apkcombo"/>
+	<Localized name="apkpure_link" value="Získat v Apkpure"/>
+	<Localized name="full_apk_info_btn" value="Úplné informace o APK"/>
+	
+	<!-- In code -->
+	<Localized name="not_a_dec_notice" value="Toto není adresář dekompilovaných APK"/>
+	<Localized name="sel_files_diag" value="Vyberte soubor APK nebo JAR"/>
+	<Localized name="invalid_notice" value="Soubor nebo složka neexistuje"/>
+	<Localized name="pak_id_copy_notice" value="Název balíčku zkopírován do schránky."/>
+	<Localized name="launch_copy_notice" value="Spoučtěcí aktivita byla zkopírována do schránky."/>
+	<Localized name="sel_dec_diag" value="Vyberte projekt složky dekompilované APK, se kterým chcete pracovat"/>
+	<Localized name="not_a_dec_2_notice" value="Složka, kterou jste vybrali, není složkou dekompilovaného souboru APK"/>´
+	<Localized name="dir_dec_not_set_notice" value="Adresář dekompilace není nastaven."/>
+	<Localized name="plz_name_dec_mbox" value="Zadejte název souboru pro dekompilaci."/>
+	<Localized name="dec_again_mbox" value="Opravdu chcete znovu dekompilovat?"/>
+	<Localized name="apk_dec_not_set_mbox" value="Adresář dekompilace není nastaven"/>
+	<Localized name="apk_dex_not_sel_mbox" value="Není vybrán soubor APK nebo složka pro dekompilaci ."/>
+	<Localized name="enter_name_com_mbox" value="Zadejte název souboru pro kompilaci"/>
+	<Localized name="dec_apk_first_mbox" value="Nejprve dekompilujte soubor APK"/>
+	<Localized name="com_apk_first_mbox" value="Nejprve zkompilujte soubor APK."/>
+	<Localized name="adb_busy_mbox" value="ADB je zaneprázdněn. Chcete restartovat ADB?"/>
+	<Localized name="zipalign_first_mbox" value="Nejprve proveďte Zipalign souboru APK"/>
+	<Localized name="ext_apk_first_mbox" value="Nejprve rozbalte soubor APK."/>
+	<Localized name="cancel_mbox" value="Přerušení ukončí proces exe. Opravdu chcete přerušit?"/>
+	<!-- ================== -->
+	<!-- Smali/baksmali tab -->
+	<!-- ================== -->
+	<Localized name="smali_bak_tab" value="Smali/baksmali"/>
+	<Localized name="baksmali_lbl" value="Baksmali"/>
+	<Localized name="dex_files_lbl" value="Dex/odex/oat souboru:"/>
+	<Localized name="bak_out_dir_lbl" value="Baksmali výstupní adresář:"/>
+	<Localized name="name_dec_smali_lbl" value="Název dekompilovaného smali:"/>
+	<Localized name="deodex_lbl" value="Deodex"/>
+	<Localized name="smali_lbl" value="Smali"/>
+	<Localized name="dis_dir_lbl" value="Složka Disassemblovaných:"/>
+	<Localized name="smali_out_dir_lbl" value="Smali výstupní adresář:"/>
+	<Localized name="name_of_com_smali_lbl" value="Název sestaveného smali:"/>
+	<Localized name="dec_smali_btn" value="Dekompilovat smali"/>
+	<Localized name="com_smali_btn" value="Kompilovat smali"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dex_odex_diag" value="Vyberte soubor dex nebo odex"/>
+	<Localized name="sel_dis_dir_diag" value="Vyberte složku pro uložení disassemblovaných smali"/>
+	<Localized name="dex_not_sel_mbox" value="Není vybrán soubor Dex / odex."/>
+	<Localized name="dir_not_set_mbox" value="Adresář není nastaven."/>
+	<Localized name="plz_enter_dis_name_mbox" value="Zadejte název dekompilovaného smali"/>
+	<Localized name="sel_dis_folder_diag" value="Vyberte složku disassemblovaných smali"/>
+	<Localized name="sel_sma_dir_diag" value="Vyberte složku pro uložení assemblovaných smali"/>
+	<Localized name="plz_enter_sma_name_mbox" value="Zadejte název kompilovaného smali"/>
+
+	<!-- ================== -->
+	<!-- Log output tab -->
+	<!-- ================== -->
+	<Localized name="log_output_tab" value="Výstup protokolu"/>
+	<Localized name="enable_log_out_check" value="Povolit výstup protokolu"/>
+	<Localized name="open_log_btn" value="Otevřít adresář protokolu"/>
+	<Localized name="clr_this_log_btn" value="Vymazat protokol"/>
+	
+	<!-- In code -->
+	<Localized name="clear_logs_mbox" value="Opravdu chcete vymazat všechny protokoly?"/>
+	<Localized name="clear_logs_mbox_err" value="Při mazání všech protokolů došlo k chybě"/>
+	<Localized name="please_read_faq" value="Přečtěte si často kladené dotazy a odstraňování problémů"/>
+	<Localized name="log_dir_mbox_err" value="Adresář protokolu nebyl nalezen"/>
+	
+	<!-- ================== -->
+	<!-- Framework tab -->
+	<!-- ================== -->
+	<Localized name="framework_file_lbl" value="Soubor framework:"/>
+	<Localized name="install_dir_lbl" value="Adresář instalace"/>
+	<Localized name="tag_fw_lbl" value="Tag:"/>
+	<Localized name="fw_dir_lbl" value="Adresář frameworku:"/>
+	<Localized name="fw_dir_note_lbl" value="Používá soubory rozhraní umístěné v adresáři pro dekompilaci a kompilaci. Pokud je adresář prázdný, [(new-line)] použije apk umístěný na  %appdata%/local/apktool/framework nebo %appdata%/local/temp 3"/>
+	<Localized name="fw_dir_note2_lbl" value="Ve většině případů bude jakákoli apk v /system/framework na zařízení [(new-line)] soubor framework. Na některých zařízeních mohou pobývat v [(new-line)]/data/system-framework a dokonce chytře skryté v /system/app nebo/system/priv-app. Obvykle jsou pojmenovány [(new-line)] pojmenováním „zdroje“, „res“ nebo „framework“.  "/>
+	<Localized name="fw_dir_note3_lbl" value="Poznámka: Apktool nemá po nainstalování žádnou kontrolu nad frameworkem, ale můžete tyto soubory spravovat sami. "/>
+	<Localized name="sel_fw_btn" value="Vyberte framework"/>
+	<Localized name="install_fw_btn" value="Instalovat FW APK"/>
+	<Localized name="open_fw_dir_btn" value="Otevřít adresář FW"/>
+	<Localized name="clr_fw_btn" value="Vymazat FW cache"/>
+	
+	<!-- In code -->
+	<Localized name="and_fw_pack_lbl" value="Soubor Android Frameworkem"/>
+	<Localized name="sel_fw_diag" value="Vyberte soubor APK s frameworkem"/>
+	<Localized name="fw_not_sel_mbox" value="Framework není vybrán. Vyberte nějaký."/>
+	<Localized name="sel_fw_folder_diag" value="Vyberte složku, do které chcete uložit soubory APK s frameworkem"/>
+	<Localized name="sel_fw_stored_diag" value="Vyberte složku, kam jste uložili své soubory APK s frameworkem"/>
+
+	<!-- ================== -->
+	<!-- Options tab -->
+	<!-- ================== -->
+	<Localized name="com_use_appt2_chk" value="Použít aapt2"/>
+
+	<!-- General child tab -->
+	<Localized name="options_tab" value="Možnosti"/>
+	<Localized name="chk_update_chk" value="Vyhledat aktualizaci"/>
+	<Localized name="rem_win_pos_chk" value="Uložit polohu okna"/>
+	<Localized name="rem_win_pos_tip" value="Zapamatuje si polohu okna při ukončení. Pokud je okno mimo obrazovku, odstraňte config.xml"/>
+	<Localized name="ena_tips_chk" value="Povolit tipy"/>
+	<Localized name="ena_tips_tip" value="Deaktivujte, pokud jsou popisky otravné"/>
+	<Localized name="dis_dropdown_his_chk" value="Zakázat historii rozbalovací nabídky"/>
+	<Localized name="clr_his_btn" value="Smazat historii"/>
+	<Localized name="con_menu_lbl" value="Integrace do kontextové nabídky"/>
+	<Localized name="ins_lbl" value="Instalovat"/>
+	<Localized name="unins_lbl" value="Odinstalovat"/>
+	<Localized name="task_bar_chk" value="Blikat/zobrazit pokrok na ikoně na hlavním panelu"/>
+	
+	<Localized name="restart_btn" value="Restartovat"/>
+	<Localized name="lang_lbl" value="Jazyk:"/>
+	<Localized name="cmd_mode_lbl" value="Mód příkazové řádky:"/>
+	<Localized name="cmd_mode_tip" value="Argumenty: Spusťte CMD pomocí argumentů[(new-line)]Příkazový řádek: Proveďte příkaz pomocí příkazového řádku.[(new-line)]Dávkový soubor: Generovat .bat soubor a spustit jej[(new-line)][(new-line)]Dávkové skriptování funguje pouze pro dekompilaci a kompilaci. Režimy měňte pouze v případě, že se nástroj zasekne. "/>
+	<Localized name="use_java_por_lbl" value="Použijte přenosný spustitelný soubor Java"/>
+	<Localized name="mb_lbl" value="MB"/>
+	<Localized name="set_code_page_chk" value="Nastavte kódovou stránku:"/>
+	<Localized name="active_code_page_lbl" value="Aktivní kódová stránka:"/>
+	<Localized name="dir_lbl" value="Adresář"/>
+	<Localized name="dec_dir_lbl" value="Adresář dekompilovaných APK:"/>
+	<Localized name="com_dir_lbl" value="Adresář kompilovaných APK:"/>
+	<Localized name="ext_dir_lbl" value="Adresář rozbalených APK:"/>
+	<Localized name="zip_dir_lbl" value="Adresář zazipovaných APK:"/>
+	<Localized name="setup_all_dir_btn" value="Nastavení všech adresářů"/>
+	<Localized name="other_lbl" value="Další"/>
+	<Localized name="reset_btn" value="Resetovat"/>
+	<Localized name="reset_note_lbl" value="Vaše pracovní složka nebude smazána"/>
+	
+	<!-- Apktool child tab -->
+	<Localized name="dont_write_info_lbl" value="Nezapisovat informace o ladění"/>
+	<Localized name="dont_write_info_tip" value="Zabránit baksmali v zapisování informací o ladění (.local, .param, .line atd.) .[(new-line)][(new-line)]Upřednostňuje se, pokud porovnáváte smali ze stejného APK různých verzí.[(new-line)]Čísla řádků a ladění se mezi verzemi budou měnit, což může způsobit, že zprávy DIFF budou nesprávné."/>
+	<Localized name="dont_dec_res_lbl" value="Nedekódovat resources.arsc"/>
+	<Localized name="dont_dec_res_tip" value="Tím se zabrání dekompilaci zdrojů. To udržuje resources.arsc beze změny bez jakéhokoli dekódování. [(new-line)]Pokud upravujete pouze Javu (smali), pak je to doporučená akce pro rychlejší dekompilaci a opětovné sestavení "/>
+	<Localized name="dont_dec_dex_lbl" value="Nedekódovat classes.dex"/>
+	<Localized name="dont_dec_dex_tip" value="Tím se zabrání dekompilování souborů dex.[(new-line)]To udržuje soubory apk dex a jednoduše je přesune během sestavení.[(new-line)]Pokud upravujete pouze zdroje.[(new-line)]Toto je doporučená akce pro rychlejší disassemblování a assemblování"/>
+	<Localized name="dont_copy_unk_asset_lbl" value="Zabránit dekódování/kopírování neznámých asset souborů."/>
+	<Localized name="keep_file_orig_lbl" value="Udržuje soubory co nejblíže originálu"/>
+	<Localized name="keep_file_orig_tip" value="Udržuje soubory co nejblíže originálu, ale brání opětovnému sestavení."/>
+	<Localized name="keep_bro_res_lbl" value="Zachovat poškozené res"/>
+	<Localized name="only_dis_main_dex" value="Disassembluje pouze hlavní třídy dex (třídy [0-9] *. Dex)[(new-line)]v kořenovém adresáři. [v2.4.1+]"/>
+	<Localized name="keep_bro_res_tip" value="Pokud dojde k chybě jako „Byly zjištěny neplatné příznaky konfigurace. Pustit zdroje ... “. [(new-line)]To znamená, že APK má jinou strukturu, než jakou dokáže zpracovat Apktool.[(new-line)]Může to být novější verze systému Android nebo náhodný soubor APK, který neodpovídá standardům.[(new-line)]Spuštění tohoto umožní dekódování, ale pak musíte ručně opravit složky s -ERR v nich. "/>
+	<Localized name="set_apk_debug_lbl" value="Nastavit soubor APK jako laditelný"/>
+	<Localized name="set_apk_debug_tip" value="Přidá do souboru AndroidManifest debuggable =''true''. [(new-line)]SmaliDebugging byl označen jako zastaralý v 2.0.3 a odstraněn v 2.1.[(new-line)]Zkontrolujte prosím SmaliIdea pro debugger."/>
+	<Localized name="dis_cru_res_lbl" value="Během kroku sestavování zakáže roztrhání zdrojových[(new-line)]souborů. [v2.4.0 +]"/>
+	<Localized name="use_aapt2_lbl" value="Použít binární aapt2 místo aapt[v2.3.2 +]"/>
+	<Localized name="use_aapt_path" value="Použít aapt ze zadaného umístění:"/>
+
+	<!-- Signer child tab -->
+	<Localized name="signer_tab" value="Podpisovač"/>
+	<Localized name="ins_apk_sign_lbl" value="Nainstalovat APK po podepsání"/>
+	<Localized name="over_apk_lbl" value="Přepsat APK (drag and drop)"/>
+	<Localized name="use_key_lbl" value="K podepisování použít úložiště klíčů."/>
+	<Localized name="key_pw_lbl" value="Heslo"/>
+	<Localized name="rem_key_pw_lbl" value="Zapamatovat heslo"/>
+	<Localized name="pri_keys_lbl" value="Soukromý klíč a certifikát:"/>
+	<Localized name="pk8_lbl" value=".pk8 soubor:"/>
+	<Localized name="pem_lbl" value=".pem soubor:"/>
+	<Localized name="sign_apk_after_com_chk" value="Podepsat APK po kompilaci "/>
+	<Localized name="signing_note" value="Ve výchozím nastavení používá apksigner.jar k rozhodování, kdy použít schéma podpisu,[(new-line)] hodnoty min sdk verze a max sdk verze."/>
+	<Localized name="v2_signing_enabled_lbl" value="v2 podepisování povoleno"/>
+	<Localized name="v3_signing_enabled_lbl" value="v3 podepisování povoleno"/>
+	<Localized name="v4_signing_enabled_lbl" value="v4 podepisování povoleno"/>
+	
+	<!-- Zipalign child tab -->
+	<Localized name="page_align_lbl" value="Zarovnání stránek uložených souborů sdílených objektů"/>
+	<Localized name="verbose_lbl" value="Podrobný výstup"/>
+	<Localized name="zip_after_com_lbl" value="ZipAlignovat po kompilaci"/>
+	<Localized name="over_exist_zip_lbl" value="Přepsat existující outfile.zip"/>
+	<Localized name="recom_zopfil_lbl" value="Rekomprimovat pomocí Zopfli"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dec_dir_diag" value="Vyberte složku pro uložení decompiled apk"/>
+	<Localized name="sel_com_dir_diag" value="Vyberte složku pro uložení compiled apk"/>
+	<Localized name="sel_ext_dir_diag" value="Vyberte složku pro uložení extracted apk"/>
+	<Localized name="sel_zip_dir_diag" value="Vyberte složku pro uložení zipped apk"/>
+	<Localized name="sel_pk8_file_diag" value="Vyberte .pk8 soubor klíče"/>
+	<Localized name="sel_pem_file_diag" value="Vyberte .pem soubor klíče"/>
+	<Localized name="sel_key_file_diag" value="Vyberte .jks nebo .keystore soubor klíče"/>
+	<Localized name="sel_all_dir_diag" value="Vyberte složku, do které chcete adresáře nastavit"/>
+	<Localized name="his_clear_mbox" value="Historie vymazána"/>
+	<Localized name="sel_java_diag" value="Vyberte java.exe soubor"/>
+	<Localized name="res_diag" value="Opravdu chcete obnovit výchozí hodnoty?"/>
+	
+	<!-- ================== -->
+	<!-- About tab -->
+	<!-- ================== -->
+	<Localized name="about_tab" value="O aplikaci"/>
+	<Localized name="software_lbl" value="Verze software:"/>
+	<Localized name="credits_lbl" value="Poděkování:"/>
+	<Localized name="donate_lbl" value="Líbí se vám moje práce? Zvažte darování mně :) "/>
+	<Localized name="softpedia_lbl" value="Cena 100% CLEAN udělená společností Softpedia"/>
+	<Localized name="softpedia_link_lbl" value="Více na Softpedii"/>
+	<Localized name="contact_lbl" value="Kontakt"/>
+	<Localized name="email_lbl" value="Email:"/>
+	<Localized name="disclaimer_lbl" value="Zřeknutí se odpovědnosti"/>
+	<Localized name="disnote_lbl" value="Stejně jako apktool, ani APK Easy Tool není určen pro pirátství a jiná nelegální použití.[(new-line)]Může být použito pro lokalizaci, přidání některých funkcí nebo podporu pro vlastní platformy,[(new-line)]analýzu aplikací a mnoho dalšího."/>
+	
+	<!-- ================== -->
+	<!-- APK Infomation form -->
+	<!-- ================== -->
+	<Localized name="apk_info_title" value="Informace o APK"/>
+	<Localized name="save_as_btn" value="Uložit jako..."/>
+	<Localized name="save_file_filter" value="Textový soubor"/>
+	
+	<!-- ================== -->
+	<!-- Keystore password form -->
+	<!-- ================== -->
+	<Localized name="keypass_title" value="Heslo úložiště klíčů"/>
+	<Localized name="input_keypass_lbl" value="Zadejte heslo úložiště klíčů:"/>
+	
+	<!-- ================== -->
+	<!-- Update form -->
+	<!-- ================== -->
+	<Localized name="update_title" value="Aktualizace"/>
+	<Localized name="update_lbl" value="K dispozici je nová verze:"/>
+	<Localized name="visit_xda_link" value="Navštivte fórum XDA"/>
+	<Localized name="changelog_lbl" value="Seznam změn"/>
+	<Localized name="down_lbl" value="Stažení"/>
+	<Localized name="down_note_lbl" value="Soubory jsou uloženy na zabezpečeném serveru Bitbucket"/>
+	<Localized name="ready_stat_lbl" value="Připraveno."/>
+	<Localized name="por_ver_btn" value="Přenosná verze"/>
+	<Localized name="close_btn" value="Ukončit"/>
+	
+	<Localized name="down_stat_lbl" value="Stahuji instalační verzi programu ..."/>
+	<Localized name="down_por_stat_lbl" value="Stahuji přenosnou verzi..."/>
+	<Localized name="down_ok_lbl" value="Staženo."/>
+	
+	<!-- ================== -->
+	<!-- Other -->
+	<!-- ================== -->
+	<!-- Jump list -->
+	<Localized name="open_dec_apk_dir" value="Otevřít adresář dekompilovaných APK"/>
+	<Localized name="open_com_apk_dir" value="Otevřít adresář kompilovaných APK"/>
+	<Localized name="open_ext_apk_dir" value="Otevřít adresář rozbalených APK"/>
+	<Localized name="open_zip_apk_dir" value="Otevřít adresář zazipovaných APK"/>
+	<Localized name="open_baksmali_apk_dir" value="Otevřít adresář baksmali"/>
+	<Localized name="open_smali_apk_dir" value="Otevřít adresář smali"/>
+	
+	<!-- CMD execution -->
+	<Localized name="dec_apk_file_notice" value="Dekompiluji APK soubor..."/>
+	<Localized name="dec_jar_file_notice" value="Dekompiluji JAR soubor..."/>
+	<Localized name="dec_success_mbox" value="Dekompilace byla úspěšná"/>
+	<Localized name="dec_fail_mbox" value="Dekompilace se nezdařila. Přečtěte si prosím protokol "/>
+	
+	<Localized name="com_apk_file_notice" value="Kompiluji APK soubor..."/>
+	<Localized name="com_jar_file_notice" value="Kompiluji JAR soubor..."/>
+	<Localized name="com_success_mbox" value="Kompilace byla úspěšná"/>
+	<Localized name="com_fail_mbox" value="Kompilace se nezdařila. Přečtěte si prosím protokol"/>
+	
+	<Localized name="key_not_sel_mbox" value="Soubor úložiště klíčů není vybrán"/>
+	<Localized name="sign_apk_file_notice" value="Podepisuji APK soubor..."/>
+	<Localized name="sign_success_mbox" value="Podpis byl úspěšný"/>
+	<Localized name="sign_fail_mbox" value="Podpis se nezdařil. Přečtěte si prosím protokol"/>
+	
+	<Localized name="ins_apk_file_log" value="Instaluji APK do zařízení..."/>
+	<Localized name="ins_apk_file_notice" value="Instaluji APK do zařízení..."/>
+	<Localized name="ins_success_mbox" value="Instalace APK byla úspěšná"/>
+	<Localized name="ins_fail_mbox" value="Instalace APK selhala. Přečtěte si prosím protokol"/>
+	
+	<Localized name="cant_zipalign_mbox" value="Soubor APK nelze zipalignovat. Přejmenujte nebo odstraňte soubor a zkuste to znovu. "/>
+	<Localized name="zipalign_apk_file_notice" value="Zipalignuji..."/>
+	<Localized name="zipalign_success_mbox" value="Zipalign byl úspěšný"/>
+	<Localized name="zipalign_fail_mbox" value="Zipalign selhal. Přečtěte si prosím protokol"/>
+	
+	<Localized name="veri_apk_file_log" value="Ověřit zarovnání"/>
+	<Localized name="zipalign_output_dis_log" value="Podrobný výstup zipalignu je zakázán"/>
+	<Localized name="veri_apk_file_notice" value="Ověřuji zarovnání..."/>
+	<Localized name="veri_success_mbox" value="Ověření bylo úspěšné"/>
+	<Localized name="veri_fail_mbox" value="Ověření selhalo. Přečtěte si prosím protokol"/>
+	
+	<Localized name="fw_apk_file_log" value="Instaluji framework..."/>
+	<Localized name="fw_success_mbox" value="Framework byl úspěšně nainstalován"/>
+	<Localized name="fw_fail_mbox" value="Instalace frameworku selhala. Přečtěte si prosím protokol"/>
+	
+	<Localized name="fw_clr_apk_file_log" value="Mažu mezipaměť frameworku..."/>
+	<Localized name="fw_clr_success_mbox" value="Mezipaměť frameworku byla vymazána"/>
+	<Localized name="fw_clr_fail_mbox" value="Mazání mezipaměti frameworku selhalo"/>
+
+	<Localized name="ext_apk_file_log" value="Rozbaluji APK soubor..."/>
+	<Localized name="ext_success_mbox" value="APK úspěšně rozbalena"/>
+	<Localized name="ext_fail_mbox" value="Rozbalování APK selhalo. Přečtěte si prosím protokol"/>
+	
+	<Localized name="zip_apk_file_log" value="Zipuji zpět do souboru APK..."/>
+	<Localized name="zip_success_mbox" value="Zipování bylo úspěšné"/>
+	<Localized name="zip_fail_mbox" value="Zipování selhalo. Přečtěte si prosím protokol"/>
+	
+	<Localized name="baksmali_file_log" value="Baksmaluji..."/>
+	<Localized name="baksmali_success_mbox" value="Baksmalování bylo úspěšné"/>
+	<Localized name="baksmali_fail_mbox" value="Baksmalování selhalo. Přečtěte si prosím protokol"/>
+	
+	<Localized name="smali_file_log" value="Smaluji zpět do APK souboru..."/>
+	<Localized name="smali_success_mbox" value="Smalování bylo úspěšné"/>
+	<Localized name="smali_fail_mbox" value="Smalování selhalo. Přečtěte si prosím protokol"/>
+	
+	<Localized name="cancelled_log" value="Zrušeno"/>
+	
+	<Localized name="mass_sign_mbox" value="Hromadné podepisování bylo úspěšné"/>
+
+	<!-- Error codes -->
+	<Localized name="adb_apk_install_fail_err" value="Instalace APK selhala:"/>
+	<Localized name="no_such_file_err" value="Žádný takový soubor nebo adresář neexistuje"/>
+	<Localized name="key_pass_incorrect_err" value="heslo úložiště klíčů bylo nesprávné"/>
+	<Localized name="rename_file_err" value="Dočasný soubor nelze přejmenovat"/>
+	<Localized name="string_index_err" value="Řetězcový index mimo hranice"/>
+	<Localized name="xml_parse_err" value="Chyba při analýze XML: není správně vytvořen (neplatný token)"/>
+</Language>

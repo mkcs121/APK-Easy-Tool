@@ -1,0 +1,382 @@
+<!-- Template updated for 1.59. Use notepad++ compare plugin or Code Compare to compare changes -->
+<!-- If something does not translate, check the log. Create new line using [(new-line)]. Do not modify the "name" values. Otherwise it will not load xml at all -->
+<!-- Shorten the words or sentences as possible -->
+<!-- Some strings has been removed as they were no longer need and a part of clean up -->
+<!-- Feel free to credit your name or username here -->
+<Language name="APK Easy Tool">
+	<!-- Credit your name here if you want. It will be shown in About page -->
+	<Localized name="translated_by_lbl" value="简体中文翻译：大眼仔~旭（Anan）"/> <!-- 你可以修订翻译以及加上你的名字，但请不要抹去别人的名字 -->
+	<Localized name="translation_credit_lbl" value="版本 1.59.2"/> <!-- Normal text will be shown below the bold text -->
+	<!-- ================== -->
+	<!-- Global - These strings are used anywhere -->
+	<!-- ================== -->
+	<Localized name="decompile" value="反编译"/>
+	<Localized name="compile" value="编译"/>
+	<Localized name="sign" value="签名"/>
+	<Localized name="framework" value="Framework"/>
+	<Localized name="change_btn" value="更改..."/>
+	<Localized name="select_btn" value="选择..."/>
+	<Localized name="cancel_esc" value="(按下 ESC 取消)"/>
+	<Localized name="ok_btn" value="确定"/>
+	<Localized name="general" value="常规"/>
+	<Localized name="dec_force_del_dir_chk" value="强制删除目标目录"/>
+	<Localized name="dec_force_del_dir_tip" value="强制删除目标目录。尝试解码到已经存在的文件夹时使用"/>
+	<Localized name="com_keep_orig_sig_chk" value="保留原始签名"/>
+	<Localized name="com_keep_orig_sig_tip" value="复制原始 AndroidManifest.xml 和 META-INF。[(new-line)]请参阅 https://ibotpeaches.github.io/Apktool/"/> <!-- URL is hardcoded -->
+	<Localized name="com_skip_changes_chk" value="跳过更改检测"/>
+	<Localized name="com_skip_changes_tip" value="跳过更改检测并构建所有文件。"/>
+	<Localized name="com_use_appt2_tip" value="更新 apktool 以使用实验性 aapt2 二进制文件。"/>
+	<Localized name="resource_missing_notice" value="Apktool 或 Resources 文件夹丢失。 确保将它们放置在 apkeasytool.exe 同目录下"/>
+	<Localized name="instance_title" value="实例"/>
+	<Localized name="java_not_installed_notice" value="未安装 Java。 请安装 Java SE 或在选项上选择 Java 可执行文件的路径。"/>
+	<Localized name="apktool_not_sel_mbox" value="未选择 Apktool.jar 版本。 请转到选项并选择它。"/>
+	
+	<!-- ================== -->
+	<!-- Status -->
+	<!-- ================== -->
+	<Localized name="read_apk" value="正在读取 APK..."/>
+	<Localized name="done" value="完成"/>
+	<Localized name="error_read_apk" value="读取 APK 文件时出错"/>
+	<Localized name="apk_not_sel_mbox" value="未选择 APK 文件。 请选择一个 APK 文件。"/>
+	<Localized name="chk_for_update" value="正在检查更新..."/>
+	
+	<!-- ================== -->
+	<!-- Main Tab -->
+	<!-- ================== -->
+	<!-- -->
+	<Localized name="tab_name_main" value="首页"/>
+	<Localized name="sel_dec_folder" value="选择反编译 APK..."/>
+	<Localized name="sel_dec_folder_tip" value="选择反编译 APK 文件夹"/>
+    <Localized name="file_folder_lbl" value="文件/文件夹："/>
+    <Localized name="decompile_name_lbl" value="反编译名称："/>
+	<Localized name="compile_name_lbl" value="编译名称："/>
+	<Localized name="tip_drop_apk_lbl" value="提示：将 APK/JAR/反编译文件夹放在此处"/>
+	<Localized name="decode_api_lvl_lbl" value="解码 API 级别："/>
+	<Localized name="rebuild_api_lvl_lbl" value="重建 API 级别："/>
+	<Localized name="api_tip" value="要生成的文件的数字 api 级别，例如 ICS 的 14。"/>
+	
+	<!-- Buttons -->
+	<Localized name="sign_apk_btn" value="签名 APK"/>
+	<Localized name="zipalign__btn" value="ZipAlign 对齐"/>
+	<Localized name="extract_apk_btn" value="提取 APK"/>
+	<Localized name="zip_apk_btn" value="压缩 APK："/>
+	<Localized name="install_apk_btn" value="安装 APK"/>
+	<Localized name="check_align_btn" value="检查 Zip 对齐"/>
+	<Localized name="dec_apk_dir_btn" value="反编译目录"/>
+	<Localized name="com_apk_dir_btn" value="已编译目录"/>
+	<Localized name="ext_apk_dir_btn" value="已提取目录"/>
+	<Localized name="zip_apk_dir_btn" value="已压缩目录"/>
+	
+	<!-- Quick Options -->
+	<Localized name="fw_use_tag_lbl" value="Framework 标签："/>
+	<Localized name="fw_use_tag_tip" value="标签框架"/>
+	
+	<!-- Info -->
+	<Localized name="package_name_lbl" value="包名："/>
+	<Localized name="launch_activity_lbl" value="启动 Activity："/>
+	<Localized name="min_sdk_ver_lbl" value="主 SDK 版本："/>
+	<Localized name="target_sdk_ver_lbl" value="目标 SDK 版本："/>
+	<Localized name="version_name_lbl" value="版本名称："/>
+	<Localized name="version_code_lbl" value="版本代码："/>
+	<Localized name="signature_scheme_lbl" value="签名方案："/>
+	<Localized name="ps_link" value="在 Play 商店上购买"/>
+	<Localized name="apkcombo_link" value="在 Apkcombo 上获取"/>
+	<Localized name="apkpure_link" value="在 Apkpure 上获取"/>
+	<Localized name="full_apk_info_btn" value="完整 APK 信息"/>
+	
+	<!-- In code -->
+	<Localized name="not_a_dec_notice" value="不是反编译的 APK 文件夹"/>
+	<Localized name="sel_files_diag" value="选择 APK 或 JAR 文件"/>
+	<Localized name="invalid_notice" value="文件或文件夹不存在"/>
+	<Localized name="pak_id_copy_notice" value="包名已复制到剪贴板。"/>
+	<Localized name="launch_copy_notice" value="启动 Activity 已复制到剪贴板。"/>
+	<Localized name="sel_dec_diag" value="选择要使用的反编译文件夹项目"/>
+	<Localized name="not_a_dec_2_notice" value="您选择的文件夹不是 APK 的反编译文件夹"/>´
+	<Localized name="dir_dec_not_set_notice" value="未设置反编译目录。"/>
+	<Localized name="plz_name_dec_mbox" value="请输入要反编译的文件名。"/>
+	<Localized name="dec_again_mbox" value="您确定要再次反编译吗?"/>
+	<Localized name="apk_dec_not_set_mbox" value="未设置反编译目录"/>
+	<Localized name="apk_dex_not_sel_mbox" value="未选择 APK 文件或反编译文件夹。"/>
+	<Localized name="enter_name_com_mbox" value="请输入要编译的文件名"/>
+	<Localized name="dec_apk_first_mbox" value="首先反编译 APK 文件"/>
+	<Localized name="com_apk_first_mbox" value="首先编译 APK 文件。"/>
+	<Localized name="adb_busy_mbox" value="ADB 正忙。 您确定要重新启动 ADB 吗?"/>
+	<Localized name="zipalign_first_mbox" value="首先压缩 APK 文件。"/>
+	<Localized name="ext_apk_first_mbox" value="首先提取 APK。"/>
+	<Localized name="cancel_mbox" value="取消将终止程序进程。 你确定要取消吗?"/>
+	<!-- ================== -->
+	<!-- Smali/baksmali tab -->
+	<!-- ================== -->
+	<Localized name="smali_bak_tab" value="Smali/baksmali"/>
+	<Localized name="baksmali_lbl" value="Baksmali"/>
+	<Localized name="dex_files_lbl" value="Dex/odex/oat 文件："/>
+	<Localized name="bak_out_dir_lbl" value="Baksmali 输出目录："/>
+	<Localized name="name_dec_smali_lbl" value="反编译 smali 名称："/>
+	<Localized name="deodex_lbl" value="Deodex"/>
+	<Localized name="smali_lbl" value="Smali"/>
+	<Localized name="dis_dir_lbl" value="反编译文件夹："/>
+	<Localized name="smali_out_dir_lbl" value="Smali 输出目录："/>
+	<Localized name="name_of_com_smali_lbl" value="编译 Smali 名称："/>
+	<Localized name="dec_smali_btn" value="反编译 Smali"/>
+	<Localized name="com_smali_btn" value="编译 Smali"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dex_odex_diag" value="选择 dex 或 odex 文件"/>
+	<Localized name="sel_dis_dir_diag" value="选择存储，反汇编的 smali 文件夹 的文件夹"/>
+	<Localized name="dex_not_sel_mbox" value="未选择 Dex/odex 文件。"/>
+	<Localized name="dir_not_set_mbox" value="目录未设置。"/>
+	<Localized name="plz_enter_dis_name_mbox" value="请输入反编译的 smali 名称"/>
+	<Localized name="sel_dis_folder_diag" value="选择反编译的 smali 文件夹"/>
+	<Localized name="sel_sma_dir_diag" value="选择文件夹保存，已编译的 smali"/>
+	<Localized name="plz_enter_sma_name_mbox" value="请输入已编译的 smali 名称"/>
+
+	<!-- ================== -->
+	<!-- Log output tab -->
+	<!-- ================== -->
+	<Localized name="log_output_tab" value="日志输出"/>
+	<Localized name="enable_log_out_check" value="启用日志输出"/>
+	<Localized name="open_log_btn" value="打开日志目录"/>
+	<Localized name="clr_this_log_btn" value="清除日志"/>
+	
+	<!-- In code -->
+	<Localized name="clear_logs_mbox" value="您确定要清除所有日志吗?"/>
+	<Localized name="clear_logs_mbox_err" value="清除所有日志时出错"/>
+	<Localized name="please_read_faq" value="请阅读常见问题解答和故障排除"/>
+	<Localized name="log_dir_mbox_err" value="找不到日志目录"/>
+	
+	<!-- ================== -->
+	<!-- Framework tab -->
+	<!-- ================== -->
+	<Localized name="framework_file_lbl" value="Framework 文件："/>
+	<Localized name="install_dir_lbl" value="安装目录："/>
+	<Localized name="tag_fw_lbl" value="标签 Framework："/>
+	<Localized name="fw_dir_lbl" value="Framework 目录："/>
+	<Localized name="fw_dir_note_lbl" value="使用位于目录中的 Framework 文件进行反编译和编译。[(new-line)]如果目录为空，它将使用位于以下位置的 apk[(new-line)]%appdata%/local/apktool/framework 或者 %appdata%/local/temp 。"/>
+	<Localized name="fw_dir_note2_lbl" value="在大多数情况下，设备上 /system/framework 中的所有 apk 都是 Framework 文件。[(new-line)]在某些设备上，它们可能驻留在 /data/system-framework 中，[(new-line)]甚至巧妙地隐藏在 /system/app 或 /system/priv-app 中。[(new-line)]它们通常以 “resources” ，“res” 或 “framework” 命名。 "/>
+	<Localized name="fw_dir_note3_lbl" value="注意：一旦安装，Apktool 将无法控制框架，但是您可以自由地自行管理这些文件。"/>
+	<Localized name="sel_fw_btn" value="选择 Framework"/>
+	<Localized name="install_fw_btn" value="安装 FW APK"/>
+	<Localized name="open_fw_dir_btn" value="打开 FW 文件夹"/>
+	<Localized name="clr_fw_btn" value="清除 FW 缓存"/>
+	
+	<!-- In code -->
+	<Localized name="and_fw_pack_lbl" value="Android Framework 包"/>
+	<Localized name="sel_fw_diag" value="选择 Framework APK 文件"/>
+	<Localized name="fw_not_sel_mbox" value="未选择 Framework。 请选择一个 Framework。"/>
+	<Localized name="sel_fw_folder_diag" value="选择存储 Framework 的文件夹 APK"/>
+	<Localized name="sel_fw_stored_diag" value="选择存储 Framework APK 的文件夹"/>
+
+	<!-- ================== -->
+	<!-- Options tab -->
+	<!-- ================== -->
+	<Localized name="com_use_appt2_chk" value="使用 aapt2"/>
+
+	<!-- General child tab -->
+	<Localized name="options_tab" value="选项"/>
+	<Localized name="apktool_ver_lbl" value="Apktool 版本："/>
+	<Localized name="apktool_ver_tip" value="切换版本后，别忘记清除 framework"/>
+	<Localized name="comp_lvl_lbl" value="压缩级别："/>
+	<Localized name="java_heap_lbl" value="设置 Java 堆大小："/>
+	<Localized name="java_heap_tip" value="如果遇到内存不足错误，请增加堆大小（java.lang.OutOfMemoryError）"/>
+	<Localized name="chk_update_chk" value="检查更新"/>
+	<Localized name="rem_win_pos_chk" value="记住窗口位置"/>
+	<Localized name="rem_win_pos_tip" value="记住退出窗口位置。 如果窗口不在屏幕上，请删除 config.xml"/>
+	<Localized name="ena_tips_chk" value="启用工具提示"/>
+	<Localized name="ena_tips_tip" value="如果工具提示令人讨厌，请禁用它"/>
+	<Localized name="dis_dropdown_his_chk" value="禁用下拉历史记录"/>
+	<Localized name="clr_his_btn" value="清除历史记录"/>
+	<Localized name="con_menu_lbl" value="右键菜单集成："/>
+	<Localized name="ins_lbl" value="安装"/>
+	<Localized name="unins_lbl" value="卸载"/>
+	<Localized name="task_bar_chk" value="显示任务栏图标中的 Flash/进度"/>
+	
+	<Localized name="restart_btn" value="重新启动"/>
+	<Localized name="lang_lbl" value="语言："/>
+    <Localized name="use_java_por_lbl" value="使用便携 Java 可执行文件"/>
+	<Localized name="mb_lbl" value="MB"/>
+	<Localized name="dir_lbl" value="目录"/>
+	<Localized name="dec_dir_lbl" value="反编译的 APK 目录："/>
+	<Localized name="com_dir_lbl" value="编译的 APK 目录："/>
+	<Localized name="ext_dir_lbl" value="提取的 APK 目录："/>
+	<Localized name="zip_dir_lbl" value="压缩的 APK 目录："/>
+	<Localized name="setup_all_dir_btn" value="设置所有目录"/>
+	<Localized name="other_lbl" value="其它"/>
+	<Localized name="reset_btn" value="恢复默认设置"/>
+	<Localized name="temp_folder_btn" value="查看临时文件夹"/>
+	<Localized name="reset_note_lbl" value="您的工作文件夹不会被删除"/>
+	
+	<!-- Apktool child tab -->
+	<Localized name="dont_write_info_lbl" value="不要写出调试信息"/>
+	<Localized name="dont_write_info_tip" value="防止 baksmali 写出调试信息 (.local, .param, .line, etc)。[(new-line)][(new-line)]如果要比较来自不同版本的同一 APK 的 smali，则首选使用。[(new-line)]行号和调试将在版本之间改变，这会使 DIFF 报告感到痛苦。"/>
+	<Localized name="dont_dec_res_lbl" value="不解码 resources.arsc"/>
+	<Localized name="dont_dec_res_tip" value="这将防止资源反编译。 这样可以保证 resources.arsc 保持完整，而无需任何解码。[(new-line)]如果仅编辑 Java（smali），则建议采取此操作，以加快反编译和编译的速度"/>
+	<Localized name="dont_dec_dex_lbl" value="不解码 classes.dex"/>
+	<Localized name="dont_dec_dex_tip" value="这将防止反汇编 dex 文件。[(new-line)]这将保留 apk dex 文件，并仅在构建期间移动它。[(new-line)]如果仅在编辑资源。[(new-line)]建议采取此操作以加快反编译和编译速度"/>
+	<Localized name="dont_copy_unk_asset_lbl" value="防止解码/复制 unknown 资源文件。"/>
+	<Localized name="keep_file_orig_lbl" value="使文件尽可能接近原始文件"/>
+	<Localized name="keep_file_orig_tip" value="匹配最接近原始文件的文件，但阻止重建。"/>
+	<Localized name="keep_bro_res_lbl" value="保留损坏资源"/>
+	<Localized name="only_dis_main_dex" value="仅在根目录中反汇编主要的 dex 类 [(new-line)]( classes[0-9]*.dex )，[v2.4.1+]"/>
+	
+	<Localized name="keep_bro_res_tip" value="如果出现错误，例如 “检测到的无效配置及标记错误等” 删除资源...'。[(new-line)]这意味着 APK 的结构不同于 Apktool 可以处理的结构。[(new-line)]这可能是较新的 Android 版本，或者是不符合标准的随机 APK。[(new-line)]运行此命令将允许解码，但是您必须手动修复其中带有 -ERR 的文件夹。"/>
+	<Localized name="set_apk_debug_lbl" value="设置 APK 可调试"/>
+	<Localized name="set_apk_debug_tip" value="添加 debuggable=''true'' 到 AndroidManifest 文件。[(new-line)]SmaliDebugging 在 2.0.3 中已被标记为已弃用，在 2.1 中已被删除。[(new-line)]请检查 SmaliIdea 是否有调试器。"/>
+	<Localized name="dis_cru_res_lbl" value="在构建过程中[(new-line)]禁用资源文件处理。[v2.4.0 +]"/>
+	<Localized name="use_aapt2_lbl" value="使用 aapt2 二进制文件而不是[(new-line)]appt [v2.3.2 +]"/>
+	<Localized name="use_aapt_path" value="使用指定位置的 aapt："/>
+
+	<!-- Signer child tab -->
+	<Localized name="signer_tab" value="签名"/>
+	<Localized name="ins_apk_sign_lbl" value="签名后安装 APK"/>
+	<Localized name="over_apk_lbl" value="覆盖 APK（拖放）"/>
+	<Localized name="use_key_lbl" value="使用密钥库进行签名。"/>
+	<Localized name="key_pw_lbl" value="密码"/>
+	<Localized name="rem_key_pw_lbl" value="记住密码"/>
+	<Localized name="pri_keys_lbl" value="私钥和证书："/>
+	<Localized name="pk8_lbl" value=".pk8 文件："/>
+	<Localized name="pem_lbl" value=".pem 文件："/>
+	<Localized name="sign_apk_after_com_chk" value="编译后签名 APK"/>
+	<!-- More info about signing https：//developer.android.com/studio/command-line/apksigner#options-sign-general -->
+	<Localized name="signing_note" value="默认情况下，apksigner.jar 使用最小 sdk 版本和最大 sdk 版本的值[(new-line)]来决定何时应用签名方案。"/>
+	<Localized name="v2_signing_enabled_lbl" value="v2 签名启用"/>
+	<Localized name="v3_signing_enabled_lbl" value="v3 签名启用"/>
+	<Localized name="v4_signing_enabled_lbl" value="v4 签名启用"/>
+	<Localized name="default_str" value="默认"/>
+	<Localized name="false_str" value="假"/>
+	<Localized name="true_str" value="真"/>
+	<Localized name="only_str" value="仅"/>
+	
+	<!-- Zipalign child tab -->
+	<Localized name="page_align_lbl" value="页面对齐存储的共享对象文件"/>
+	<Localized name="verbose_lbl" value="详细输出"/>
+	<Localized name="zip_after_com_lbl" value="对齐之后编译"/>
+	<Localized name="over_exist_zip_lbl" value="覆盖现有 outfile.zip"/>
+	<Localized name="recom_zopfil_lbl" value="使用 Zopfli 重新压缩"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dec_dir_diag" value="选择文件夹以存储反编译的 apk"/>
+	<Localized name="sel_com_dir_diag" value="选择文件夹以存储编译的 apk"/>
+	<Localized name="sel_ext_dir_diag" value="选择文件夹以存储提取的 apk"/>
+	<Localized name="sel_zip_dir_diag" value="选择要存储压缩 apk 的文件夹"/>
+	<Localized name="sel_pk8_file_diag" value="选择 .pk8 密钥文件"/>
+	<Localized name="sel_pem_file_diag" value="选择 .pem 密钥文件"/>
+	<Localized name="sel_key_file_diag" value="选择 .jks 或 .keystore 密钥文件"/>
+	<Localized name="sel_aapt_file_diag" value="选择 aapt 可执行文件"/>
+	<Localized name="sel_all_dir_diag" value="选择文件夹以设置要工作的目录"/>
+	<Localized name="his_clear_mbox" value="历史记录已清除"/>
+	<Localized name="sel_java_diag" value="选择 java.exe 所在的 bin 文件夹"/>
+	<Localized name="res_diag" value="您确定要重置为默认值吗?"/>
+	
+	<!-- ================== -->
+	<!-- About tab -->
+	<!-- ================== -->
+	<Localized name="about_tab" value="关于"/>
+	<Localized name="software_lbl" value="版本："/>
+	<Localized name="credits_lbl" value="致谢："/>
+	<Localized name="donate_lbl" value="你喜欢我的工作吗? 考虑给我捐赠以支持更好的开发，谢谢！)"/>
+	<Localized name="softpedia_lbl" value="100% CLEAN award granted by Softpedia"/>
+	<Localized name="softpedia_link_lbl" value="在 Softpedia 上了解更多"/>
+	<Localized name="contact_lbl" value="联系"/>
+	<Localized name="email_lbl" value="Email："/>
+	<Localized name="disclaimer_lbl" value="免责声明"/>
+	<Localized name="disnote_lbl" value="与 apktool 一样，APK Easy Tool 既不用于盗版也不能用于其他非法用途。[(new-line)][(new-line)]它可以用于本地化，添加一些功能或对自定义平台的支持，分析应用程序等等。[(new-line)][(new-line)]"/>
+	
+	<!-- ================== -->
+	<!-- APK Infomation form -->
+	<!-- ================== -->
+	<Localized name="apk_info_title" value="APK 信息"/>
+	<Localized name="save_as_btn" value="另存为..."/>
+	<Localized name="save_file_filter" value="文本文件"/>
+	
+	<!-- ================== -->
+	<!-- Keystore password form -->
+	<!-- ================== -->
+	<Localized name="keypass_title" value="密钥库密码"/>
+	<Localized name="input_keypass_lbl" value="输入您的密钥库密码："/>
+	
+	<!-- ================== -->
+	<!-- Update form -->
+	<!-- ================== -->
+	<Localized name="update_title" value="更新"/>
+	<Localized name="update_lbl" value="有新版本可用："/>
+	<Localized name="update_error" value="无法连接到服务器"/>
+	<Localized name="update_svr_ver" value="最新版本："/>
+	<Localized name="update_cli_ver" value="您的版本："/>
+	<Localized name="visit_xda_link" value="访问 XDA 论坛"/>
+	<Localized name="changelog_lbl" value="更新日志"/>
+	<Localized name="down_lbl" value="下载"/>
+	<Localized name="down_note_lbl" value="文件存储在安全的 Bitbucket 服务器中"/>
+	<Localized name="ready_stat_lbl" value="就绪。"/>
+	<Localized name="close_btn" value="关闭"/>
+	<Localized name="downloading_lbl" value="正在下载..."/>
+	<Localized name="down_ok_lbl" value="已下载。"/>
+	
+	<!-- ================== -->
+	<!-- Other -->
+	<!-- ================== -->
+	<!-- Jump list -->
+	<Localized name="open_dec_apk_dir" value="打开反编译的 APK 目录"/>
+	<Localized name="open_com_apk_dir" value="打开已编译的 APK 目录"/>
+	<Localized name="open_ext_apk_dir" value="打开提取的 APK 目录"/>
+	<Localized name="open_zip_apk_dir" value="打开压缩的 APK 目录"/>
+	<Localized name="open_baksmali_apk_dir" value="打开 baksmali 目录"/>
+	<Localized name="open_smali_apk_dir" value="打开 smali 目录"/>
+	
+	<!-- CMD execution -->
+	<Localized name="dec_apk_file_notice" value="正在反编译 APK 文件..."/>
+	<Localized name="dec_jar_file_notice" value="正在反编译 JAR 文件..."/>
+	<Localized name="dec_success_mbox" value="反编译成功"/>
+	<Localized name="dec_fail_mbox" value="反编译失败。 请阅读日志"/>
+	
+	<Localized name="com_apk_file_notice" value="正在编译 APK 文件..."/>
+	<Localized name="com_jar_file_notice" value="正在编译 JAR 文件..."/>
+	<Localized name="com_success_mbox" value="编译成功"/>
+	<Localized name="com_fail_mbox" value="编译失败。 请阅读日志"/>
+	
+	<Localized name="key_not_sel_mbox" value="未选择密钥库文件"/>
+	<Localized name="sign_apk_file_notice" value="正在签名 APK 文件..."/>
+	<Localized name="sign_success_mbox" value="签名成功"/>
+	<Localized name="sign_fail_mbox" value="签名失败。 请阅读日志"/>
+	
+	<Localized name="ins_apk_file_log" value="正在将 APK 安装到设备上..."/>
+	<Localized name="ins_apk_file_notice" value="正在将 APK 安装到设备上...如果卡住，请按取消"/>
+	<Localized name="ins_success_mbox" value="APK 安装成功"/>
+	<Localized name="ins_fail_mbox" value="APK 安装失败。 请阅读日志"/>
+	
+	<Localized name="cant_zipalign_mbox" value="无法压缩对齐 APK 文件。 重命名或删除文件，然后重试。"/>
+	<Localized name="zipalign_apk_file_notice" value="正在压缩对齐..."/>
+	<Localized name="zipalign_success_mbox" value="压缩对齐成功"/>
+	<Localized name="zipalign_fail_mbox" value="对齐失败。 请阅读日志"/>
+	
+	<Localized name="veri_apk_file_log" value="验证对齐"/>
+	<Localized name="zipalign_output_dis_log" value="验证对齐输出已禁用"/>
+	<Localized name="veri_apk_file_notice" value="验证对齐中..."/>
+	<Localized name="veri_success_mbox" value="验证成功"/>
+	<Localized name="veri_fail_mbox" value="验证失败。 请阅读日志"/>
+	
+	<Localized name="fw_apk_file_log" value="正在安装框架..."/>
+	<Localized name="fw_success_mbox" value="框架安装成功"/>
+	<Localized name="fw_fail_mbox" value="框架安装失败。 请阅读日志"/>
+	
+	<Localized name="fw_clr_apk_file_log" value="清除框架缓存..."/>
+	<Localized name="fw_clr_success_mbox" value="框架缓存已清除"/>
+	<Localized name="fw_clr_fail_mbox" value="框架缓存清除失败"/>
+
+	<Localized name="ext_apk_file_log" value="正在提取 APK 文件..."/>
+	<Localized name="ext_success_mbox" value="提取 APK 成功"/>
+	<Localized name="ext_fail_mbox" value="提取 APK 失败。 请阅读日志"/>
+	
+	<Localized name="zip_apk_file_log" value="正在压缩返回到 APK 文件..."/>
+	<Localized name="zip_success_mbox" value="压缩成功"/>
+	<Localized name="zip_fail_mbox" value="压缩失败。 请阅读日志"/>
+	
+	<Localized name="baksmali_file_log" value="Baksmaling..."/>
+	<Localized name="baksmali_success_mbox" value="Baksmaling 成功"/>
+	<Localized name="baksmali_fail_mbox" value="Baksmaling 失败。 请阅读日志"/>
+	
+	<Localized name="smali_file_log" value="Smaling 回写到 APK 文件..."/>
+	<Localized name="smali_success_mbox" value="Smaling 成功"/>
+	<Localized name="smali_fail_mbox" value="Smaling 失败。 请阅读日志"/>
+	
+	<Localized name="cancelled_log" value="操作已取消"/>
+</Language>

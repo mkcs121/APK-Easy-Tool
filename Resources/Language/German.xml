@@ -1,0 +1,393 @@
+<!-- Template updated for 1.57. Use notepad++ compare plugin or Code Compare to compare changes -->
+<!-- Clone this template and translate to your language. Do not translate [(new-line)]. Do not modify the "name" values. Otherwise it will not load xml at all -->
+<!-- Use shorten words or sentences as much as possible -->
+<!-- Feel free to credit your name or username here -->
+<Language name="APK Easy Tool">
+	<!-- ================== -->
+	<!-- Global - These strings are used anywhere -->
+	<!-- ================== -->
+	<Localized name="decompile" value="Dekompilieren"/>
+	<Localized name="compile" value="Kompilieren"/>
+	<Localized name="sign" value="Signieren"/>
+	<Localized name="framework" value="Framework"/>
+	<Localized name="change_btn" value="Ändern"/>
+	<Localized name="select_btn" value="Auswählen"/>											  
+	<Localized name="cancel_btn" value="Abbrechen"/>
+	<Localized name="ok_btn" value="OK"/>
+	<Localized name="replace_spaces_underscore_chk" value="Leerzeichen d. Unterstrich ersetzen"/>
+	<Localized name="apktool_ver_lbl" value="Apktool Version:"/>
+	<Localized name="comp_lvl_lbl" value="Kompressionsstufe:"/>
+	<Localized name="java_heap_lbl" value="JavaHeapGröße:"/>
+	<Localized name="general" value="Allgemeines"/>
+	<Localized name="dec_force_del_dir_chk" value="Zielverzeich. löschen erzwingen"/>
+	<Localized name="dec_force_del_dir_tip" value="Löschen des Zielverzeichnisses erzwingen. Wird verwendet, wenn versucht wird, in einen bereits vorhandenen Ordner zu dekodieren."/>
+	<Localized name="com_keep_orig_sig_chk" value="Originalsignatur behalten"/>
+	<Localized name="com_keep_orig_sig_tip" value="Kopiert original AndroidManifest.xml und META-INF.[(new-line)]Weitere Informationen unter"/> <!-- URL is hardcoded -->
+	<Localized name="com_skip_changes_chk" value="Änderungen erkennen überspring."/>
+	<Localized name="com_skip_changes_tip" value="Änderungen erkennen überspringen und alle Dateien erstellen."/>
+	<Localized name="com_use_appt2_tip" value="Apktool aktualisieren, um die experimentelle aapt2-Binärdatei zu verwenden."/>
+	
+	<!-- In code -->
+	<Localized name="apktool_not_sel_mbox" value="Apktool.jar Version ist nicht ausgewählt. Bitte zu den Optionen gehen und auswählen."/>
+	<Localized name="apk_not_sel_mbox" value="APK-Datei ist nicht ausgewählt. Bitte eine APK-Datei auswählen."/>
+	<!-- ================== -->
+	<!-- Main Tab -->
+	<!-- ================== -->
+	<!-- -->
+	<Localized name="tab_name_main" value="Hauptseite"/>
+	<Localized name="sel_dec_folder_tip" value="APK zum dekompilieren in einem Ordner auswählen"/>
+    <Localized name="file_folder_lbl" value="Datei / Verzeichnis:"/>
+    <Localized name="decompile_name_lbl" value="Dekompiliername:"/>
+	<Localized name="compile_name_lbl" value="Kompiliername:"/>
+	<Localized name="tip_drop_apk_lbl" value="Hinweis: APK/JAR/Dekompilier-Ordner hierher ziehen."/>
+	<Localized name="decode_api_lvl_lbl" value="Decode API Level:"/>
+	<Localized name="rebuild_api_lvl_lbl" value="Rebuild API Level:"/>
+	<Localized name="api_tip" value="Numerische Api-Ebene der zu erzeugenden Datei, z.B. 14 für ICS."/>
+	
+	<!-- Buttons -->
+	<Localized name="sign_apk_btn" value="APK signieren"/>
+	<Localized name="zipalign__btn" value="ZipAlign"/>
+	<Localized name="extract_apk_btn" value="APK entpacken"/>
+	<Localized name="zip_apk_btn" value="APK packen"/>
+	<Localized name="install_apk_btn" value="APK installieren"/>
+	<Localized name="check_align_btn" value="Ausrichtung prüfen"/>
+	<Localized name="dec_apk_dir_btn" value="APK-Verzeichnis Dekompilierte"/>
+	<Localized name="com_apk_dir_btn" value="APK-Verzeichnis Kompilierte"/>
+	<Localized name="ext_apk_dir_btn" value="APK-Verzeichnis Entpackte"/>
+	<Localized name="zip_apk_dir_btn" value="APK-Verzeichnis Gepackte"/>
+	
+	<!-- Quick Options -->
+	<Localized name="quick_options_group" value="Schnell-Optionen"/>
+	<Localized name="fw_use_tag_lbl" value="Tag verwend:"/>
+	<Localized name="fw_use_tag_tip" value="Tag-Frameworks"/>
+	<Localized name="com_use_appt2_chk" value="aapt2 verwenden"/>
+	<Localized name="sign_zip_after_com_chk" value="ZipAlign nach kompilieren"/>
+	<Localized name="sign_apk_after_com_chk" value="APK nach kompilieren signieren"/>
+	<Localized name="sign_install_apk_after_sign_chk" value="APK nach signieren installieren"/>
+	<Localized name="sign_overwrite_apk_chk" value="APK überschreiben[(new-line)](nur Drag und Drop)"/>
+	
+	<!-- Info -->
+	<Localized name="package_name_lbl" value="Paketname:"/>
+	<Localized name="launch_activity_lbl" value="Startaktivität:"/>
+	<Localized name="min_sdk_ver_lbl" value="Min SDK Version:"/>
+	<Localized name="target_sdk_ver_lbl" value="Ziel SDK Version:"/>
+	<Localized name="version_name_lbl" value="Version-Name:"/>
+	<Localized name="version_code_lbl" value="Version-Code:"/>
+	<Localized name="signature_scheme_lbl" value="Signatur-Schema:"/>
+	<Localized name="ps_link" value="Im Play Store erhältlich"/>
+	<Localized name="apkcombo_link" value="Bei APKCombo erhältlich"/>
+	<Localized name="apkpure_link" value="Bei Apkpure erhältlich"/>
+	<Localized name="full_apk_info_btn" value="Vollständige APK-Info"/>
+	
+	<!-- In code -->
+	<Localized name="sign_zip_btn" value="ZIP signieren"/>
+	<Localized name="zip_name_lbl" value="ZIP-Name:"/>
+	<Localized name="not_a_dec_notice" value="Kein dekompilierter APK-Ordner"/>
+	<Localized name="sel_files_diag" value="APK-, JAR- oder ZIP-Datei auswählen"/>
+	<Localized name="invalid_notice" value="Ungültiger Datei- oder Ordnerpfad"/>
+	<Localized name="pak_id_copy_notice" value="Paketname wird in die Zwischenablage kopiert."/>
+	<Localized name="launch_copy_notice" value="Startaktivität in die Zwischenablage kopiert."/>
+	<Localized name="sel_dec_diag" value="Projekt des dekompilierten Ordners auswählen, mit dem Sie arbeiten möchten."/>
+	<Localized name="not_a_dec_2_notice" value="Der von Ihnen gewählte Ordner ist kein dekompilierter Ordner von APK."/>´
+	<Localized name="dir_dec_not_set_notice" value="Dekompilier-Verzeichnis ist nicht gesetzt."/>
+	<Localized name="plz_name_dec_mbox" value="Dateinamen für die Dekompilierung eingeben."/>
+	<Localized name="dec_again_mbox" value="Sind Sie sicher, dass Sie wieder dekompilieren wollen?"/>
+	<Localized name="apk_dec_not_set_mbox" value="Dekompilier-Verzeichnis ist nicht gesetzt."/>
+	<Localized name="apk_dex_not_sel_mbox" value="APK-Datei oder der Dekompilierordner ist nicht ausgewählt."/>
+	<Localized name="enter_name_com_mbox" value="Bitte Dateinamen für die Kompilierung eingeben."/>
+	<Localized name="dec_apk_first_mbox" value="Zuerst die APK-Datei dekompilieren"/>
+	<Localized name="sign_zip_not_sup_mbox" value="Signieren von ZIP mit ApkSigner wird nicht unterstützt. Bitte zu signapk (Java 8 und darunter) wechseln."/>
+	<Localized name="com_apk_first_mbox" value="Zuerst die APK-Datei kompilieren"/>
+	<Localized name="adb_busy_mbox" value="ADB ist beschäftigt. Möchten Sie ADB neu starten?"/>
+	<Localized name="zipalign_first_mbox" value="Zuerst die APK-Datei Zipalign"/>
+	<Localized name="ext_apk_first_mbox" value="Zuerst die APK extrahieren."/>
+	<Localized name="cancel_mbox" value="Sind Sie sicher, dass Sie abbrechen möchten?"/>
+	<!-- ================== -->
+	<!-- Smali/baksmali tab -->
+	<!-- ================== -->
+	<Localized name="smali_bak_tab" value="Smali/Baksmali"/>
+	<Localized name="baksmali_lbl" value="Baksmali"/>
+	<Localized name="dex_files_lbl" value="Dex/Odex/Oat-Datei:"/>
+	<Localized name="bak_out_dir_lbl" value="Baksmali-Ausgabeverzeichnis:"/>
+	<Localized name="name_dec_smali_lbl" value="Dekompilierter Smali-Name:"/>
+	<Localized name="deodex_lbl" value="Deodex"/>
+	<Localized name="smali_lbl" value="Smali"/>
+	<Localized name="dis_dir_lbl" value="Disassembliertes-Verzeichniss:"/>
+	<Localized name="smali_out_dir_lbl" value="Smali-Ausgabeverzeichnis:"/>
+	<Localized name="name_of_com_smali_lbl" value="Kompilierter Smali-Name:"/>
+	<Localized name="dec_smali_btn" value="Smali dekompilieren"/>
+	<Localized name="com_smali_btn" value="Smali kompilieren"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dex_odex_diag" value="Dex oder Odex-Datei auswählen"/>
+	<Localized name="sel_dis_dir_diag" value="Ordner auswählen, in dem der disassembled Smali gespeichert werden soll."/>
+	<Localized name="dex_not_sel_mbox" value="Keine Dex/Odex-Datei ausgewählt."/>
+	<Localized name="dir_not_set_mbox" value="Kein Verzeichnis ausgewählt."/>
+	<Localized name="plz_enter_dis_name_mbox" value="Bitte dekompilierten Smali-Namen eingeben."/>
+	<Localized name="sel_dis_folder_diag" value="Disassembled Smali-Ordner auswählen."/>
+	<Localized name="sel_sma_dir_diag" value="Ordner auswählen, in dem die assembled Smali gespeichert werden sollen."/>
+	<Localized name="plz_enter_sma_name_mbox" value="Bitte den kompilierten Smali-Namen eingeben."/>
+
+	<!-- ================== -->
+	<!-- Log output tab -->
+	<!-- ================== -->
+	<Localized name="log_output_tab" value="Log-Ausgabe"/>
+	<Localized name="sel_log_view_lbl" value="Log-Datei auswählen:"/>
+	<Localized name="enable_log_out_check" value="Log-Ausgabe aktivieren"/>
+	<Localized name="open_log_btn" value="Log-Verzeichnis öffnen"/>
+	<Localized name="clr_all_log_btn" value="Alle Logs löschen"/>
+	<Localized name="clr_this_log_btn" value="Log löschen"/>
+	
+	<!-- In code -->
+	<Localized name="clear_logs_mbox" value="Sind Sie sicher, dass Sie alle Protokolle löschen möchten?"/>
+	<Localized name="clear_logs_mbox_err" value="Es gab einen Fehler beim Löschen aller Protokolle."/>
+	<Localized name="log_dir_mbox_err" value="Protokollverzeichnis wird nicht gefunden"/>
+	<Localized name="file_write_err" value="Es gab einen Fehler beim Speichern des Protokolls in der Textdatei. Bitte erlauben Sie dem APK Easy Tool, Dateiänderungen in Ihren Antiviren-Einstellungen vorzunehmen."/>
+	
+	
+	<!-- ================== -->
+	<!-- Framework tab -->
+	<!-- ================== -->
+	<Localized name="framework_file_lbl" value="Framework-Datei:"/>
+	<Localized name="install_dir_lbl" value="Installationsverzeichnis:"/>
+	<Localized name="tag_fw_lbl" value="Tag Framework:"/>
+	<Localized name="fw_dir_lbl" value="Framework-Verzeichnis:"/>
+	<Localized name="fw_dir_note_lbl" value="Framework-Dateien, die sich in einem Verzeichnis befinden zum Dekompilieren und Kompilieren[(new-line)]verwenden.[(new-line)]Wenn das Verzeichnis leer ist, wird es die Apks verwenden, die sich unter[(new-line)]%appdata%/local/apktool/framework oder %appdata%/local/temp 3 befinden."/>
+	<Localized name="fw_dir_note2_lbl" value="In den meisten Fällen ist jede Apk in /system/framework auf dem Gerät eine Framework-Datei.[(new-line)]Auf einigen Geräten können sie sich in data/system-framework befinden und sogar geschickt in /system/app oder[(new-line)]/system/priv-app versteckt sein. Sie werden in der Regel mit dem Namen von 'Ressourcen', 'res' oder 'Framework' benannt."/>
+	<Localized name="fw_dir_note3_lbl" value="Hinweis: Apktool hat keine Kontrolle über die einmal installierten Frameworks, aber Sie können diese Dateien selbst verwalten."/>
+	<Localized name="sel_fw_btn" value="Framework auswählen"/>
+	<Localized name="install_fw_btn" value="FW APK installieren"/>
+	<Localized name="open_fw_dir_btn" value="FW-Verzeichnis öffen"/>
+	<Localized name="clr_fw_btn" value="FW-Cache bereinigen"/>
+	
+	<!-- In code -->
+	<Localized name="and_fw_pack_lbl" value="Android Framework Paket"/>
+	<Localized name="sel_fw_diag" value="Framework APK-Datei auswählen"/>
+	<Localized name="fw_not_sel_mbox" value="Framework ist nicht ausgewählt. Bitte Framework auswählen."/>
+	<Localized name="sel_fw_folder_diag" value="Verzeichnis auswählen, in dem die Framework-APK gespeichert werden soll"/>
+	<Localized name="sel_fw_stored_diag" value="Verzeichnis auswählen, in dem die Framework-APKs gespeichert werden soll"/>
+
+	<!-- ================== -->
+	<!-- Options tab -->
+	<!-- ================== -->
+	<!-- General child tab -->
+	<Localized name="options_tab" value="Optionen"/>
+	<Localized name="chk_update_chk" value="Nach Updates suchen"/>
+	<Localized name="rem_win_pos_chk" value="Fensterposition speichern (SHIFT+Q zum Zurücksetzen)"/>
+	<Localized name="rem_win_pos_tip" value="Fensterposition beim Verlassen merken. Wenn das Fenster außerhalb des Bildschirms liegt, SHIFT + Q drücken, um das Fenster zurückzusetzen."/>
+	<Localized name="ena_tips_chk" value="Tool-Tipps aktivieren"/>
+	<Localized name="ena_tips_tip" value="Deaktivieren, wenn Tool-Tipps lästig sind."/>
+	<Localized name="dis_dropdown_his_chk" value="Dropdown-Verlauf deaktivieren"/>
+	<Localized name="clr_his_btn" value="Verlauf löschen"/>
+	<Localized name="dis_com_msg_box_chk" value="Nachrichtenfeld ausfüllen deaktivieren"/>
+	<Localized name="dis_com_msg_box_note_lbl" value="(Das Warnhinweisfenster wird nicht deaktiviert)"/>
+	<Localized name="ena_win_ext_chk" value="Windows Explorer-Integration aktivieren"/>
+	<Localized name="ena_win_ext_note_lbl" value="(Erfordert Administratorrechte. Option aktivieren/deaktivieren[(new-line)]deinstallieren oder installieren)."/>
+	<Localized name="task_bar_chk" value="Fortschritt im Taskleistensymbol anzeigen"/>
+	
+	<Localized name="restart_btn" value="Neustart"/>
+	<Localized name="lang_lbl" value="Sprache:"/>
+	<Localized name="apk_sign_ver_lbl" value="APK Signer Version:"/>
+	<Localized name="cmd_mode_lbl" value="CMD-Modus:"/>
+	<Localized name="cmd_mode_tip" value="Argumente: CMD mit Argumenten ausführen[(new-line)]WriteLine: CMD mit WriteLine ausführen.[(new-line)]Batch: Eine .bat-Datei erzeugen und ausführen[(new-line)][(new-line)]Batch-Skripting funktioniert nur für die Dekompilierung und Kompilierung. Modus nur wechseln, wenn das Tool hängt."/>
+	<Localized name="log_lvl_lbl" value="Log Level:"/>
+	<Localized name="use_java_por_lbl" value="Portables Java verwenden, das ausführbar ist."/>
+	<Localized name="use_java_por_note_lbl" value="(Den Ordner 'bin' auswählen, der die java.exe enthält)"/>
+	<Localized name="mb_lbl" value=" MB"/>
+	<Localized name="dir_lbl" value="Verzeichnis"/>
+	<Localized name="dec_dir_lbl" value="APK-Verzeichnis dekompilierte"/>
+	<Localized name="com_dir_lbl" value="APK-Verzeichnis kompilierte"/>
+	<Localized name="ext_dir_lbl" value="APK-Verzeichnis entpackte"/>
+	<Localized name="zip_dir_lbl" value="APK-Verzeichnis gepackte"/>
+	<Localized name="setup_all_dir_btn" value="Alle Verzeichnisse einrichten"/>
+	<Localized name="other_lbl" value="Andere"/>
+	<Localized name="reset_btn" value="Auf Standard zurücksetzen"/>
+	<Localized name="reset_note_lbl" value="Ihr Arbeitsordner wird nicht gelöscht."/>
+	
+	<!-- Apktool child tab -->
+	<Localized name="dont_write_info_lbl" value="Keine Debug-Informationen ausgeben"/>
+	<Localized name="dont_write_info_tip" value="Verhindert, dass baksmali Debug-Informationen ausgibt (.local, .param, .line, etc).[(new-line)][(new-line)]Bevorzugt zu verwenden, wenn Sie smali aus dem gleichen APK verschiedener Versionen vergleichen.[(new-line)]Die Zeilennummern und das Debugging werden sich zwischen den Versionen ändern, was dazu führen kann, dass DIFF-Berichte zu einem Problem werden."/>
+	<Localized name="dont_dec_res_lbl" value="Keine resources.arsc dekodieren"/>
+	<Localized name="dont_dec_res_tip" value="Dies verhindert die Dekompilierung von Ressourcen. Dadurch bleibt die resources.arsc ohne Dekodierung intakt.[(new-line)]Wenn Sie nur Java (smali) bearbeiten, dann ist dies die empfohlene Aktion für eine schnellere Dekompilierung und Neuerstellung."/>
+	<Localized name="dont_dec_dex_lbl" value="Keine classes.dex dekodieren"/>
+	<Localized name="dont_dec_dex_tip" value="Das verhindern das dekodieren der dex-Dateien(n).[(new-line)]Dies behält die Apk-Dex-Datei(en) und verschiebt sie einfach während des Builds.[(new-line)]Wenn Sie nur die Ressourcen bearbeiten.[(new-line)]Dies ist die empfohlene Maßnahme für eine schnellere de- und assemble."/>
+	<Localized name="dont_copy_unk_asset_lbl" value="Das Decodieren/Kopieren von unbekannten Asset-Dateien verhindern."/>
+	<Localized name="keep_file_orig_lbl" value="Dateien so nah wie möglich an das Original halten."/>
+	<Localized name="keep_file_orig_tip" value="Passt Dateien so nah wie möglich an das Original an, verhindert aber ein erneutes Erstellen."/>
+	<Localized name="keep_bro_res_lbl" value="Behält defekte res"/>
+	<Localized name="only_dis_main_dex" value="Nur die wichtigsten Dex-Klassen Disassemblieren (classes[0-9]*.dex)[(new-line)]im Root. [v2.4.1+]"/>
+	
+	<Localized name="keep_bro_res_tip" value="Wenn ein Fehler wie'Ungültige Konfigurationsmerker erkannt' vorliegt. Auf Ressourcen verzichten…'.[(new-line)]Das bedeutet, dass APK eine andere Struktur hat, als das Apktool verarbeiten kann.[(new-line)]Dies kann eine neuere Android-Version oder ein zufälliges APK sein, die nicht den Standards entspricht.[(new-line)]Wenn Sie dies ausführen, wird die Dekodierung ermöglicht, aber dann müssen Sie die Ordner die -ERR enthalten, manuell reparieren."/>
+	<Localized name="set_apk_debug_lbl" value="APK debuggbar setzen"/>
+	<Localized name="set_apk_debug_tip" value="Fügt debuggable=''true'' zur AndroidManifest Datei hinzu.[(new-line)]SmaliDebugging wurde in 2.0.3 als veraltet markiert und in 2.1 entfernt.[(new-line)]Bitte überprüfen Sie SmaliIdea für einen Debugger."/>
+	<Localized name="dis_cru_res_lbl" value="Crunchen von Ressourcendateien während[(new-line)]des Builds deaktivieren."/>
+	<Localized name="use_aapt2_lbl" value="aapt2-Binärdatei anstelle von appt verwenden"/>
+
+	<!-- Signer child tab -->
+	<Localized name="signer_tab" value="Signieren"/>
+	<Localized name="ins_apk_sign_lbl" value="APK nach Signierung installieren"/>
+	<Localized name="over_apk_lbl" value="Überschreiben der APKs (Ziehen und Ablegen)"/>
+	<Localized name="use_key_lbl" value="Schlüsseldatei zum Signieren verwenden (nur für apksigner erhältlich)."/>
+	<Localized name="key_pw_lbl" value="Passwort"/>
+	<Localized name="rem_key_pw_lbl" value="Passwort merken"/>
+	<Localized name="pri_keys_lbl" value="Privater Schlüssel und Zertifikat:"/>
+	<Localized name="pk8_lbl" value=".pk8-Datei:"/>
+	<Localized name="pem_lbl" value=".pem-Datei:"/>
+	
+	<!-- Zipalign child tab -->
+	<Localized name="page_align_lbl" value="Seitenausrichtung gespeicherter gemeinsamer Objektdateien"/>
+	<Localized name="verbose_lbl" value="Ausführliche Ausgabe"/>
+	<Localized name="zip_after_com_lbl" value="ZipAlign nach kompilieren"/>
+	<Localized name="over_exist_zip_lbl" value="Bestehende outfile.zip überschreiben"/>
+	<Localized name="recom_zopfil_lbl" value="Rekomprimierung mit Zopfli"/>
+	
+	<!-- In code -->
+	<Localized name="sel_dec_dir_diag" value="Ordner auswählen, in dem dekompilierte Apk gespeichert werden soll"/>
+	<Localized name="sel_com_dir_diag" value="Ordner auswählen, in dem kompilierte Apk gespeichert werden soll"/>
+	<Localized name="sel_ext_dir_diag" value="Ordner auswählen, in dem entpackte Apk gespeichert werden soll"/>
+	<Localized name="sel_zip_dir_diag" value="Ordner auswählen, in dem gezippte Apk gespeichert werden soll"/>
+	<Localized name="sel_pk8_file_diag" value=".pk8 Schlüsseldatei auswählen"/>
+	<Localized name="sel_pem_file_diag" value=".pem Schlüsseldatei auswählen"/>
+	<Localized name="sel_key_file_diag" value=".jks- or .keystore-Schlüssel auswählen"/>
+	<Localized name="sel_all_dir_diag" value="Ordner auswählen, in dem die Verzeichnisse für die Arbeit eingerichtet werden sollen."/>
+	<Localized name="his_clear_mbox" value="Verlauf gelöscht"/>
+	<Localized name="his_already_clear_mbox" value="Verlauf bereits gelöscht"/>
+	<Localized name="sel_bin_dir_diag" value="Bin-Ordner auswählen, in dem sich die java.exe befindet"/>
+	<Localized name="res_diag" value="Sind Sie sicher, dass Sie auf die Standardeinstellungen zurücksetzen möchten?"/>
+	
+	<!-- ================== -->
+	<!-- About tab -->
+	<!-- ================== -->
+	<Localized name="about_tab" value="Über"/>
+	<Localized name="software_lbl" value="Software-Versionen:"/>
+	<Localized name="credits_lbl" value="Kredite:"/>
+	<Localized name="donate_lbl" value="Gefällt Ihnen meine Arbeit? Erwägen Sie, für mich zu spenden :)"/>
+	<Localized name="softpedia_lbl" value="100% CLEAN Award von Softpedia verliehen"/>
+	<Localized name="softpedia_link_lbl" value="Mehr dazu unter Softpedia"/>
+	<Localized name="contact_lbl" value="Kontakt"/>
+	<Localized name="email_lbl" value="E-Mail:"/>
+	<Localized name="disclaimer_lbl" value="Haftungsausschluss"/>
+	<Localized name="disnote_lbl" value="Wie apktool ist APK Easy Tool[(new-line)]weder für Piraterie noch für[(new-line)]andere nicht-legale Zwecke[(new-line)]gedacht: Es könnte zur[(new-line)]Lokalisierung, zum Hinzufügen[(new-line)]einiger Funktionen[(new-line)]oder zur Unterstützung[(new-line)]benutzerdefinierter Plattformen,[(new-line)]zur Analyse von Anwendungen[(new-line)]und vieles mehr verwendet werden."/>
+	
+	<!-- ================== -->
+	<!-- APK Infomation form -->
+	<!-- ================== -->
+	<Localized name="apk_info_title" value="APK Info"/>
+	<Localized name="save_as_btn" value="Speichern als…"/>
+	
+	<!-- ================== -->
+	<!-- Keystore password form -->
+	<!-- ================== -->
+	<Localized name="keypass_title" value="Schlüsseldateipasswort"/>
+	<Localized name="input_keypass_lbl" value="Ihr Schlüsseldateipasswort eingeben:"/>
+	
+	<!-- ================== -->
+	<!-- Update form -->
+	<!-- ================== -->
+	<Localized name="update_title" value="Update"/>
+	<Localized name="update_lbl" value="Eine neue Version ist verfügbar:"/>
+	<Localized name="visit_xda_link" value="XDA-Forum besuchen"/>
+	<Localized name="changelog_lbl" value="Änderungsprotokoll"/>
+	<Localized name="down_lbl" value="Download"/>
+	<Localized name="down_note_lbl" value="Dateien werden auf einem sicheren Bitbucket-Server gespeichert."/>
+	<Localized name="down2_note_lbl" value="Sicherstellen, dass Ihre DNS-Konfiguration nicht entführt wird oder dass ein bösartiges Zertifikat von einer Malware installiert wird,[(new-line)]die die Download-URL umleiten könnte."/>
+	<Localized name="ready_stat_lbl" value="Bereit."/>
+	<Localized name="por_ver_btn" value="Portable Version"/>
+	<Localized name="close_btn" value="Schließen"/>
+	
+	<Localized name="down_stat_lbl" value="Installer Version herunterladen…"/>
+	<Localized name="down_por_stat_lbl" value="Portable Version herunterladen…"/>
+	<Localized name="down_ok_lbl" value="Heruntergeladen."/>
+	
+	<!-- ================== -->
+	<!-- Other -->
+	<!-- ================== -->
+	<!-- Jump list -->
+	<Localized name="open_dec_apk_dir" value="Dekompiliertes APK-Verzeichnis öffnen"/>
+	<Localized name="open_com_apk_dir" value="Kompiliertes APK-Verzeichnis öffnen"/>
+	<Localized name="open_ext_apk_dir" value="Extrahiertes APK-Verzeichnis öffnen"/>
+	<Localized name="open_zip_apk_dir" value="Gezipptes APK-Verzeichnis öffnen"/>
+	<Localized name="open_baksmali_apk_dir" value="Baksmali-Verzeichnis öffnen"/>
+	<Localized name="open_smali_apk_dir" value="Smali-Verzeichnis öffnen"/>
+	
+	<!-- CMD execution -->
+	<Localized name="dec_apk_file_notice" value="APK-Datei dekompilieren…"/>
+	<Localized name="dec_jar_file_notice" value="JAR-Datei dekompilieren…"/>
+	<Localized name="dec_success_mbox" value="Dekompilieren erfolgreich"/>
+	<Localized name="dec_fail_mbox" value="Dekompilieren fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="com_apk_file_notice" value="APK-Datei kompilieren…"/>
+	<Localized name="com_jar_file_notice" value="JAR-Datei kompilieren…"/>
+	<Localized name="com_success_mbox" value="Kompilieren erfolgreich"/>
+	<Localized name="com_fail_mbox" value="Kompilieren fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="key_not_sel_mbox" value="Schlüsseldatei nicht ausgewählt"/>
+	<Localized name="sign_apk_file_notice" value="APK-Datei signieren…"/>
+	<Localized name="sign_success_mbox" value="Signieren erfolgreich"/>
+	<Localized name="sign_fail_mbox" value="signieren fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="ins_apk_file_log" value="APK auf Gerät installieren…"/>
+	<Localized name="ins_apk_file_notice" value="APK auf Gerät installieren… Auf Abbrechen drücken, wenn es hängt"/>
+	<Localized name="ins_success_mbox" value="APK installieren erfolgreich"/>
+	<Localized name="ins_fail_mbox" value="APK installieren fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="sign_zip_file_notice" value="ZIP-Datei signieren…"/>
+	
+	<Localized name="cant_zipalign_mbox" value="Die APK-Datei kann nicht Zipalign werden. Datei umbenennen oder löschen und erneut versuchen."/>
+	<Localized name="zipalign_apk_file_notice" value="Zipaligning…"/>
+	<Localized name="zipalign_success_mbox" value="Zipalign erfogreich"/>
+	<Localized name="zipalign_fail_mbox" value="Zipalign fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="veri_apk_file_log" value="Überprüfung der Ausrichtung von"/>
+	<Localized name="zipalign_output_dis_log" value="Zipalign verbose Ausgabe ist deaktiviert"/>
+	<Localized name="veri_apk_file_notice" value="Ausrichtung überprüfen…"/>
+	<Localized name="veri_success_mbox" value="Überprüfen erfolgreich"/>
+	<Localized name="veri_fail_mbox" value="Überprüfen fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="fw_apk_file_log" value="Framework installieren…"/>
+	<Localized name="fw_success_mbox" value="Framework intallieren erfolgreich"/>
+	<Localized name="fw_fail_mbox" value="Framework intallieren fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="fw_clr_apk_file_log" value="Framework-Cache bereinigen…"/>
+	<Localized name="fw_clr_success_mbox" value="Framework-Cache bereinigt"/>
+	<Localized name="fw_clr_fail_mbox" value="Framework-Cache bereinigen fehlgeschlagen"/>
+
+	<Localized name="ext_apk_file_log" value="APK-Datei entpacken…"/>
+	<Localized name="ext_success_mbox" value="APK-Datei entpacken erfolgreich"/>
+	<Localized name="ext_fail_mbox" value="APK-Datei entpacken fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="zip_apk_file_log" value="APK-Datei packen…"/>
+	<Localized name="zip_success_mbox" value="Packen erfolgreich"/>
+	<Localized name="zip_fail_mbox" value="Packen fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="baksmali_file_log" value="Baksmaling…"/>
+	<Localized name="baksmali_success_mbox" value="Baksmaling erfolgreich"/>
+	<Localized name="baksmali_fail_mbox" value="Baksmaling fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="smali_file_log" value="APK-Datei-Smaling…"/>
+	<Localized name="smali_success_mbox" value="Smaling erfolgreich"/>
+	<Localized name="smali_fail_mbox" value="Smaling fehlgeschlagen. Bitte Log lesen"/>
+	
+	<Localized name="cancelled_log" value="Operation abgebrochen"/>
+	
+	<Localized name="mass_sign_mbox" value="Massensignatur erfolgreich"/>
+	<Localized name="log_file_log" value="Log-Speicherort:"/>
+
+	<!-- Error codes -->
+	
+	<Localized name="adb_apk_install_fail_err" value="APK installieren fehlgeschlagen:"/>
+	<Localized name="no_such_file_err" value="Datei oder Verzeichnis nicht vorhanden"/>
+	<Localized name="key_pass_incorrect_err" value="Schlüsseldatei-Passwort war falsch"/>
+	<Localized name="rename_file_err" value="Temporäre Datei umbenennen nicht möglich"/>
+	<Localized name="string_index_err" value="Zeichenkettenindex außerhalb der Grenzen"/>
+	<Localized name="c_1073741515_err" value="Kompilieren fehlgeschlagen. Versuchen, die aapt2 zu verwenden, die Apktool-Versionen zu wechseln oder die Java 64-Bit-Version zu installieren."/>
+	<Localized name="xml_parse_err" value="XML-Fehler beim Parsen: not well-formed (ungültiges Token)"/>
+	
+	<!-- UI -->
+	
+	<Localized name="resource_missing_notice" value="Apktool oder Ressourcenordner fehlen. Sicherstellen, dass sie neben apkeasytool.exe platziert sind."/>
+	<Localized name="shell_dll_missing_lbl" value="(Deaktiviert, da erforderliche Shell-Dateien fehlen.)"/>
+	<Localized name="instance_title" value="Instanz"/>
+	
+	<Localized name="java_not_installed_notice" value="Java ist nicht installiert. Bitte Java SE installieren oder den Pfad zu Java wählen, der unter Optionen ausführbar ist."/>
+</Language>

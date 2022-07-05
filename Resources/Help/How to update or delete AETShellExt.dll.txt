@@ -1,0 +1,7 @@
+If you are using shell extension for APK Easy Tool and you want to update, you must unregister and uninstall it first
+
+Open APK Easy Tool. Go to options -> General and click Uninstall Context menu integration. It will ask you for admin rights
+Windows 8/10: Open Task Manager and restart all explorer.exe processes
+Windows 7: Open Task Manager, end all explorer.exe processes and run new task explorer.exe
+
+Then you can replace or delete AETShellExt.dll, don't forget SharpShell.dll ServerRegistrationManager.exe too
