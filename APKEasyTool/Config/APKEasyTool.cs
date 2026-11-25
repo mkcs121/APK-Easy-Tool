@@ -46,6 +46,9 @@
 
         public string DropDownApkTool { get; set; }
 
+        // 0 = written by v1.60 or older. 2 = v1.61+, where the Apktool choice was made with 3.x available.
+        public int ConfigVersion { get; set; }
+
         public string DropDownApkSign { get; set; }
 
         public string DropDownLogLevel { get; set; }

@@ -363,7 +363,11 @@ namespace APKEasyTool
                         main.comNameTextBox.Text = info.FileNameCom;
                         main.baksNameTxtBox.Text = info.FileNameDexOdexOat;
                         main.smaliNameTxtBox.Text = info.FileNameSmali;
-                        main.apkToolComboBox.Text = info.DropDownApkTool;
+                        // A config from v1.60 or older still points at Apktool 2.6.1, which cannot
+                        // decode current apps. Keep the newest bundled version in that case, and
+                        // also when the saved jar no longer exists.
+                        if (info.ConfigVersion >= 2 && main.apkToolComboBox.Items.Contains(info.DropDownApkTool))
+                            main.apkToolComboBox.Text = info.DropDownApkTool;
                         main.javaHeapSizeNum.Text = info.DwordXmx;
                         main.langComboBox.Text = info.Language;
                         main.decBcheckBox.Checked = info.CheckBoxDecB;
@@ -501,6 +505,7 @@ namespace APKEasyTool
                 info.FileNameDexOdexOat = main.baksNameTxtBox.Text;
                 info.FileNameSmali = main.smaliNameTxtBox.Text;
                 info.DropDownApkTool = main.apkToolComboBox.Text;
+                info.ConfigVersion = 2;
                 // info.DropDownCmdMode = main.cmdModeChkBox.Text;
                 info.DwordX = main.Location.X;
                 info.DwordY = main.Location.Y;
