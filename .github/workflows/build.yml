@@ -39,6 +39,13 @@ jobs:
           name: ${{ env.ZIP_NAME }}
           path: ${{ env.ZIP_NAME }}.zip
 
+      # Small artifact for quick testing: just the exe (dependencies are embedded by Costura).
+      # Drop it over an existing portable folder.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exe-only
+          path: APKEasyTool/bin/Release/apkeasytool.exe
+
       - name: Publish release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
