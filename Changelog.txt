@@ -1,6 +1,9 @@
 v1.64 (unreleased)
 - Split APKs (.apks/.xapk/.apkm): dropping or browsing one merges it into a single APK (APKEditor 1.4.9 by REAndroid, Apache-2.0) before Decompile
 - "Split APK" button: merge into an installable (zipaligned + signed) APK, or install all parts with adb install-multiple and copy XAPK OBB data
+- Translation: Android "quoted" strings no longer get visible quote marks in the translation, real line breaks show as 
+, HTML shown as text (&lt;b&gt;) stays text
+- Language list starts with the languages the app already has; "en" added; the window shows which languages exist
 
 -------------------------------------------------
 

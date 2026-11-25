@@ -29,6 +29,8 @@ namespace APKEasyTool
         readonly CheckBox applyDefaultChk = new CheckBox();
         readonly TextBox appNameBox = new TextBox();
         readonly Label appNameInfo = new Label();
+        readonly Label langInfo = new Label();
+        static readonly string[] CommonLanguages = { "fa", "ar", "tr", "ur", "ku", "ckb", "en", "ru", "de", "fr", "es", "it", "pt", "zh", "ja", "ko", "hi", "id" };
         readonly TextBox searchBox = new TextBox();
         readonly CheckBox untranslatedChk = new CheckBox();
         readonly Label countLbl = new Label();
@@ -88,7 +90,7 @@ namespace APKEasyTool
             browseBtn.Click += BrowseBtn_Click;
             langBox.DropDownStyle = ComboBoxStyle.DropDown;
             langBox.Width = S(90);
-            langBox.Items.AddRange(new object[] { "fa", "ar", "tr", "ur", "ku", "ckb", "ru", "de", "fr", "es", "it", "pt", "zh", "ja", "ko", "hi", "id" });
+            langBox.Items.AddRange(CommonLanguages);
             var loadBtn = new Button { Text = "Load", AutoSize = true };
             loadBtn.Click += (s, e) => LoadProject();
             langBox.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; LoadProject(); } };
@@ -102,7 +104,7 @@ namespace APKEasyTool
             root.Controls.Add(row1, 0, 0);
 
             // Row 2: app name
-            var row2 = NewRow(3);
+            var row2 = NewRow(4);
             row2.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, S(320));
             appNameBox.Dock = DockStyle.Fill;
             appNameBox.TextChanged += (s, e) => dirty = true;
@@ -112,6 +114,11 @@ namespace APKEasyTool
             row2.Controls.Add(Lbl("App name:"), 0, 0);
             row2.Controls.Add(appNameBox, 1, 0);
             row2.Controls.Add(appNameInfo, 2, 0);
+            langInfo.AutoSize = true;
+            langInfo.ForeColor = SystemColors.GrayText;
+            langInfo.Anchor = AnchorStyles.Left;
+            langInfo.Padding = new Padding(S(24), 0, 0, 0);
+            row2.Controls.Add(langInfo, 3, 0);
             root.Controls.Add(row2, 0, 1);
 
             // Row 3: search + filters + AI helpers
@@ -272,6 +279,11 @@ namespace APKEasyTool
                 var originals = ReadStrings(originalsFile, true);
                 var existing = File.Exists(TargetStringsPath) ? ReadStrings(TargetStringsPath, false) : new Dictionary<string, string>();
 
+                literalTagNames.Clear();
+                foreach (var kv in originals)
+                    if (kv.Value.Contains("&lt;"))
+                        literalTagNames.Add(kv.Key);
+
                 table = new DataTable();
                 table.Columns.Add("Name", typeof(string));
                 table.Columns.Add("Original", typeof(string));
@@ -291,6 +303,7 @@ namespace APKEasyTool
                 applyDefaultChk.Checked = File.Exists(BackupPath);
 
                 LoadAppName(originals, existing);
+                ShowAppLanguages();
                 LoadIconPackage();
                 ApplyFilter();
                 dirty = false;
@@ -300,6 +313,23 @@ namespace APKEasyTool
             {
                 MessageBox.Show(this, "Could not read the strings:\n" + ex.Message, Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Languages the app already has (res/values-xx/strings.xml) go first in the list and are shown next to it.
+        void ShowAppLanguages()
+        {
+            var langs = Directory.GetDirectories(Path.Combine(projectDir, "res"), "values-*")
+                .Where(d => File.Exists(Path.Combine(d, "strings.xml")))
+                .Select(d => Path.GetFileName(d).Substring(7))
+                .Where(q => Regex.IsMatch(q, @"^([a-z]{2,3}(-r[A-Z]{2})?|b\+[A-Za-z0-9+]+)$"))
+                .Distinct().OrderBy(q => q).ToList();
+            string current = langBox.Text;
+            langBox.Items.Clear();
+            langBox.Items.AddRange(langs.Cast<object>().ToArray());
+            langBox.Items.AddRange(CommonLanguages.Where(c => !langs.Contains(c)).Cast<object>().ToArray());
+            langBox.Text = current;
+            langInfo.Text = "Languages in the app: default (res/values, the \"Original\" column)" +
+                (langs.Count > 0 ? " + " + String.Join(", ", langs.Take(25)) + (langs.Count > 25 ? " ..." : "") : " only");
         }
 
         // name -> raw inner XML of <string>. Skips translatable="false" when reading originals.
@@ -698,10 +728,15 @@ namespace APKEasyTool
                 doc.Save(w);
         }
 
+        // Strings whose original shows HTML tags as text (&lt;b&gt;): keep tags in translations as text too.
+        readonly HashSet<string> literalTagNames = new HashSet<string>();
+
         // User text -> valid Android string resource content.
-        static void SetValue(XmlElement el, string text)
+        void SetValue(XmlElement el, string text)
         {
             string s = text.Replace("\r\n", "\\n").Replace("\n", "\\n");
+            if (literalTagNames.Contains(el.GetAttribute("name")))
+                s = s.Replace("<", "&lt;");
             s = Regex.Replace(s, @"(?<!\\)'", "\\'");
             s = Regex.Replace(s, @"(?<!\\)""", "\\\"");
             if (s.StartsWith("@") || s.StartsWith("?"))
@@ -720,7 +755,15 @@ namespace APKEasyTool
         // Raw inner XML -> what the user sees and edits.
         static string ToDisplay(string innerXml)
         {
-            return XmlDecode(innerXml ?? "");
+            string s = XmlDecode(innerXml ?? "");
+            string t = s.Trim();
+            // Android "quoted" strings: the quotes are syntax (they keep apostrophes and line breaks), not text.
+            if (t.Length >= 2 && t[0] == '"' && t[t.Length - 1] == '"' && !t.EndsWith("\\\""))
+                s = t.Substring(1, t.Length - 2).Replace("\r\n", "\n").Replace("\n", "\\n");
+            // Translations saved by v1.62-1.64 kept those quotes as visible \"...\" text: drop them.
+            else if (t.Length >= 4 && t.StartsWith("\\\"") && t.EndsWith("\\\""))
+                s = t.Substring(2, t.Length - 4);
+            return s;
         }
 
         static string XmlDecode(string s)
