@@ -15,7 +15,7 @@ namespace APKEasyTool
     /// Translate the strings of a decompiled APK (res/values/strings.xml) into another
     /// language (res/values-xx/strings.xml) and rename the app.
     /// </summary>
-    public class TranslateForm : Form
+    public partial class TranslateForm : Form
     {
         // Copy of the untouched default strings, written before we ever modify res/values/strings.xml.
         // Apktool only packs known folders/files, so a file in the project root is ignored on build.
@@ -44,8 +44,9 @@ namespace APKEasyTool
         bool appLabelIsLiteral;
         bool dirty;
 
-        public TranslateForm(string decompiledDir)
+        public TranslateForm(string decompiledDir, string aiSettingsFile)
         {
+            settingsFile = aiSettingsFile;
             Text = "Translate app - " + Program.Name;
             Font = SystemFonts.MessageBoxFont;
             // Fixed pixel sizes were too small on high-DPI screens: use most of the screen instead.
@@ -71,8 +72,7 @@ namespace APKEasyTool
 
         void BuildUi()
         {
-            var root = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 5, Padding = new Padding(8) };
-            root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            var root = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 4, Padding = new Padding(8) };
             root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
@@ -132,19 +132,15 @@ namespace APKEasyTool
             var tip = new ToolTip();
             tip.SetToolTip(copyAiBtn, "Copies the untranslated strings with instructions.\nPaste them into ChatGPT (or any AI), then copy its answer and press \"Paste from AI\".");
             tip.SetToolTip(pasteAiBtn, "Reads lines like  name: translated text  from the clipboard.");
-            applyDefaultChk.Text = "Show this language on every device";
-            applyDefaultChk.AutoSize = true;
-            applyDefaultChk.Anchor = AnchorStyles.Left;
-            applyDefaultChk.CheckedChanged += (s, e) => dirty = true;
-            tip.SetToolTip(applyDefaultChk, "Also writes the translation into res/values (the default language).\nWithout this, the translation only appears when the phone language is set to it.\nThe original text is kept in " + BackupFileName + ".");
+            // applyDefaultChk is not shown: the two mode radio buttons drive it.
+            applyDefaultChk.CheckedChanged += (s, e) => { dirty = true; SyncModeRadios(); };
             row3.Controls.Add(Lbl("Search:"));
             row3.Controls.Add(searchBox);
             row3.Controls.Add(untranslatedChk);
             row3.Controls.Add(countLbl);
             row3.Controls.Add(copyAiBtn);
             row3.Controls.Add(pasteAiBtn);
-            row3.Controls.Add(applyDefaultChk);
-            root.Controls.Add(row3, 0, 2);
+            AddAiControls(row3, tip);
 
             // Grid
             grid.Dock = DockStyle.Fill;
@@ -166,7 +162,23 @@ namespace APKEasyTool
             grid.CellFormatting += Grid_CellFormatting;
             grid.CellValueChanged += (s, e) => { dirty = true; UpdateCount(); };
             grid.DataError += (s, e) => { e.ThrowException = false; };
-            root.Controls.Add(grid, 0, 3);
+
+            // Tabs: texts | icon & package
+            var textsPage = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 3 };
+            textsPage.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            textsPage.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            textsPage.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            textsPage.Controls.Add(row3, 0, 0);
+            textsPage.Controls.Add(BuildModeRow(tip), 0, 1);
+            textsPage.Controls.Add(grid, 0, 2);
+            var tabs = new TabControl { Dock = DockStyle.Fill };
+            var p1 = new TabPage("Texts / translation") { Padding = new Padding(6) };
+            p1.Controls.Add(textsPage);
+            var p2 = new TabPage("Icon and package name") { Padding = new Padding(6), AutoScroll = true };
+            p2.Controls.Add(BuildIconPackagePage(tip));
+            tabs.TabPages.Add(p1);
+            tabs.TabPages.Add(p2);
+            root.Controls.Add(tabs, 0, 2);
 
             // Bottom buttons
             var bottom = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.RightToLeft };
@@ -180,7 +192,7 @@ namespace APKEasyTool
             bottom.Controls.Add(closeBtn);
             bottom.Controls.Add(saveBtn);
             bottom.Controls.Add(hint);
-            root.Controls.Add(bottom, 0, 4);
+            root.Controls.Add(bottom, 0, 3);
 
             AcceptButton = null;
             KeyPreview = true;
@@ -273,6 +285,7 @@ namespace APKEasyTool
                 applyDefaultChk.Checked = File.Exists(BackupPath);
 
                 LoadAppName(originals, existing);
+                LoadIconPackage();
                 ApplyFilter();
                 dirty = false;
                 Text = "Translate app (" + loadedLang + ") - " + Path.GetFileName(projectDir.TrimEnd('\\', '/')) + " - " + Program.Name;
@@ -517,7 +530,22 @@ namespace APKEasyTool
         {
             if (table == null || projectDir == null)
                 return;
-            grid.EndEdit();
+            if (!SaveStrings(false))
+                return;
+            if (!ApplyIconPackage())
+                return;
+            MessageBox.Show(this, "Saved.\n\nNow press Compile in the main window, then install the new APK" +
+                "\n(uninstall the original app first, unless you changed the package name: the signature is different).",
+                Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // Writes the strings. silent = used by auto-translate after every batch.
+        bool SaveStrings(bool silent)
+        {
+            if (table == null || projectDir == null)
+                return false;
+            if (!silent)
+                grid.EndEdit();
             try
             {
                 var translations = new Dictionary<string, string>();
@@ -549,13 +577,15 @@ namespace APKEasyTool
 
                 table.AcceptChanges();
                 dirty = false;
-                MessageBox.Show(this, "Saved.\n\nNow press Compile in the main window, then install the new APK" +
-                    "\n(uninstall the original app first: the signature is different).",
-                    Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "Saving failed:\n" + ex.Message, Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (silent)
+                    SetStatus("Auto-save failed: " + ex.Message);
+                else
+                    MessageBox.Show(this, "Saving failed:\n" + ex.Message, Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 

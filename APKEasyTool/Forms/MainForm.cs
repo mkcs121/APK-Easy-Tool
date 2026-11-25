@@ -266,7 +266,7 @@ namespace APKEasyTool
                     dir = pathOfApk.Text;
                 else if (!String.IsNullOrEmpty(pathOfDec.Text) && !String.IsNullOrEmpty(decNameTextBox.Text))
                     dir = Path.Combine(pathOfDec.Text, decNameTextBox.Text);
-                using (TranslateForm form = new TranslateForm(dir))
+                using (TranslateForm form = new TranslateForm(dir, Variables.GetPath() + "ai.xml"))
                     form.ShowDialog(this);
             };
             tabMain.Controls.Add(translateBtn);

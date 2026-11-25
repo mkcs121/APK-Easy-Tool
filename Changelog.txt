@@ -1,3 +1,11 @@
+v1.62 (unreleased)
+- New "Translate / Rename app" window: strings next to their translation, app name, Persian/RTL aware
+- Auto-translate with any OpenAI-compatible API (URL, key, model in AI settings). Batches, retry with backoff on rate limits, saves after every batch, stop/continue
+- Translation as a new language (values-xx) or replacing the app's own texts (original kept)
+- Change the app icon (all densities) and the package name (authorities and own permissions follow)
+
+-------------------------------------------------
+
 v1.61 (unreleased)
 - Added Apktool 3.0.3 (default). Apktool 2.6.1 fails on apps built for Android 15 (Invalid chunk type)
 - Flags are translated for Apktool 3 (-b/-k/-m/-c/-d/-nc renamed; -api and --use-aapt2 removed)
