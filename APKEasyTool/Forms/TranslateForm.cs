@@ -47,7 +47,7 @@ namespace APKEasyTool
         public TranslateForm(string decompiledDir, string aiSettingsFile)
         {
             settingsFile = aiSettingsFile;
-            Text = "Translate app - " + Program.Name;
+            Text = "Edit app - " + Program.Name;
             Font = SystemFonts.MessageBoxFont;
             // Fixed pixel sizes were too small on high-DPI screens: use most of the screen instead.
             Rectangle wa = Screen.PrimaryScreen.WorkingArea;
@@ -288,7 +288,7 @@ namespace APKEasyTool
                 LoadIconPackage();
                 ApplyFilter();
                 dirty = false;
-                Text = "Translate app (" + loadedLang + ") - " + Path.GetFileName(projectDir.TrimEnd('\\', '/')) + " - " + Program.Name;
+                Text = "Edit app (" + loadedLang + ") - " + Path.GetFileName(projectDir.TrimEnd('\\', '/')) + " - " + Program.Name;
             }
             catch (Exception ex)
             {

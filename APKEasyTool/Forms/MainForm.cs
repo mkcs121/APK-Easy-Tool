@@ -252,13 +252,13 @@ namespace APKEasyTool
             Button translateBtn = new Button
             {
                 Name = "translateBtn",
-                Text = "Translate / Rename app",
+                Text = "Edit app: translate, icon, package",
                 Font = openZipApk.Font,
                 Location = new Point(rebuildApiLvl.Left, openZipApk.Top),
                 Size = new Size(Math.Max(selectApk.Right - rebuildApiLvl.Left, openZipApk.Width), openZipApk.Height),
                 UseVisualStyleBackColor = true
             };
-            toolTip1.SetToolTip(translateBtn, "Translate the app's texts (e.g. into Persian) and change its name.\nDecompile first, then press Compile after saving.");
+            toolTip1.SetToolTip(translateBtn, "Translate the texts, rename the app, change its icon or package name.\nDecompile first, then press Compile after saving.");
             translateBtn.Click += (sender, e) =>
             {
                 string dir = "";
