@@ -48,9 +48,11 @@ namespace APKEasyTool
         {
             Text = "Translate app - " + Program.Name;
             Font = SystemFonts.MessageBoxFont;
-            Size = new Size(1000, 700);
-            MinimumSize = new Size(720, 480);
-            StartPosition = FormStartPosition.CenterParent;
+            // Fixed pixel sizes were too small on high-DPI screens: use most of the screen instead.
+            Rectangle wa = Screen.PrimaryScreen.WorkingArea;
+            Size = new Size(wa.Width * 85 / 100, wa.Height * 85 / 100);
+            MinimumSize = new Size(S(720), S(480));
+            StartPosition = FormStartPosition.CenterScreen;
             ShowIcon = false;
             BuildUi();
 
@@ -61,6 +63,12 @@ namespace APKEasyTool
         }
 
         #region UI
+        // Scale a 96-dpi pixel size to the screen's DPI.
+        int S(int px)
+        {
+            return (int)(px * DeviceDpi / 96f);
+        }
+
         void BuildUi()
         {
             var root = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 5, Padding = new Padding(8) };
@@ -79,7 +87,7 @@ namespace APKEasyTool
             var browseBtn = new Button { Text = "Browse...", AutoSize = true };
             browseBtn.Click += BrowseBtn_Click;
             langBox.DropDownStyle = ComboBoxStyle.DropDown;
-            langBox.Width = 90;
+            langBox.Width = S(90);
             langBox.Items.AddRange(new object[] { "fa", "ar", "tr", "ur", "ku", "ckb", "ru", "de", "fr", "es", "it", "pt", "zh", "ja", "ko", "hi", "id" });
             var loadBtn = new Button { Text = "Load", AutoSize = true };
             loadBtn.Click += (s, e) => LoadProject();
@@ -95,7 +103,7 @@ namespace APKEasyTool
 
             // Row 2: app name
             var row2 = NewRow(3);
-            row2.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 320);
+            row2.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, S(320));
             appNameBox.Dock = DockStyle.Fill;
             appNameBox.TextChanged += (s, e) => dirty = true;
             appNameInfo.AutoSize = true;
@@ -107,8 +115,9 @@ namespace APKEasyTool
             root.Controls.Add(row2, 0, 1);
 
             // Row 3: search + filters + AI helpers
-            var row3 = NewRow(8);
-            searchBox.Width = 220;
+            // Flow panel so the toolbar wraps onto a second line on narrow windows instead of being cut off.
+            var row3 = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, WrapContents = true, Margin = new Padding(0, 0, 0, 4) };
+            searchBox.Width = S(220);
             searchBox.TextChanged += (s, e) => ApplyFilter();
             untranslatedChk.Text = "Untranslated only";
             untranslatedChk.AutoSize = true;
@@ -128,13 +137,13 @@ namespace APKEasyTool
             applyDefaultChk.Anchor = AnchorStyles.Left;
             applyDefaultChk.CheckedChanged += (s, e) => dirty = true;
             tip.SetToolTip(applyDefaultChk, "Also writes the translation into res/values (the default language).\nWithout this, the translation only appears when the phone language is set to it.\nThe original text is kept in " + BackupFileName + ".");
-            row3.Controls.Add(Lbl("Search:"), 0, 0);
-            row3.Controls.Add(searchBox, 1, 0);
-            row3.Controls.Add(untranslatedChk, 2, 0);
-            row3.Controls.Add(countLbl, 3, 0);
-            row3.Controls.Add(copyAiBtn, 4, 0);
-            row3.Controls.Add(pasteAiBtn, 5, 0);
-            row3.Controls.Add(applyDefaultChk, 6, 0);
+            row3.Controls.Add(Lbl("Search:"));
+            row3.Controls.Add(searchBox);
+            row3.Controls.Add(untranslatedChk);
+            row3.Controls.Add(countLbl);
+            row3.Controls.Add(copyAiBtn);
+            row3.Controls.Add(pasteAiBtn);
+            row3.Controls.Add(applyDefaultChk);
             root.Controls.Add(row3, 0, 2);
 
             // Grid
@@ -143,6 +152,7 @@ namespace APKEasyTool
             grid.AllowUserToDeleteRows = false;
             grid.AutoGenerateColumns = false;
             grid.RowHeadersVisible = false;
+            grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             grid.SelectionMode = DataGridViewSelectionMode.CellSelect;
             grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             grid.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
@@ -286,11 +296,24 @@ namespace APKEasyTool
                     continue;
                 if (originals && el.GetAttribute("translatable") == "false")
                     continue;
-                if (originals && el.InnerXml.Trim().Length == 0)
+                if (originals && (el.InnerXml.Trim().Length == 0 || IsTechnical(el.InnerText.Trim())))
                     continue;
                 result[name] = el.InnerXml;
             }
             return result;
+        }
+
+        // Strings the user never sees and must not translate: class names, keys, URLs, IDs.
+        static readonly Regex TechnicalValue = new Regex(
+            @"^([a-zA-Z_][\w$]*(\.[\w$]+){2,}" +   // com.google.android.material.behavior.Foo
+            @"|[a-z][a-z0-9+.-]*://\S*" +           // https://..., market://...
+            @"|[A-Za-z0-9+/=_\-]{32,}" +            // base64 keys, tokens, long ids
+            @"|[0-9a-fA-F:\-]{8,}" +                // hex ids, uuids
+            @"|[^\p{L}]*)$");                       // no letters at all: %1$s • %2$s, numbers, symbols
+
+        static bool IsTechnical(string value)
+        {
+            return TechnicalValue.IsMatch(value);
         }
 
         void LoadAppName(Dictionary<string, string> originals, Dictionary<string, string> existing)
