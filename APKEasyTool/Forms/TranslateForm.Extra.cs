@@ -295,6 +295,7 @@ namespace APKEasyTool
             string pkg = AppEditTools.GetPackage(projectDir);
             currentPkgLbl.Text = pkg;
             newPkgBox.Text = pkg;
+            ScanAds();
         }
 
         void ChooseIcon_Click(object sender, EventArgs e)

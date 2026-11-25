@@ -3,6 +3,7 @@ v1.62 (unreleased)
 - Auto-translate with any OpenAI-compatible API (URL, key, model in AI settings). Batches, retry with backoff on rate limits, saves after every batch, stop/continue
 - Translation as a new language (values-xx) or replacing the app's own texts (original kept)
 - Change the app icon (all densities) and the package name (authorities and own permissions follow)
+- Remove ads: detects 17 ad SDKs (AdMob, AppLovin, Unity, Meta, ironSource, Tapsell, Adivery ...) and disables their load/show methods; original code backed up for Restore
 
 -------------------------------------------------
 
