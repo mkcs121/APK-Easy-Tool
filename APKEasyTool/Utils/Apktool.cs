@@ -38,6 +38,16 @@ namespace APKEasyTool
                 return "";
         }
 
+        // Apktool 3.x renamed or removed several short flags (-b, -k, -m, -c, -d, -nc, -api, --use-aapt2 ...).
+        // Detect the major version from the selected jar name, e.g. "apktool_3.0.3.jar".
+        internal static bool IsApktool3OrNewer()
+        {
+            Match m = Regex.Match(Variables.Apktool ?? "", @"apktool[_\-]?(\d+)\.", RegexOptions.IgnoreCase);
+            if (m.Success)
+                return int.Parse(m.Groups[1].Value) >= 3;
+            return !String.IsNullOrEmpty(Variables.ApkToolVer) && Regex.IsMatch(Variables.ApkToolVer.Trim(), @"^([3-9]|\d{2,})\.");
+        }
+
         static string GetJavaPath()
         {
             if (main.useExtJava.Checked)
@@ -50,30 +60,34 @@ namespace APKEasyTool
         {
             processType = ProcessType.Java;
 
+            bool v3 = IsApktool3OrNewer();
             string flag = "";
             if (main.decBcheckBox.Checked)
-                flag += " -b";
+                flag += v3 ? " --no-debug-info" : " -b";
             if (main.decFcheckBox.Checked)
                 flag += " -f";
             if (main.decKcheckBox.Checked)
-                flag += " -k";
+                flag += v3 ? " --keep-broken-res" : " -k";
             if (main.decMcheckBox.Checked)
-                flag += " -m";
+                flag += v3 ? " --match-original" : " -m";
             if (main.decRcheckBox.Checked)
                 flag += " -r";
             if (main.decScheckBox.Checked)
                 flag += " -s";
             if (main.decNoAssetsCheckBox.Checked)
                 flag += " --no-assets";
-            if (!String.IsNullOrEmpty(main.decodeApiLvl.Text))
+            if (!v3 && !String.IsNullOrEmpty(main.decodeApiLvl.Text))
                 flag += " -api " + main.decodeApiLvl.Text;
-            if (main.decOnlyMainClassesChkBox.Checked)
+            // Apktool 3 decodes only the main classes*.dex by default; -a decodes everything.
+            if (v3 && !main.decOnlyMainClassesChkBox.Checked)
+                flag += " -a";
+            else if (!v3 && main.decOnlyMainClassesChkBox.Checked)
                 flag += " --only-main-classes";
             if (main.useTagChkBox.Checked)
                 flag += " -t \"" + main.tagTxtBox.Text + "\"";
             if (!String.IsNullOrEmpty(main.fwDirTxtBox.Text))
                 flag += " -p \"" + main.fwDirTxtBox.Text + "\"";
-            if (main.decForceManifestChkBox.Checked)
+            if (!v3 && main.decForceManifestChkBox.Checked)
                 flag += " --force-manifest";
 
             main.DisableForm();
@@ -115,20 +129,22 @@ namespace APKEasyTool
         {
             processType = ProcessType.Java;
 
+            bool v3 = IsApktool3OrNewer();
             string flag = "";
             //compile
             if (main.comCcheckBox.Checked)
-                flag += " -c";
+                flag += v3 ? " --copy-original" : " -c";
             if (main.comDcheckBox.Checked)
-                flag += " -d";
+                flag += v3 ? " --debuggable" : " -d";
             if (main.comFcheckBox.Checked)
                 flag += " -f";
-            if (main.chkBoxUseAapt2.Checked)
+            // Apktool 3 always uses aapt2 and no longer accepts -api.
+            if (!v3 && main.chkBoxUseAapt2.Checked)
                 flag += " --use-aapt2";
-            if (!String.IsNullOrEmpty(main.rebuildApiLvl.Text))
+            if (!v3 && !String.IsNullOrEmpty(main.rebuildApiLvl.Text))
                 flag += " -api " + main.rebuildApiLvl.Text;
             if (main.comNCcheckBox.Checked)
-                flag += " -nc";
+                flag += v3 ? " --no-crunch" : " -nc";
             if (main.useAaptPathChkBox.Checked)
                 flag += " --aapt \"" + main.useAaptPathTxtBox.Text + "\"";
             if (!String.IsNullOrEmpty(main.fwDirTxtBox.Text))

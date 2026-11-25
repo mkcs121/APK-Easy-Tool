@@ -1,3 +1,12 @@
+v1.61 (unreleased)
+- Added Apktool 3.0.3 (default). Apktool 2.6.1 fails on apps built for Android 15 (Invalid chunk type)
+- Flags are translated for Apktool 3 (-b/-k/-m/-c/-d/-nc renamed; -api and --use-aapt2 removed)
+- Updated aapt, aapt2, zipalign, apksigner, adb to 37.0.0
+- Apktool list is sorted newest first
+- Builds on GitHub Actions; releases published from v* tags
+
+-------------------------------------------------
+
 v1.60 (Final) (2022-06-23)
 - Added Force manifest for decompiling
 - Removed unused checkbox "v4 no merkle tree" because it wasn't available for apksigner.jar

@@ -67,7 +67,15 @@ namespace APKEasyTool
 
             //get apktool version
             string[] filePaths = Directory.GetFiles(Variables.RealPath("Apktool"), "*.jar", SearchOption.AllDirectories);
-            var namesOnly = filePaths.Select(f => Path.GetFileName(f)).ToArray();
+            // Newest version first, so a fresh install defaults to the latest Apktool
+            var namesOnly = filePaths.Select(f => Path.GetFileName(f))
+                .OrderByDescending(n =>
+                {
+                    var m = System.Text.RegularExpressions.Regex.Match(n, @"(\d+(?:\.\d+)+)");
+                    Version v;
+                    return m.Success && Version.TryParse(m.Groups[1].Value, out v) ? v : new Version(0, 0);
+                })
+                .ToArray();
             main.apkToolComboBox.Items.AddRange(namesOnly);
 
             main.apkToolComboBox.SelectedIndex = 0;
