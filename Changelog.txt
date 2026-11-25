@@ -4,6 +4,7 @@ v1.64 (unreleased)
 - Translation: Android "quoted" strings no longer get visible quote marks in the translation, real line breaks show as 
 , HTML shown as text (&lt;b&gt;) stays text
 - Language list starts with the languages the app already has; "en" added; the window shows which languages exist
+- Texts from: Android strings, language JSON files (games such as Cocos2d, i18n folders) or web apps (Ionic/Capacitor/Cordova: JS and HTML in assets). Picked automatically when the app has no Android texts; files are rebuilt from a backup, so saving again or clearing a translation is safe; optional RTL layout for web apps
 
 -------------------------------------------------
 

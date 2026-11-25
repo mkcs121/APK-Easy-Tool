@@ -141,6 +141,7 @@ namespace APKEasyTool
             tip.SetToolTip(pasteAiBtn, "Reads lines like  name: translated text  from the clipboard.");
             // applyDefaultChk is not shown: the two mode radio buttons drive it.
             applyDefaultChk.CheckedChanged += (s, e) => { dirty = true; SyncModeRadios(); };
+            AddSourceControls(row3, tip);
             row3.Controls.Add(Lbl("Search:"));
             row3.Controls.Add(searchBox);
             row3.Controls.Add(untranslatedChk);
@@ -163,6 +164,7 @@ namespace APKEasyTool
             grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Name", DataPropertyName = "Name", HeaderText = "Name", ReadOnly = true, FillWeight = 22 });
             grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Original", DataPropertyName = "Original", HeaderText = "Original", ReadOnly = true, FillWeight = 39 });
             grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Translation", DataPropertyName = "Translation", HeaderText = "Translation", FillWeight = 39 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { Name = "Where", DataPropertyName = "Where", HeaderText = "File", ReadOnly = true, FillWeight = 14, Visible = false });
             grid.Columns["Name"].DefaultCellStyle.ForeColor = SystemColors.GrayText;
             grid.Columns["Original"].DefaultCellStyle.BackColor = Color.FromArgb(248, 248, 248);
             grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -288,11 +290,12 @@ namespace APKEasyTool
                 table.Columns.Add("Name", typeof(string));
                 table.Columns.Add("Original", typeof(string));
                 table.Columns.Add("Translation", typeof(string));
+                table.Columns.Add("Where", typeof(string));
                 foreach (var kv in originals)
                 {
                     string tr;
                     existing.TryGetValue(kv.Key, out tr);
-                    table.Rows.Add(kv.Key, ToDisplay(kv.Value), tr == null ? "" : ToDisplay(tr));
+                    table.Rows.Add(kv.Key, ToDisplay(kv.Value), tr == null ? "" : ToDisplay(tr), "");
                 }
                 table.AcceptChanges();
                 grid.DataSource = table;
@@ -301,6 +304,8 @@ namespace APKEasyTool
                 grid.Columns["Translation"].DefaultCellStyle.Alignment = rtl ? DataGridViewContentAlignment.MiddleRight : DataGridViewContentAlignment.MiddleLeft;
                 appNameBox.RightToLeft = rtl ? RightToLeft.Yes : RightToLeft.No;
                 applyDefaultChk.Checked = File.Exists(BackupPath);
+                AutoPickSource(originals.Count);
+                LoadExternalTable(rtl);
 
                 LoadAppName(originals, existing);
                 ShowAppLanguages();
@@ -580,6 +585,8 @@ namespace APKEasyTool
         {
             if (table == null || projectDir == null)
                 return false;
+            if (currentSource != TextSource.Android)
+                return SaveExternal(silent);
             if (!silent)
                 grid.EndEdit();
             try
