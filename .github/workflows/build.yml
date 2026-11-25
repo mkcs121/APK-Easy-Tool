@@ -1,0 +1,47 @@
+name: Build
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: microsoft/setup-msbuild@v2
+      - uses: nuget/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore APKEasyTool.sln
+
+      - name: Build (Release)
+        run: msbuild APKEasyTool.sln /m /p:Configuration=Release /p:Platform="Any CPU" /v:minimal
+
+      - name: Package portable zip
+        shell: pwsh
+        run: |
+          $out = "APKEasyTool/bin/Release"
+          Get-ChildItem $out -Include *.pdb,*.xml -File | Where-Object { $_.DirectoryName -eq (Resolve-Path $out).Path } | Remove-Item
+          $name = if ($env:GITHUB_REF_TYPE -eq 'tag') { "APK-Easy-Tool-$env:GITHUB_REF_NAME" } else { "APK-Easy-Tool-$($env:GITHUB_SHA.Substring(0,7))" }
+          "ZIP_NAME=$name" | Out-File -Append $env:GITHUB_ENV
+          Compress-Archive -Path "$out/*" -DestinationPath "$name.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ZIP_NAME }}
+          path: ${{ env.ZIP_NAME }}.zip
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ZIP_NAME }}.zip
+          generate_release_notes: true

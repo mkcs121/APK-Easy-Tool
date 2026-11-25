@@ -61,7 +61,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <Win32Resource>E:\Mobile-Modding\CSharp\APK Easy Tool\APKEasyTool\Resource.res</Win32Resource>
+    <Win32Resource>Resource.res</Win32Resource>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>APKEasyTool.Program</StartupObject>
