@@ -1,4 +1,4 @@
-﻿using APKEasyTool.Enums;
+using APKEasyTool.Enums;
 using APKEasyTool.Forms;
 using APKEasyTool.Utils;
 using System;
@@ -78,10 +78,8 @@ namespace APKEasyTool
                 flag += " --no-assets";
             if (!v3 && !String.IsNullOrEmpty(main.decodeApiLvl.Text))
                 flag += " -api " + main.decodeApiLvl.Text;
-            // Apktool 3 decodes only the main classes*.dex by default; -a decodes everything.
-            if (v3 && !main.decOnlyMainClassesChkBox.Checked)
-                flag += " -a";
-            else if (!v3 && main.decOnlyMainClassesChkBox.Checked)
+            // Apktool 3 decodes only the main classes*.dex, which rebuilds most reliably.
+            if (!v3 && main.decOnlyMainClassesChkBox.Checked)
                 flag += " --only-main-classes";
             if (main.useTagChkBox.Checked)
                 flag += " -t \"" + main.tagTxtBox.Text + "\"";
@@ -317,7 +315,7 @@ namespace APKEasyTool
             if (main.zipFcheckBox.Checked)
                 flag += " -f";
             if (main.zipPcheckBox.Checked)
-                flag += " -p";
+                flag += " -P 16"; // 16 KB pages (Android 15+ devices); also valid on 4 KB devices
             if (main.zipZcheckBox.Checked)
                 flag += " -z";
             if (main.zipVcheckBox.Checked)
@@ -381,7 +379,7 @@ namespace APKEasyTool
             if (main.zipFcheckBox.Checked)
                 flag += " -f";
             if (main.zipPcheckBox.Checked)
-                flag += " -p";
+                flag += " -P 16"; // 16 KB pages (Android 15+ devices); also valid on 4 KB devices
             if (main.zipZcheckBox.Checked)
                 flag += " -z";
             if (main.zipVcheckBox.Checked)

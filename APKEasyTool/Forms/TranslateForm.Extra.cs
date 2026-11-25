@@ -296,6 +296,7 @@ namespace APKEasyTool
             currentPkgLbl.Text = pkg;
             newPkgBox.Text = pkg;
             ScanAds();
+            ScanFonts();
         }
 
         void ChooseIcon_Click(object sender, EventArgs e)

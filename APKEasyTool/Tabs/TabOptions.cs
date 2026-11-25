@@ -35,7 +35,7 @@ namespace APKEasyTool
             try
             {
                 Variables.Apktool = "\"" + Variables.RealPath("Apktool\\" + main.apkToolComboBox.Text) + "\"";
-                //Vars.apkvLbl.Text = Vars.apkToolComboBox.Text;
+                main.UpdateApktoolUi();
 
                 await Task.Factory.StartNew(() =>
                 {

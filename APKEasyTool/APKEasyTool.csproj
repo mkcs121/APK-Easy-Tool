@@ -339,6 +339,10 @@
     <Compile Include="Utils\JavaCheck.cs" />
     <Compile Include="Utils\TaskBarJumpList.cs" />
     <Compile Include="Forms\MainClass.cs" />
+    <Compile Include="Forms\TranslateForm.Fonts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utils\FontTools.cs" />
     <Compile Include="Forms\TranslateForm.Ads.cs">
       <SubType>Form</SubType>
     </Compile>

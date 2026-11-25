@@ -181,6 +181,9 @@ namespace APKEasyTool
             var p3 = new TabPage("Remove ads") { Padding = new Padding(6) };
             p3.Controls.Add(BuildAdsPage());
             tabs.TabPages.Add(p3);
+            var p4 = new TabPage("Fonts") { Padding = new Padding(6) };
+            p4.Controls.Add(BuildFontsPage());
+            tabs.TabPages.Add(p4);
             root.Controls.Add(tabs, 0, 2);
 
             // Bottom buttons

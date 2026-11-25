@@ -245,6 +245,17 @@ namespace APKEasyTool
             #endregion
         }
 
+        // Apktool 3 ignores the API level options and always uses aapt2: hide/disable what does nothing.
+        internal void UpdateApktoolUi()
+        {
+            bool v3 = Apktool.IsApktool3OrNewer();
+            label96.Visible = decodeApiLvl.Visible = !v3;
+            adad.Visible = rebuildApiLvl.Visible = !v3;
+            chkBoxUseAapt2.Enabled = !v3;
+            decForceManifestChkBox.Enabled = !v3;
+            decOnlyMainClassesChkBox.Enabled = !v3;
+        }
+
         // Created in code (not in the designer) so MainForm.resx stays untouched.
         // Sits in the empty bottom-right cell of the Main tab, under "Rebuild API level".
         private void AddTranslateButton()

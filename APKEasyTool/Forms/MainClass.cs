@@ -327,6 +327,31 @@ namespace APKEasyTool
             Variables.InsCount = count.ToString();
         }
 
+        // Settings that work for modding current apps. Applied on a fresh install and once to
+        // configs from v1.61 or older (whose defaults left the APK unsigned, kept the original
+        // manifest with "Keep original signature", and didn't page-align native libraries).
+        private void ApplyRecommendedDefaults()
+        {
+            main.decFcheckBox.Checked = true;       // overwrite the decompile folder
+            main.comFcheckBox.Checked = true;       // always rebuild everything
+            main.comCcheckBox.Checked = false;      // --copy-original would throw away manifest edits
+            main.zipAfterSignChkBox.Checked = true; // zipalign, then sign
+            main.signApkCheckBox.Checked = true;
+            main.zipFcheckBox.Checked = true;
+            main.zipPcheckBox.Checked = true;       // page-align .so (16 KB, see Apktool.ZipAlign)
+        }
+
+        // The signing key path is absolute; after moving or updating the portable folder it may point
+        // to a folder that no longer exists. Fall back to the bundled test key.
+        private void EnsureSigningKey()
+        {
+            if (!File.Exists(main.pk8FileTxtBox.Text) || !File.Exists(main.pemFileTxtBox.Text))
+            {
+                main.pk8FileTxtBox.Text = Variables.RealPath("Resources\\apkeasytool.pk8");
+                main.pemFileTxtBox.Text = Variables.RealPath("Resources\\apkeasytool.pem");
+            }
+        }
+
         //Load Config
         private void LoadConfig()
         {
@@ -422,12 +447,20 @@ namespace APKEasyTool
 
 
                         read.Close();
+                        if (info.ConfigVersion < 3)
+                            ApplyRecommendedDefaults();
+                    }
+                    else
+                    {
+                        ApplyRecommendedDefaults();
                     }
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.ToString());
                 }
+                EnsureSigningKey();
+                main.UpdateApktoolUi();
 
                 try
                 {
@@ -505,7 +538,7 @@ namespace APKEasyTool
                 info.FileNameDexOdexOat = main.baksNameTxtBox.Text;
                 info.FileNameSmali = main.smaliNameTxtBox.Text;
                 info.DropDownApkTool = main.apkToolComboBox.Text;
-                info.ConfigVersion = 2;
+                info.ConfigVersion = 3;
                 // info.DropDownCmdMode = main.cmdModeChkBox.Text;
                 info.DwordX = main.Location.X;
                 info.DwordY = main.Location.Y;
