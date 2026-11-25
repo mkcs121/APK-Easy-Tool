@@ -30,7 +30,7 @@ namespace APKEasyTool
             main = Main;
         }
 
-        static string GetXmx()
+        internal static string GetXmx()
         {
             if (main.useJaxaXmxChkBox.Checked)
                 return "-Xmx" + main.javaHeapSizeNum.Text + "m ";
@@ -48,7 +48,7 @@ namespace APKEasyTool
             return !String.IsNullOrEmpty(Variables.ApkToolVer) && Regex.IsMatch(Variables.ApkToolVer.Trim(), @"^([3-9]|\d{2,})\.");
         }
 
-        static string GetJavaPath()
+        internal static string GetJavaPath()
         {
             if (main.useExtJava.Checked)
                 return "\"" + main.extJavaTxtBox.Text + "\"";

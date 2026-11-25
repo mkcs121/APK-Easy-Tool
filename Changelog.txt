@@ -1,3 +1,9 @@
+v1.64 (unreleased)
+- Split APKs (.apks/.xapk/.apkm): dropping or browsing one merges it into a single APK (APKEditor 1.4.9 by REAndroid, Apache-2.0) before Decompile
+- "Split APK" button: merge into an installable (zipaligned + signed) APK, or install all parts with adb install-multiple and copy XAPK OBB data
+
+-------------------------------------------------
+
 v1.63 (2026-11-25)
 - Fonts tab: lists font files and the fonts text styles use; replace one/all font files or set an app font (theme + text styles + layouts), with Restore
 - Recommended defaults, applied once to old configs: sign + zipalign after compile, no "Keep original signature" (it dropped manifest edits), 16 KB page alignment for native libs

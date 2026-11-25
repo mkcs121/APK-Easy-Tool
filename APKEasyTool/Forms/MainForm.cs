@@ -66,14 +66,14 @@ namespace APKEasyTool
                 if (attr.HasFlag(FileAttributes.Directory))
                     e.CheckDragEnter();
                 else
-                    e.CheckDragEnter(".apk", ".jar");
+                    e.CheckDragEnter(".apk", ".jar", ".apks", ".xapk", ".apkm");
             });
             tabMain.DragOver += new DragEventHandler((sender, e) => {
                 string[] files = e.GetFilesDrop();
                 FileAttributes attr = File.GetAttributes(files[0]);
                 if (attr.HasFlag(FileAttributes.Directory))
                     tabMain.BackColor = Color.PowderBlue;
-                else if (e.CheckDragOver(".apk", ".jar"))
+                else if (e.CheckDragOver(".apk", ".jar", ".apks", ".xapk", ".apkm"))
                     tabMain.BackColor = Color.PowderBlue;
             });
 
@@ -251,6 +251,8 @@ namespace APKEasyTool
             bool v3 = Apktool.IsApktool3OrNewer();
             label96.Visible = decodeApiLvl.Visible = !v3;
             adad.Visible = rebuildApiLvl.Visible = !v3;
+            if (splitBtn != null)
+                splitBtn.Visible = v3; // uses the space of the API level fields
             chkBoxUseAapt2.Enabled = !v3;
             decForceManifestChkBox.Enabled = !v3;
             decOnlyMainClassesChkBox.Enabled = !v3;
@@ -282,6 +284,33 @@ namespace APKEasyTool
             };
             tabMain.Controls.Add(translateBtn);
             translateBtn.BringToFront();
+
+            // Split APK tools, in the place of the (Apktool 2 only) API level fields.
+            splitBtn = new Button
+            {
+                Name = "splitBtn",
+                Text = "Split APK (.apks/.xapk) ...",
+                Font = openZipApk.Font,
+                Location = new Point(rebuildApiLvl.Left, label96.Top),
+                Size = translateBtn.Size,
+                UseVisualStyleBackColor = true
+            };
+            toolTip1.SetToolTip(splitBtn, "Merge an .apks/.xapk/.apkm bundle into one APK, or install it on the phone.\nTip: dropping or browsing a bundle merges it automatically before Decompile.");
+            var menu = new ContextMenuStrip();
+            menu.Items.Add("Merge into one installable APK...", null, (s, e) => PickSplit(f => SplitApk.MergeToInstallable(this, f)));
+            menu.Items.Add("Install on phone (all parts + OBB data)...", null, (s, e) => PickSplit(f => SplitApk.Install(this, f)));
+            splitBtn.Click += (sender, e) => menu.Show(splitBtn, new Point(0, splitBtn.Height));
+            tabMain.Controls.Add(splitBtn);
+            splitBtn.BringToFront();
+        }
+
+        Button splitBtn;
+
+        void PickSplit(Func<string, System.Threading.Tasks.Task> action)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog { Filter = SplitApk.DialogFilter })
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                    _ = action(ofd.FileName);
         }
 
         #region MainForm

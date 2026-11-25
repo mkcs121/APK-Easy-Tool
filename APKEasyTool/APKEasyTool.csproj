@@ -343,6 +343,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Utils\FontTools.cs" />
+    <Compile Include="Utils\SplitApk.cs" />
     <Compile Include="Forms\TranslateForm.Ads.cs">
       <SubType>Form</SubType>
     </Compile>

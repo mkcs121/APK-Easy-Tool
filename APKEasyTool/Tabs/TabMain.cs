@@ -436,14 +436,34 @@ namespace APKEasyTool
         internal void selectApk_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog();
-            ofd.Filter = "Android Package (*.apk)|*.apk|JAR file (*.jar)|*.jar";
+            ofd.Filter = "Android Package (*.apk;*.apks;*.xapk;*.apkm)|*.apk;*.apks;*.xapk;*.apkm|JAR file (*.jar)|*.jar|" + SplitApk.DialogFilter;
             ofd.Title = Lang.SEL_FILES_DIAG;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+                if (SplitApk.IsSplit(ofd.FileName))
+                {
+                    _ = OpenSplit(ofd.FileName);
+                    return;
+                }
                 main.decNameTextBox.Text = Path.GetFileNameWithoutExtension(ofd.FileName);
                 main.comNameTextBox.Text = Path.GetFileNameWithoutExtension(ofd.FileName);
                 selectApk(ofd.FileName);
             }
+        }
+
+        // A split bundle is merged first; the merged APK then behaves like any other APK.
+        internal async Task OpenSplit(string file)
+        {
+            string merged = await SplitApk.Merge(main, file);
+            if (merged == null)
+                return;
+            main.pathOfApk.Text = merged;
+            main.decNameTextBox.Text = Path.GetFileNameWithoutExtension(merged);
+            main.comNameTextBox.Text = Path.GetFileNameWithoutExtension(merged);
+            if (main.disHisBox.Checked == false && !main.pathOfApk.Items.Contains(merged))
+                main.pathOfApk.Items.Insert(0, merged);
+            selectApk(merged);
+            Worktype(WorkType.Apk);
         }
 
         internal void selectDecDir_Click(object sender, EventArgs e)
