@@ -1,4 +1,4 @@
-v1.63 (unreleased)
+v1.63 (2026-11-25)
 - Fonts tab: lists font files and the fonts text styles use; replace one/all font files or set an app font (theme + text styles + layouts), with Restore
 - Recommended defaults, applied once to old configs: sign + zipalign after compile, no "Keep original signature" (it dropped manifest edits), 16 KB page alignment for native libs
 - Signing key falls back to the bundled one when the saved path no longer exists
