@@ -142,6 +142,7 @@ namespace APKEasyTool
             launchLbl.Click += new EventHandler((sender, e) => { tabMainInstance.launchLbl_Click(sender, e); });
             selectDecDir.Click += new EventHandler((sender, e) => { tabMainInstance.selectDecDir_Click(sender, e); });
             fullApkInfoBtn.Click += new EventHandler((sender, e) => { ApkInfoForm form = new ApkInfoForm(); form.Show(); });
+            AddTranslateButton();
 
             psPicBox.Click += new EventHandler((sender, e) => { if (pakLbl.Text != "---") Process.Start("https://play.google.com/store/apps/details?id=" + pakLbl.Text); });
             acPicBox.Click += new EventHandler((sender, e) => { if (pakLbl.Text != "---") Process.Start("https://apkcombo.com/a/" + pakLbl.Text); });
@@ -242,6 +243,34 @@ namespace APKEasyTool
             if (_logform != null)
                 _logform.richTextBoxLogsStandalone.ContextMenu = contextMenu;
             #endregion
+        }
+
+        // Created in code (not in the designer) so MainForm.resx stays untouched.
+        // Sits in the empty bottom-right cell of the Main tab, under "Rebuild API level".
+        private void AddTranslateButton()
+        {
+            Button translateBtn = new Button
+            {
+                Name = "translateBtn",
+                Text = "Translate / Rename app",
+                Font = openZipApk.Font,
+                Location = new Point(rebuildApiLvl.Left, openZipApk.Top),
+                Size = new Size(Math.Max(selectApk.Right - rebuildApiLvl.Left, openZipApk.Width), openZipApk.Height),
+                UseVisualStyleBackColor = true
+            };
+            toolTip1.SetToolTip(translateBtn, "Translate the app's texts (e.g. into Persian) and change its name.\nDecompile first, then press Compile after saving.");
+            translateBtn.Click += (sender, e) =>
+            {
+                string dir = "";
+                if (Directory.Exists(pathOfApk.Text) && File.Exists(Path.Combine(pathOfApk.Text, "AndroidManifest.xml")))
+                    dir = pathOfApk.Text;
+                else if (!String.IsNullOrEmpty(pathOfDec.Text) && !String.IsNullOrEmpty(decNameTextBox.Text))
+                    dir = Path.Combine(pathOfDec.Text, decNameTextBox.Text);
+                using (TranslateForm form = new TranslateForm(dir))
+                    form.ShowDialog(this);
+            };
+            tabMain.Controls.Add(translateBtn);
+            translateBtn.BringToFront();
         }
 
         #region MainForm
