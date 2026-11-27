@@ -1,3 +1,10 @@
+v1.66 (2026-11-27)
+- App icons in WebP and adaptive icons (res/mipmap-anydpi-v26/*.xml) are shown; before, only PNG was found ("No icon" for apps like LingQ)
+- Split APK merge ends with a message showing where the APK is, with an option to open its folder
+- Edit app says when the APK is not decompiled yet instead of opening an empty window
+
+-------------------------------------------------
+
 v1.65 (2026-11-27) - fixes from the external review
 - Keystore password: stored with DPAPI (old Base64 value migrated), passed to apksigner as env:, never in the command line or log
 - Cancel stops only the process of the current operation, not every java/adb/zipalign on the PC
