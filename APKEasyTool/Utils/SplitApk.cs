@@ -74,6 +74,13 @@ namespace APKEasyTool
                 main.LogOutput("Ready: " + merged, MainForm.Type.Info);
             else
                 main.LogOutput("Merged, but zipalign/signing failed, so it can't be installed yet: " + merged, MainForm.Type.Error);
+
+            // The log line is easy to miss: say where the file is and offer to show it.
+            string msg = (ok ? "The split APK was merged into one installable APK:" : "The split APK was merged, but zipalign/signing failed (see the log):")
+                + "\n\n" + merged + "\n\nOpen the folder?";
+            if (System.Windows.Forms.MessageBox.Show(main, msg, Program.Name, System.Windows.Forms.MessageBoxButtons.YesNo,
+                    ok ? System.Windows.Forms.MessageBoxIcon.Information : System.Windows.Forms.MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.Yes)
+                System.Diagnostics.Process.Start("explorer.exe", "/select,\"" + merged + "\"");
             return ok;
         }
 
