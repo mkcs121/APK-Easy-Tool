@@ -1,4 +1,4 @@
-v1.65 (unreleased) - fixes from the external review
+v1.65 (2026-11-27) - fixes from the external review
 - Keystore password: stored with DPAPI (old Base64 value migrated), passed to apksigner as env:, never in the command line or log
 - Cancel stops only the process of the current operation, not every java/adb/zipalign on the PC
 - Sign/ZipAlign work on a temporary file, sign is verified with apksigner verify, the output is replaced only on success; install uses the signed file

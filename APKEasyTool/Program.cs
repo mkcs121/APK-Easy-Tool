@@ -15,7 +15,7 @@ namespace APKEasyTool
 
         public static readonly string Name = "APK Easy Tool";
 
-        public static readonly string Version = "1.64";
+        public static readonly string Version = "1.65";
 
 
         [DllImport("Shcore.dll")]
