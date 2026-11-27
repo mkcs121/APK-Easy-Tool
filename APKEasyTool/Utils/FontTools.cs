@@ -122,9 +122,32 @@ namespace APKEasyTool
         /// <summary>Overwrites one font file with another font (file name stays, so the app still finds it).</summary>
         public static void ReplaceFont(string projectDir, string fontRelPath, string newFont)
         {
+            if (!IsFontFile(newFont))
+                throw new InvalidDataException("\"" + Path.GetFileName(newFont) + "\" is not a TTF/OTF font.");
             string target = Path.Combine(projectDir, fontRelPath.Replace('/', '\\'));
             Backup(projectDir, target);
-            File.Copy(newFont, target, true);
+            string temp = target + ".copying";
+            File.Copy(newFont, temp, true);
+            File.Copy(temp, target, true);
+            File.Delete(temp);
+        }
+
+        // TrueType (00 01 00 00 / "true"), OpenType CFF ("OTTO") or a collection ("ttcf").
+        public static bool IsFontFile(string file)
+        {
+            try
+            {
+                byte[] head = new byte[4];
+                using (var fs = File.OpenRead(file))
+                    if (fs.Read(head, 0, 4) != 4)
+                        return false;
+                string tag = Encoding.ASCII.GetString(head);
+                return (head[0] == 0 && head[1] == 1 && head[2] == 0 && head[3] == 0) || tag == "OTTO" || tag == "true" || tag == "ttcf";
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public class DefaultFontResult
@@ -141,10 +164,17 @@ namespace APKEasyTool
             var result = new DefaultFontResult();
             string fontDir = Path.Combine(projectDir, "res", "font");
             Directory.CreateDirectory(fontDir);
-            foreach (string old in Directory.GetFiles(fontDir, DefaultFontName + ".*"))
-                File.Delete(old);
+            if (!IsFontFile(newFont))
+                throw new InvalidDataException("\"" + Path.GetFileName(newFont) + "\" is not a TTF/OTF font.");
+            // Copy next to the target first; the previous font is removed only after the copy worked,
+            // so a failed copy leaves the app font (and the XML that points at it) intact.
             string ext = Path.GetExtension(newFont).ToLowerInvariant() == ".otf" ? ".otf" : ".ttf";
-            File.Copy(newFont, Path.Combine(fontDir, DefaultFontName + ext), true);
+            string temp = Path.Combine(fontDir, DefaultFontName + ".copying");
+            File.Copy(newFont, temp, true);
+            foreach (string old in Directory.GetFiles(fontDir, DefaultFontName + ".*"))
+                if (!old.Equals(temp, StringComparison.OrdinalIgnoreCase))
+                    File.Delete(old);
+            File.Move(temp, Path.Combine(fontDir, DefaultFontName + ext));
             string fontRef = "@font/" + DefaultFontName;
 
             var strings = ReadDefaultStrings(projectDir);

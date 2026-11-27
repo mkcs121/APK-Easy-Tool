@@ -60,20 +60,54 @@ namespace APKEasyTool
         }
 
         /// <summary>Merges, then zipaligns and signs (per the options), so the result installs directly.</summary>
-        public static async Task MergeToInstallable(MainForm main, string input)
+        public static async Task<bool> MergeToInstallable(MainForm main, string input)
         {
             string merged = await Merge(main, input);
             if (merged == null)
-                return;
+                return false;
+            bool ok = true;
             if (main.zipAfterSignChkBox.Checked)
-                await Apktool.ZipAlign(merged, merged); // signs afterwards when "Sign APK after compile" is on
+                ok = await Apktool.ZipAlign(merged, merged); // signs afterwards when "Sign APK after compile" is on
             else if (main.signApkCheckBox.Checked)
-                await Apktool.Sign(merged, merged);
-            main.LogOutput("Ready: " + merged, MainForm.Type.Info);
+                ok = await Apktool.Sign(merged, merged);
+            if (ok)
+                main.LogOutput("Ready: " + merged, MainForm.Type.Info);
+            else
+                main.LogOutput("Merged, but zipalign/signing failed, so it can't be installed yet: " + merged, MainForm.Type.Error);
+            return ok;
+        }
+
+        static readonly System.Text.RegularExpressions.Regex PackageName =
+            new System.Text.RegularExpressions.Regex(@"^[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)+$");
+
+        // Where an archive entry may be extracted, or null when the entry is not wanted / not safe.
+        // Only top-level *.apk files and Android/obb/<package>/<name>.obb are accepted, and the final
+        // path must stay inside the temporary folder (no "..", drive letters or absolute names).
+        static string SafeDestination(string tempRoot, string entryName, out string obbPackage)
+        {
+            obbPackage = null;
+            string name = entryName.Replace('\\', '/');
+            string[] parts = name.Split('/');
+            bool apk = parts.Length == 1 && name.EndsWith(".apk", StringComparison.OrdinalIgnoreCase);
+            bool obb = parts.Length == 4 && parts[0].Equals("Android", StringComparison.OrdinalIgnoreCase)
+                && parts[1].Equals("obb", StringComparison.OrdinalIgnoreCase)
+                && PackageName.IsMatch(parts[2]) && parts[3].EndsWith(".obb", StringComparison.OrdinalIgnoreCase);
+            if (!apk && !obb)
+                return null;
+            foreach (string part in parts)
+                if (part == "" || part == "." || part == ".." || part.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                    throw new InvalidDataException("Unsafe file name inside the bundle: " + entryName);
+            string root = Path.GetFullPath(tempRoot).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            string dest = Path.GetFullPath(Path.Combine(root, name.Replace('/', Path.DirectorySeparatorChar)));
+            if (!dest.StartsWith(root, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("Unsafe file name inside the bundle: " + entryName);
+            if (obb)
+                obbPackage = parts[2];
+            return dest;
         }
 
         /// <summary>Installs every APK in the bundle with "adb install-multiple" and copies OBB data.</summary>
-        public static async Task Install(MainForm main, string input)
+        public static async Task<bool> Install(MainForm main, string input)
         {
             string temp = Path.Combine(Path.GetTempPath(), "aet_split_" + Guid.NewGuid().ToString("N"));
             Apktool.processType = ProcessType.Adb;
@@ -86,32 +120,42 @@ namespace APKEasyTool
                 var obbs = new List<KeyValuePair<string, string>>(); // local file -> package
                 await Task.Factory.StartNew(() =>
                 {
+                    var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                     using (ZipArchive zip = ZipFile.OpenRead(input))
+                    {
+                        // Check every entry before writing anything.
+                        var plan = new List<KeyValuePair<ZipArchiveEntry, string>>();
+                        var packages = new Dictionary<string, string>();
                         foreach (ZipArchiveEntry e in zip.Entries)
                         {
                             if (e.FullName.EndsWith("/") || e.Length == 0)
                                 continue;
-                            string name = e.FullName.Replace('\\', '/');
-                            bool apk = name.EndsWith(".apk", StringComparison.OrdinalIgnoreCase) && !name.Contains("/");
-                            string[] parts = name.Split('/');
-                            // XAPK: Android/obb/<package>/<file>.obb
-                            bool obb = parts.Length == 4 && parts[0].Equals("Android", StringComparison.OrdinalIgnoreCase)
-                                && parts[1].Equals("obb", StringComparison.OrdinalIgnoreCase);
-                            if (!apk && !obb)
+                            string pkg;
+                            string dest = SafeDestination(temp, e.FullName, out pkg);
+                            if (dest == null)
                                 continue;
-                            string dest = Path.Combine(temp, name.Replace('/', Path.DirectorySeparatorChar));
-                            Directory.CreateDirectory(Path.GetDirectoryName(dest));
-                            e.ExtractToFile(dest, true);
-                            if (apk)
-                                apks.Add(dest);
-                            else
-                                obbs.Add(new KeyValuePair<string, string>(dest, parts[2]));
+                            if (!seen.Add(dest))
+                                throw new InvalidDataException("The bundle contains the same file twice: " + e.FullName);
+                            plan.Add(new KeyValuePair<ZipArchiveEntry, string>(e, dest));
+                            if (pkg != null)
+                                packages[dest] = pkg;
                         }
+                        foreach (var item in plan)
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(item.Value));
+                            item.Key.ExtractToFile(item.Value, true);
+                            string pkg;
+                            if (packages.TryGetValue(item.Value, out pkg))
+                                obbs.Add(new KeyValuePair<string, string>(item.Value, pkg));
+                            else
+                                apks.Add(item.Value);
+                        }
+                    }
                 });
                 if (apks.Count == 0)
                 {
                     main.LogOutput("No APK files found inside " + Path.GetFileName(input), MainForm.Type.Error);
-                    return;
+                    return false;
                 }
 
                 string adb = Variables.RealPath("Resources\\adb.exe");
@@ -121,26 +165,36 @@ namespace APKEasyTool
                 if (exitCode != 0)
                 {
                     main.LogOutput("\n" + Lang.INS_FAIL_MBOX, MainForm.Type.Error);
-                    return;
+                    return false;
                 }
+                main.LogOutput("\n" + Lang.INS_SUCCESS_MBOX, MainForm.Type.Info);
 
+                var failed = new List<string>();
                 foreach (var obb in obbs)
                 {
                     string remoteDir = "/sdcard/Android/obb/" + obb.Value;
-                    int code = 0;
+                    int mkdirCode = 0, pushCode = 0;
                     await Task.Factory.StartNew(() =>
                     {
-                        CMD.StartProgram(adb, "shell mkdir -p \"" + remoteDir + "\"", true, out code);
-                        CMD.StartProgram(adb, "push \"" + obb.Key + "\" \"" + remoteDir + "/\"", true, out code);
+                        CMD.StartProgram(adb, "shell mkdir -p \"" + remoteDir + "\"", true, out mkdirCode);
+                        if (mkdirCode == 0)
+                            CMD.StartProgram(adb, "push \"" + obb.Key + "\" \"" + remoteDir + "/\"", true, out pushCode);
                     });
-                    if (code != 0)
-                        main.LogOutput("Copying OBB data failed: " + Path.GetFileName(obb.Key), MainForm.Type.Error);
+                    if (mkdirCode != 0 || pushCode != 0)
+                        failed.Add(Path.GetFileName(obb.Key) + (mkdirCode != 0 ? " (could not create " + remoteDir + ")" : ""));
                 }
-                main.LogOutput("\n" + Lang.INS_SUCCESS_MBOX + (obbs.Count > 0 ? " (" + obbs.Count + " OBB file(s) copied)" : ""), MainForm.Type.Info);
+                if (obbs.Count > 0)
+                {
+                    int copied = obbs.Count - failed.Count;
+                    main.LogOutput("OBB data: " + copied + " of " + obbs.Count + " file(s) copied" +
+                        (failed.Count > 0 ? ". Failed: " + String.Join(", ", failed) : "."), failed.Count > 0 ? MainForm.Type.Error : MainForm.Type.Info);
+                }
+                return failed.Count == 0;
             }
             catch (Exception ex)
             {
                 main.LogOutput("Installing failed: " + ex.Message, MainForm.Type.Error);
+                return false;
             }
             finally
             {

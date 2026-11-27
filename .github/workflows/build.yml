@@ -34,6 +34,10 @@ jobs:
           name: apkeditor
           path: Resources/Resources/APKEditor.jar
 
+      # JSON/web translation, fonts and password storage rewrite user files: test them before building.
+      - name: Regression tests
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File tests/regression.ps1
+
       - name: Restore NuGet packages
         run: nuget restore APKEasyTool.sln
 

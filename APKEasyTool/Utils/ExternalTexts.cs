@@ -60,9 +60,18 @@ namespace APKEasyTool
             File.WriteAllText(file, text, Utf8NoBom);
         }
 
-        public static Dictionary<string, string> LoadSidecar(string projectDir, bool web)
+        // One translation memory per language: aet_texts_json.fa.json, aet_texts_web.fa.json ...
+        static string SidecarPath(string projectDir, bool web, string lang)
         {
-            string f = Path.Combine(projectDir, web ? WebSidecar : JsonSidecar);
+            string name = web ? WebSidecar : JsonSidecar;
+            return Path.Combine(projectDir, Path.GetFileNameWithoutExtension(name) + "." + lang + ".json");
+        }
+
+        public static Dictionary<string, string> LoadSidecar(string projectDir, bool web, string lang)
+        {
+            string f = SidecarPath(projectDir, web, lang);
+            if (!File.Exists(f))
+                f = Path.Combine(projectDir, web ? WebSidecar : JsonSidecar); // v1.64 kept one file for all languages
             var map = new Dictionary<string, string>();
             if (File.Exists(f))
                 try
@@ -74,9 +83,9 @@ namespace APKEasyTool
             return map;
         }
 
-        static void SaveSidecar(string projectDir, bool web, Dictionary<string, string> map)
+        static void SaveSidecar(string projectDir, bool web, string lang, Dictionary<string, string> map)
         {
-            File.WriteAllText(Path.Combine(projectDir, web ? WebSidecar : JsonSidecar), Ser().Serialize(map), Utf8NoBom);
+            File.WriteAllText(SidecarPath(projectDir, web, lang), Ser().Serialize(map), Utf8NoBom);
         }
 
         #region JSON language files
@@ -163,7 +172,7 @@ namespace APKEasyTool
         /// false: write a new file for the language (en.json -> fa.json), used only if the app looks for it.</param>
         public static int SaveJson(string projectDir, Dictionary<string, string> translations, bool replace, string lang)
         {
-            SaveSidecar(projectDir, false, translations.Where(kv => kv.Value != "").ToDictionary(kv => kv.Key, kv => kv.Value));
+            SaveSidecar(projectDir, false, lang, translations.Where(kv => kv.Value != "").ToDictionary(kv => kv.Key, kv => kv.Value));
             int files = 0;
             foreach (string file in FindJsonLanguageFiles(projectDir))
             {
@@ -186,12 +195,24 @@ namespace APKEasyTool
                     // the English file stays original
                     string backup = Path.Combine(projectDir, JsonBackupDir, file.Substring(projectDir.Length + 1));
                     if (File.Exists(backup)) { File.Copy(backup, file, true); }
-                    string name = LangToken.Replace(Path.GetFileName(file), lang.Split('-')[0], 1);
+                    string name = NewLanguageFileName(Path.GetFileName(file), lang);
                     File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), name), json, Utf8NoBom);
                 }
                 files++;
             }
             return files;
+        }
+
+        /// <summary>en.json -> fa.json, com.en.json -> com.pt-BR.json (Android "pt-rBR" -> "pt-BR").
+        /// Throws when the result would overwrite the source file.</summary>
+        public static string NewLanguageFileName(string sourceFileName, string lang)
+        {
+            string code = Regex.Replace(lang, "-r([A-Za-z]{2})$", "-$1");
+            string name = LangToken.Replace(sourceFileName, code, 1);
+            if (name.Equals(sourceFileName, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("The new language \"" + lang + "\" would overwrite the source file " + sourceFileName +
+                    ". Choose another language, or \"replace the app's own texts\".");
+            return name;
         }
 
         // JavaScriptSerializer writes everything on one line and escapes non-ASCII; make it readable.
@@ -323,6 +344,49 @@ namespace APKEasyTool
             return letters * 2 >= s.Length;
         }
 
+        // Methods whose string arguments are names/keys, not text shown to the user.
+        static readonly Regex KeyApiBefore = new Regex(
+            @"(\.(includes|indexOf|lastIndexOf|startsWith|endsWith|getItem|setItem|removeItem|getAttribute|setAttribute|hasAttribute|" +
+            @"removeAttribute|emit|\$emit|on|off|once|addEventListener|removeEventListener|querySelector|querySelectorAll|" +
+            @"getElementById|getElementsByClassName|createElement|commit|dispatch|get|set|has|delete|hasOwnProperty|" +
+            @"matchMedia|postMessage|getPlugin|registerPlugin|addListener|send|call|invoke)|\brequire|\bimport|\bdefine)\s*\(\s*$");
+
+        /// <summary>
+        /// True when the literal at [start, end) is part of the program's logic rather than shown text:
+        /// an object key ({"x": or ,"x":), a property name (o["x"]), a comparison (== "x", "x" ===),
+        /// a case label, the left side of "in", or an argument of a key-taking API (getItem("x") ...).
+        /// Such literals are neither listed nor replaced, so translating a text never changes a key
+        /// that happens to have the same words.
+        /// </summary>
+        public static bool IsCodeUse(string content, int start, int end)
+        {
+            int p = start - 1;
+            while (p >= 0 && char.IsWhiteSpace(content[p])) p--;
+            int n = end;
+            while (n < content.Length && char.IsWhiteSpace(content[n])) n++;
+            char prev = p >= 0 ? content[p] : '\0';
+            char next = n < content.Length ? content[n] : '\0';
+
+            if (next == ':' && (prev == '{' || prev == ','))
+                return true; // object key
+            if (prev == '[' && next == ']')
+                return true; // o["key"]
+            if (next == '=' && n + 1 < content.Length && content[n + 1] == '=')
+                return true; // "x" == / ===
+            if (next == '!' && n + 1 < content.Length && content[n + 1] == '=')
+                return true; // "x" != / !==
+            if (prev == '=' && p >= 1 && (content[p - 1] == '=' || content[p - 1] == '!'))
+                return true; // == "x", != "x", === "x"
+            string before = content.Substring(Math.Max(0, p - 60), p + 1 - Math.Max(0, p - 60));
+            if (Regex.IsMatch(before, @"\bcase$"))
+                return true; // case "x":
+            if (n + 2 < content.Length && content[n] == 'i' && content[n + 1] == 'n' && !char.IsLetterOrDigit(content[n + 2]) && content[n + 2] != '_')
+                return true; // "x" in obj
+            if (KeyApiBefore.IsMatch(content.Substring(Math.Max(0, start - 60), start - Math.Max(0, start - 60))))
+                return true; // getItem("x"), $emit("x") ...
+            return false;
+        }
+
         static string UnescapeJs(string body)
         {
             return Regex.Replace(body, @"\\(u\{?[0-9a-fA-F]{4,5}\}?|x[0-9a-fA-F]{2}|.)", m =>
@@ -387,6 +451,7 @@ namespace APKEasyTool
                 char quote = m.Value[0];
                 string t = UnescapeJs(m.Value.Substring(1, m.Value.Length - 2));
                 if (!IsUiText(t, singleWords)) return m.Value;
+                if (IsCodeUse(content, m.Index, m.Index + m.Length)) return m.Value;
                 if (visit != null) visit(t);
                 string tr;
                 if (map != null && map.TryGetValue(t, out tr) && tr != "")
@@ -419,9 +484,10 @@ namespace APKEasyTool
         }
 
         /// <summary>Rebuilds every web file from its original with the translations (text -> translation).</summary>
-        public static int SaveWeb(string projectDir, Dictionary<string, string> translations, bool singleWords, string rtlLang)
+        public static int SaveWeb(string projectDir, Dictionary<string, string> translations, bool singleWords, string lang, bool rtl)
         {
-            SaveSidecar(projectDir, true, translations.Where(kv => kv.Value != "").ToDictionary(kv => kv.Key, kv => kv.Value));
+            string rtlLang = rtl ? lang : null;
+            SaveSidecar(projectDir, true, lang, translations.Where(kv => kv.Value != "").ToDictionary(kv => kv.Key, kv => kv.Value));
             int changed = 0;
             foreach (string file in WebFiles(projectDir))
             {

@@ -14,6 +14,7 @@ namespace APKEasyTool
     public partial class TranslateForm
     {
         string settingsFile;
+        string lastSaveError; // message of the last failed save (auto-save or Save)
         CancellationTokenSource cts;
 
         readonly Button autoBtn = new Button();
@@ -141,6 +142,7 @@ namespace APKEasyTool
             {
                 done = p.Done;
                 failed = p.Failed;
+                string saveNote = "";
                 if (p.Translated != null && p.Translated.Count > 0)
                 {
                     foreach (var kv in p.Translated)
@@ -149,33 +151,32 @@ namespace APKEasyTool
                         if (byName.TryGetValue(kv.Key, out row) && (!(row["Translation"] is string) || ((string)row["Translation"]).Trim() == ""))
                             row["Translation"] = kv.Value;
                     }
-                    SaveStrings(true);
+                    saveNote = SaveStrings(true) ? " (saved)" : " (NOT saved: " + lastSaveError + ")";
                 }
                 progressBar.Value = Math.Min(progressBar.Maximum, p.Done + p.Failed);
-                SetStatus(p.Status ?? ("Translated " + p.Done + " of " + p.Total + (p.Failed > 0 ? ", " + p.Failed + " failed" : "") + " (saved)"));
+                SetStatus(p.Status ?? ("Translated " + p.Done + " of " + p.Total + (p.Failed > 0 ? ", " + p.Failed + " failed" : "") + saveNote));
                 UpdateCount();
             });
 
-            string summary = null;
+            // Progress reports are posted to this UI thread before the awaited task completes,
+            // so every received translation is in the table when the final save below runs.
+            string outcome;
             try
             {
                 await new AiTranslator(settings).TranslateAll(items, loadedLang, progress, cts.Token);
-                await Task.Delay(200); // let the last progress report reach the UI
-                summary = "Done: " + done + " of " + items.Count + " texts translated and saved." +
-                    (items.Count - done > 0 ? "\n" + (items.Count - done) + " could not be translated; press Auto-translate again to retry them." : "") +
-                    "\n\nCheck the result, then press Compile in the main window.";
+                outcome = "done";
             }
             catch (OperationCanceledException)
             {
-                SetStatus("Stopped. " + done + " translated so far (saved).");
+                outcome = "stopped";
             }
             catch (AiFatalException ex)
             {
-                summary = ex.Message;
+                outcome = ex.Message;
             }
             catch (Exception ex)
             {
-                summary = "Auto-translate stopped:\n" + ex.Message + "\n\n" + done + " texts were translated and saved. Press Auto-translate again to continue.";
+                outcome = "Auto-translate stopped:\n" + ex.Message;
             }
             finally
             {
@@ -186,18 +187,31 @@ namespace APKEasyTool
                 autoBtn.Enabled = true;
                 saveBtn.Enabled = true;
                 progressBar.Visible = false;
-                if (!IsDisposed)
-                {
-                    SaveStrings(true);
-                    UpdateCount();
-                    grid.Invalidate();
-                }
             }
-            if (summary != null && !IsDisposed)
+            if (IsDisposed)
+                return;
+
+            bool saved = SaveStrings(true);
+            UpdateCount();
+            grid.Invalidate();
+            string saveLine = saved
+                ? done + " translated texts are saved."
+                : "Saving FAILED: " + lastSaveError + "\nThe " + done + " translations are still in the table: fix the problem and press Save.";
+
+            if (outcome == "stopped")
             {
-                SetStatus("");
-                MessageBox.Show(this, summary, Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SetStatus("Stopped. " + saveLine.Replace("\n", " "));
+                if (!saved)
+                    MessageBox.Show(this, saveLine, Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+            string summary = outcome == "done"
+                ? "Done: " + done + " of " + items.Count + " texts translated.\n" + saveLine +
+                  (items.Count - done > 0 ? "\n" + (items.Count - done) + " could not be translated; press Auto-translate again to retry them." : "") +
+                  (saved ? "\n\nCheck the result, then press Compile in the main window." : "")
+                : outcome + "\n\n" + saveLine + (saved ? " Press Auto-translate again to continue." : "");
+            SetStatus("");
+            MessageBox.Show(this, summary, Program.Name, MessageBoxButtons.OK, saved ? MessageBoxIcon.Information : MessageBoxIcon.Error);
         }
         #endregion
 

@@ -828,33 +828,9 @@ namespace APKEasyTool
             DialogResult dialogResult = MessageBox.Show(Lang.CANCEL_MBOX, Program.Name, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
             {
-                switch (Apktool.processType)
-                {
-                    case ProcessType.SevenZip:
-                        foreach (var process in Process.GetProcessesByName("7z"))
-                        {
-                            process.Kill();
-                        }
-                        break;
-                    case ProcessType.Java:
-                        foreach (var process in Process.GetProcessesByName("java"))
-                        {
-                            process.Kill();
-                        }
-                        break;
-                    case ProcessType.Adb:
-                        foreach (var process in Process.GetProcessesByName("adb"))
-                        {
-                            process.Kill();
-                        }
-                        break;
-                    case ProcessType.Zipalign:
-                        foreach (var process in Process.GetProcessesByName("zipalign"))
-                        {
-                            process.Kill();
-                        }
-                        break;
-                }
+                // Only the process this operation started; other java/adb processes (Android Studio,
+                // another tool) keep running.
+                CMD.CancelCurrent();
 
                 main.LogOutput(Lang.CANCELLED_LOG, MainForm.Type.Info);
                 main.tMain.Enabled = true;

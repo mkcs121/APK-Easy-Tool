@@ -133,7 +133,11 @@
 
         public bool IsReset { get; set; }
 
+        // Old: Base64 only (readable). Read once for migration, then written empty.
         public string PassJks { get; set; }
+
+        // Keystore password protected with DPAPI for the current Windows user.
+        public string PassJksProtected { get; set; }
 
         public string DecApiLvl { get; set; }
 

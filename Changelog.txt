@@ -1,3 +1,18 @@
+v1.65 (unreleased) - fixes from the external review
+- Keystore password: stored with DPAPI (old Base64 value migrated), passed to apksigner as env:, never in the command line or log
+- Cancel stops only the process of the current operation, not every java/adb/zipalign on the PC
+- Sign/ZipAlign work on a temporary file, sign is verified with apksigner verify, the output is replaced only on success; install uses the signed file
+- A missing custom signing key stops signing with a message instead of silently using the test key
+- Split APK install: entries checked before extraction (no paths outside the temp folder, valid OBB package/name, no duplicates); OBB result shows copied/failed
+- JSON: new language never overwrites the source file, region kept (pt-rBR -> pt-BR), translation memory per language
+- Web apps: strings used as object keys, in comparisons, case labels, o["x"], "x" in o or as key-API arguments are never changed
+- Auto-translate reports save failures instead of "(saved)"; final save checked
+- Font change copies first and keeps the old font if anything fails; non-font files refused
+- Tool output read without deadlock, timeout from start
+- CI runs tests/regression.ps1 before building
+
+-------------------------------------------------
+
 v1.64 (2026-11-25)
 - Split APKs (.apks/.xapk/.apkm): dropping or browsing one merges it into a single APK (APKEditor 1.4.9 by REAndroid, Apache-2.0) before Decompile
 - "Split APK" button: merge into an installable (zipaligned + signed) APK, or install all parts with adb install-multiple and copy XAPK OBB data

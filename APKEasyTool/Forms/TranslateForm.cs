@@ -624,6 +624,7 @@ namespace APKEasyTool
             }
             catch (Exception ex)
             {
+                lastSaveError = ex.Message;
                 if (silent)
                     SetStatus("Auto-save failed: " + ex.Message);
                 else

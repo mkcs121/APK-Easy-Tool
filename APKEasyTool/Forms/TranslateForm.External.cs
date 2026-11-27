@@ -111,7 +111,7 @@ namespace APKEasyTool
             modeReplaceRadio.Checked = true;
 
             List<ExtText> items = web ? ExternalTexts.LoadWeb(projectDir, singleWordsChk.Checked) : ExternalTexts.LoadJson(projectDir);
-            var saved = ExternalTexts.LoadSidecar(projectDir, web);
+            var saved = ExternalTexts.LoadSidecar(projectDir, web, loadedLang);
             extKeys.Clear();
             table.Rows.Clear();
             int i = 0;
@@ -152,7 +152,7 @@ namespace APKEasyTool
                 if (currentSource == TextSource.Json)
                     ExternalTexts.SaveJson(projectDir, map, modeReplaceRadio.Checked, loadedLang);
                 else
-                    ExternalTexts.SaveWeb(projectDir, map, singleWordsChk.Checked, rtlChk.Checked && rtl ? loadedLang : null);
+                    ExternalTexts.SaveWeb(projectDir, map, singleWordsChk.Checked, loadedLang, rtlChk.Checked && rtl);
                 SaveAppNameOnly();
                 table.AcceptChanges();
                 dirty = false;
@@ -160,6 +160,7 @@ namespace APKEasyTool
             }
             catch (Exception ex)
             {
+                lastSaveError = ex.Message;
                 if (silent)
                     SetStatus("Auto-save failed: " + ex.Message);
                 else

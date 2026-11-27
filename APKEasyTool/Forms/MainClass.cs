@@ -341,14 +341,24 @@ namespace APKEasyTool
             main.zipPcheckBox.Checked = true;       // page-align .so (16 KB, see Apktool.ZipAlign)
         }
 
-        // The signing key path is absolute; after moving or updating the portable folder it may point
-        // to a folder that no longer exists. Fall back to the bundled test key.
+        // The signing key path is absolute, so it breaks when the portable folder is moved or updated.
+        // Only the bundled test key (apkeasytool.pk8/.pem) is re-pointed at this copy. A missing custom
+        // key is NOT replaced: signing with another key would make the APK unable to update the
+        // installed app, so Sign stops with a clear message instead.
         private void EnsureSigningKey()
         {
-            if (!File.Exists(main.pk8FileTxtBox.Text) || !File.Exists(main.pemFileTxtBox.Text))
+            string pk8 = main.pk8FileTxtBox.Text, pem = main.pemFileTxtBox.Text;
+            bool bundled = (pk8 == "" || Path.GetFileName(pk8).Equals("apkeasytool.pk8", StringComparison.OrdinalIgnoreCase))
+                && (pem == "" || Path.GetFileName(pem).Equals("apkeasytool.pem", StringComparison.OrdinalIgnoreCase));
+            if (bundled && (!File.Exists(pk8) || !File.Exists(pem)))
             {
                 main.pk8FileTxtBox.Text = Variables.RealPath("Resources\\apkeasytool.pk8");
                 main.pemFileTxtBox.Text = Variables.RealPath("Resources\\apkeasytool.pem");
+            }
+            else if (!main.useJksCheckBox.Checked && (!File.Exists(pk8) || !File.Exists(pem)))
+            {
+                main.LogOutput("Your signing key was not found:\n" + pk8 + "\n" + pem +
+                    "\nChoose it again in Options > Signer. Signing will stop until then.", MainForm.Type.Warning);
             }
         }
 
@@ -442,8 +452,12 @@ namespace APKEasyTool
                             main.Location = new System.Drawing.Point(formX, formY);
                         }
 
-                        byte[] bytes = Convert.FromBase64String(info.PassJks);
-                        main.jksPass.Text = Encoding.UTF8.GetString(bytes);
+                        main.jksPass.Text = KeystorePassword.Unprotect(info.PassJksProtected);
+                        if (main.jksPass.Text == "" && !String.IsNullOrEmpty(info.PassJks))
+                        {
+                            // migrate the old Base64 value; it is written empty on the next save
+                            try { main.jksPass.Text = Encoding.UTF8.GetString(Convert.FromBase64String(info.PassJks)); } catch { }
+                        }
 
 
                         read.Close();
@@ -580,8 +594,8 @@ namespace APKEasyTool
                 info.v4SigningEnabled = main.v4signComboBox.Text;
                 info.CheckBoxForceManifest = main.decForceManifestChkBox.Checked;
 
-                var enc = Encoding.UTF8.GetBytes(main.jksPass.Text);
-                info.PassJks = Convert.ToBase64String(enc);
+                info.PassJks = "";
+                info.PassJksProtected = KeystorePassword.Protect(main.jksPass.Text);
 
                 XMLSave.SaveData(info, Variables.GetPath() + "config.xml");
 
