@@ -1,4 +1,4 @@
-﻿using APKEasyTool.Enums;
+using APKEasyTool.Enums;
 using APKEasyTool.Forms;
 using APKEasyTool.Utils;
 using System;
@@ -30,7 +30,7 @@ namespace APKEasyTool
             main = Main;
         }
 
-        static string GetXmx()
+        internal static string GetXmx()
         {
             if (main.useJaxaXmxChkBox.Checked)
                 return "-Xmx" + main.javaHeapSizeNum.Text + "m ";
@@ -38,7 +38,17 @@ namespace APKEasyTool
                 return "";
         }
 
-        static string GetJavaPath()
+        // Apktool 3.x renamed or removed several short flags (-b, -k, -m, -c, -d, -nc, -api, --use-aapt2 ...).
+        // Detect the major version from the selected jar name, e.g. "apktool_3.0.3.jar".
+        internal static bool IsApktool3OrNewer()
+        {
+            Match m = Regex.Match(Variables.Apktool ?? "", @"apktool[_\-]?(\d+)\.", RegexOptions.IgnoreCase);
+            if (m.Success)
+                return int.Parse(m.Groups[1].Value) >= 3;
+            return !String.IsNullOrEmpty(Variables.ApkToolVer) && Regex.IsMatch(Variables.ApkToolVer.Trim(), @"^([3-9]|\d{2,})\.");
+        }
+
+        internal static string GetJavaPath()
         {
             if (main.useExtJava.Checked)
                 return "\"" + main.extJavaTxtBox.Text + "\"";
@@ -50,30 +60,32 @@ namespace APKEasyTool
         {
             processType = ProcessType.Java;
 
+            bool v3 = IsApktool3OrNewer();
             string flag = "";
             if (main.decBcheckBox.Checked)
-                flag += " -b";
+                flag += v3 ? " --no-debug-info" : " -b";
             if (main.decFcheckBox.Checked)
                 flag += " -f";
             if (main.decKcheckBox.Checked)
-                flag += " -k";
+                flag += v3 ? " --keep-broken-res" : " -k";
             if (main.decMcheckBox.Checked)
-                flag += " -m";
+                flag += v3 ? " --match-original" : " -m";
             if (main.decRcheckBox.Checked)
                 flag += " -r";
             if (main.decScheckBox.Checked)
                 flag += " -s";
             if (main.decNoAssetsCheckBox.Checked)
                 flag += " --no-assets";
-            if (!String.IsNullOrEmpty(main.decodeApiLvl.Text))
+            if (!v3 && !String.IsNullOrEmpty(main.decodeApiLvl.Text))
                 flag += " -api " + main.decodeApiLvl.Text;
-            if (main.decOnlyMainClassesChkBox.Checked)
+            // Apktool 3 decodes only the main classes*.dex, which rebuilds most reliably.
+            if (!v3 && main.decOnlyMainClassesChkBox.Checked)
                 flag += " --only-main-classes";
             if (main.useTagChkBox.Checked)
                 flag += " -t \"" + main.tagTxtBox.Text + "\"";
             if (!String.IsNullOrEmpty(main.fwDirTxtBox.Text))
                 flag += " -p \"" + main.fwDirTxtBox.Text + "\"";
-            if (main.decForceManifestChkBox.Checked)
+            if (!v3 && main.decForceManifestChkBox.Checked)
                 flag += " --force-manifest";
 
             main.DisableForm();
@@ -115,20 +127,22 @@ namespace APKEasyTool
         {
             processType = ProcessType.Java;
 
+            bool v3 = IsApktool3OrNewer();
             string flag = "";
             //compile
             if (main.comCcheckBox.Checked)
-                flag += " -c";
+                flag += v3 ? " --copy-original" : " -c";
             if (main.comDcheckBox.Checked)
-                flag += " -d";
+                flag += v3 ? " --debuggable" : " -d";
             if (main.comFcheckBox.Checked)
                 flag += " -f";
-            if (main.chkBoxUseAapt2.Checked)
+            // Apktool 3 always uses aapt2 and no longer accepts -api.
+            if (!v3 && main.chkBoxUseAapt2.Checked)
                 flag += " --use-aapt2";
-            if (!String.IsNullOrEmpty(main.rebuildApiLvl.Text))
+            if (!v3 && !String.IsNullOrEmpty(main.rebuildApiLvl.Text))
                 flag += " -api " + main.rebuildApiLvl.Text;
             if (main.comNCcheckBox.Checked)
-                flag += " -nc";
+                flag += v3 ? " --no-crunch" : " -nc";
             if (main.useAaptPathChkBox.Checked)
                 flag += " --aapt \"" + main.useAaptPathTxtBox.Text + "\"";
             if (!String.IsNullOrEmpty(main.fwDirTxtBox.Text))
@@ -181,7 +195,12 @@ namespace APKEasyTool
             main.EnableForm();
         }
 
-        public static async Task Sign(string input, string output)
+        /// <summary>
+        /// Signs input into output. Signs to a temporary file first and verifies it with
+        /// "apksigner verify"; output is replaced only after that, so a failed signing keeps the
+        /// previous output. Returns true on success. Installs output (the signed file) if enabled.
+        /// </summary>
+        public static async Task<bool> Sign(string input, string output)
         {
             processType = ProcessType.Java;
 
@@ -203,61 +222,103 @@ namespace APKEasyTool
             else if (main.v4signComboBox.SelectedIndex == 3)
                 flag += " --v4-signing-enabled only";
 
-            main.DisableForm();
+            // No silent fallback to another key: a different key makes the APK impossible to
+            // install as an update of the previous one.
+            if (main.useJksCheckBox.Checked ? !File.Exists(main.jksFileTxtBox.Text)
+                : !File.Exists(main.pk8FileTxtBox.Text) || !File.Exists(main.pemFileTxtBox.Text))
+            {
+                string which = main.useJksCheckBox.Checked ? main.jksFileTxtBox.Text : main.pk8FileTxtBox.Text + "\n" + main.pemFileTxtBox.Text;
+                main.LogOutput("Signing key not found:\n" + which + "\nChoose it again in Options > Signer.", MainForm.Type.Error);
+                MessageBox.Show(Lang.KEY_NOT_SEL_MBOX + "\n\n" + which, Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
 
+            main.DisableForm();
             main.LogOutput("---------------------------\n");
             main.LogOutput(Lang.SIGN_APK_FILE_NOTICE + " " + Lang.CANCEL_ESC, MainForm.Type.Info);
 
-            string command = null;
+            string temp = TempNextTo(output, "signing");
+            Dictionary<string, string> env = null;
+            string command;
             if (main.useJksCheckBox.Checked)
             {
-                if (main.jksFileTxtBox.Text == "")
-                {
-                    MessageBox.Show(Lang.KEY_NOT_SEL_MBOX, Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
+                // The password goes through an environment variable: never in the command line or the log.
+                env = new Dictionary<string, string> { { "AET_KS_PASS", main.jksPass.Text } };
                 command = GetXmx() + "-jar " + Variables.ApkSignerPath + " --ks \"" + main.jksFileTxtBox.Text +
-                    "\" --ks-pass pass:" + main.jksPass.Text + " " + flag + " --out \"" + output + "\" \"" + input + "\"";
+                    "\" --ks-pass env:AET_KS_PASS " + flag + " --out \"" + temp + "\" \"" + input + "\"";
             }
             else
             {
                 command = GetXmx() + "-jar " + Variables.ApkSignerPath + " --key \"" + main.pk8FileTxtBox.Text +
-                    "\" --cert \"" + main.pemFileTxtBox.Text + "\" " + flag + " --out \"" + output + "\" \"" + input + "\"";
+                    "\" --cert \"" + main.pemFileTxtBox.Text + "\" " + flag + " --out \"" + temp + "\" \"" + input + "\"";
             }
 
-            int exitCode = 0;
+            int exitCode = 0, verifyCode = -1;
             await Task.Factory.StartNew(() =>
             {
-                CMD.StartProgram(GetJavaPath(), command, true, out exitCode);
+                CMD.StartProgram(GetJavaPath(), command, true, env, out exitCode);
+                if (exitCode == 0 && File.Exists(temp))
+                    CMD.StartProgram(GetJavaPath(), GetXmx() + "-jar " + Variables.ApkSignerPath.Replace(" sign ", " verify ") + "\"" + temp + "\"", true, out verifyCode);
             });
 
-            if (exitCode == 0)
+            bool ok = exitCode == 0 && verifyCode == 0 && Publish(temp, output);
+            DeleteQuietly(temp);
+            if (temp.EndsWith(".apk"))
+                DeleteQuietly(temp + ".idsig");
+
+            if (ok)
             {
                 main.LogOutput(Lang.SIGN_SUCCESS_MBOX, MainForm.Type.Info);
+                main.EnableForm();
                 if (main.installApkChkBox.Checked)
-                {
-                    await InstallApk(input);
-                }
-                else
-                {
-                    if (Environment.GetCommandLineArgs().Length > 2)
-                        Environment.Exit(0);
-                }
-            }
-            else
-            {
-                main.LogOutput(Lang.SIGN_FAIL_MBOX, MainForm.Type.Error);
-                main.Log("\n" + Lang.PLEASE_READ_FAQ + "\nhttps://forum.xda-developers.com/t/tool-windows-apk-easy-tool-v1-58-3-dec-2020.3333960/#post-65775601", Color.Yellow);
-
-                if (!MainClass.isSidedLogOpened)
-                    main.tMain.SelectedIndex = 2;
+                    return await InstallApk(output);
+                if (Environment.GetCommandLineArgs().Length > 2)
+                    Environment.Exit(0);
+                return true;
             }
 
+            main.LogOutput(Lang.SIGN_FAIL_MBOX + (exitCode == 0 && verifyCode != 0 ? " (verification failed)" : ""), MainForm.Type.Error);
+            main.Log("\n" + Lang.PLEASE_READ_FAQ + "\nhttps://forum.xda-developers.com/t/tool-windows-apk-easy-tool-v1-58-3-dec-2020.3333960/#post-65775601", Color.Yellow);
+            if (!MainClass.isSidedLogOpened)
+                main.tMain.SelectedIndex = 2;
             main.EnableForm();
+            return false;
         }
 
-        public static async Task InstallApk(string input)
+        // A unique temporary file in the same folder as target, so the final move stays on one disk.
+        static string TempNextTo(string target, string what)
+        {
+            return Path.Combine(Path.GetDirectoryName(target),
+                Path.GetFileNameWithoutExtension(target) + " " + what + " " + Guid.NewGuid().ToString("N").Substring(0, 8) + ".tmp.apk");
+        }
+
+        // Replaces target with the finished temp file. Returns false (and keeps the old target)
+        // when the temp file is missing or the target is locked.
+        static bool Publish(string temp, string target)
+        {
+            if (!File.Exists(temp))
+                return false;
+            try
+            {
+                if (File.Exists(target))
+                    File.Replace(temp, target, null);
+                else
+                    File.Move(temp, target);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                main.LogOutput("Could not write " + target + ": " + ex.Message, MainForm.Type.Error);
+                return false;
+            }
+        }
+
+        static void DeleteQuietly(string file)
+        {
+            try { if (File.Exists(file)) File.Delete(file); } catch { }
+        }
+
+        public static async Task<bool> InstallApk(string input)
         {
             processType = ProcessType.Adb;
 
@@ -291,9 +352,15 @@ namespace APKEasyTool
             }
 
             main.EnableForm();
+            return exitCode == 0;
         }
 
-        public static async Task ZipAlign(string input, string output)
+        /// <summary>
+        /// Zipaligns input into output (through a temporary file; output is replaced only when
+        /// zipalign succeeded), then signs output when "Sign APK" is enabled.
+        /// Returns true only if every step that ran succeeded.
+        /// </summary>
+        public static async Task<bool> ZipAlign(string input, string output)
         {
             processType = ProcessType.Zipalign;
 
@@ -301,7 +368,7 @@ namespace APKEasyTool
             if (main.zipFcheckBox.Checked)
                 flag += " -f";
             if (main.zipPcheckBox.Checked)
-                flag += " -p";
+                flag += " -P 16"; // 16 KB pages (Android 15+ devices); also valid on 4 KB devices
             if (main.zipZcheckBox.Checked)
                 flag += " -z";
             if (main.zipVcheckBox.Checked)
@@ -312,10 +379,8 @@ namespace APKEasyTool
             main.LogOutput("---------------------------\n");
             main.LogOutput(Lang.ZIPALIGN_APK_FILE_NOTICE + " " + Lang.CANCEL_ESC, MainForm.Type.Info);
 
-            string s = Path.Combine(Path.GetDirectoryName(input), Path.GetFileNameWithoutExtension(input) + " zipalign temp.apk");
-            if (File.Exists(s))
-                File.Delete(s);
-            string command = flag + " 4 \"" + input + "\" \"" + s + "\"";
+            string temp = TempNextTo(output, "zipalign");
+            string command = flag + " 4 \"" + input + "\" \"" + temp + "\"";
 
             int exitCode = 0;
             await Task.Factory.StartNew(() =>
@@ -323,38 +388,26 @@ namespace APKEasyTool
                 CMD.StartProgram(Variables.RealPath("Resources\\zipalign.exe"), command, true, out exitCode);
             });
 
-            if (exitCode == 0)
-            {
-                if (File.Exists(output))
-                {
-                    File.Delete(output);
-                }
-                if (File.Exists(Path.Combine(Path.GetDirectoryName(input), Path.GetFileNameWithoutExtension(input) + " zipalign temp.apk")))
-                {
-                    File.Move(Path.Combine(Path.GetDirectoryName(input), Path.GetFileNameWithoutExtension(input) + " zipalign temp.apk"), output);
-                }
-                main.LogOutput(Lang.ZIPALIGN_SUCCESS_MBOX, MainForm.Type.Info);
+            bool ok = exitCode == 0 && Publish(temp, output);
+            DeleteQuietly(temp);
 
-                if (main.signApkCheckBox.Checked)
-                {
-                    await Sign(output, output);
-                }
-                else
-                {
-                    if (Environment.GetCommandLineArgs().Length > 2)
-                        Environment.Exit(0);
-                }
-            }
-            else
+            if (!ok)
             {
                 main.LogOutput(Lang.ZIPALIGN_FAIL_MBOX, MainForm.Type.Error);
                 main.Log("\n" + Lang.PLEASE_READ_FAQ + "\nhttps://forum.xda-developers.com/t/tool-windows-apk-easy-tool-v1-58-3-dec-2020.3333960/#post-65775601", Color.Yellow);
-
                 if (!MainClass.isSidedLogOpened)
                     main.tMain.SelectedIndex = 2;
+                main.EnableForm();
+                return false;
             }
 
+            main.LogOutput(Lang.ZIPALIGN_SUCCESS_MBOX, MainForm.Type.Info);
             main.EnableForm();
+            if (main.signApkCheckBox.Checked)
+                return await Sign(output, output);
+            if (Environment.GetCommandLineArgs().Length > 2)
+                Environment.Exit(0);
+            return true;
         }
 
         public static async Task CheckAlign(string input)
@@ -365,7 +418,7 @@ namespace APKEasyTool
             if (main.zipFcheckBox.Checked)
                 flag += " -f";
             if (main.zipPcheckBox.Checked)
-                flag += " -p";
+                flag += " -P 16"; // 16 KB pages (Android 15+ devices); also valid on 4 KB devices
             if (main.zipZcheckBox.Checked)
                 flag += " -z";
             if (main.zipVcheckBox.Checked)

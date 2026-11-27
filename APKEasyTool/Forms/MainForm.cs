@@ -66,14 +66,14 @@ namespace APKEasyTool
                 if (attr.HasFlag(FileAttributes.Directory))
                     e.CheckDragEnter();
                 else
-                    e.CheckDragEnter(".apk", ".jar");
+                    e.CheckDragEnter(".apk", ".jar", ".apks", ".xapk", ".apkm");
             });
             tabMain.DragOver += new DragEventHandler((sender, e) => {
                 string[] files = e.GetFilesDrop();
                 FileAttributes attr = File.GetAttributes(files[0]);
                 if (attr.HasFlag(FileAttributes.Directory))
                     tabMain.BackColor = Color.PowderBlue;
-                else if (e.CheckDragOver(".apk", ".jar"))
+                else if (e.CheckDragOver(".apk", ".jar", ".apks", ".xapk", ".apkm"))
                     tabMain.BackColor = Color.PowderBlue;
             });
 
@@ -142,6 +142,7 @@ namespace APKEasyTool
             launchLbl.Click += new EventHandler((sender, e) => { tabMainInstance.launchLbl_Click(sender, e); });
             selectDecDir.Click += new EventHandler((sender, e) => { tabMainInstance.selectDecDir_Click(sender, e); });
             fullApkInfoBtn.Click += new EventHandler((sender, e) => { ApkInfoForm form = new ApkInfoForm(); form.Show(); });
+            AddTranslateButton();
 
             psPicBox.Click += new EventHandler((sender, e) => { if (pakLbl.Text != "---") Process.Start("https://play.google.com/store/apps/details?id=" + pakLbl.Text); });
             acPicBox.Click += new EventHandler((sender, e) => { if (pakLbl.Text != "---") Process.Start("https://apkcombo.com/a/" + pakLbl.Text); });
@@ -242,6 +243,74 @@ namespace APKEasyTool
             if (_logform != null)
                 _logform.richTextBoxLogsStandalone.ContextMenu = contextMenu;
             #endregion
+        }
+
+        // Apktool 3 ignores the API level options and always uses aapt2: hide/disable what does nothing.
+        internal void UpdateApktoolUi()
+        {
+            bool v3 = Apktool.IsApktool3OrNewer();
+            label96.Visible = decodeApiLvl.Visible = !v3;
+            adad.Visible = rebuildApiLvl.Visible = !v3;
+            if (splitBtn != null)
+                splitBtn.Visible = v3; // uses the space of the API level fields
+            chkBoxUseAapt2.Enabled = !v3;
+            decForceManifestChkBox.Enabled = !v3;
+            decOnlyMainClassesChkBox.Enabled = !v3;
+        }
+
+        // Created in code (not in the designer) so MainForm.resx stays untouched.
+        // Sits in the empty bottom-right cell of the Main tab, under "Rebuild API level".
+        private void AddTranslateButton()
+        {
+            Button translateBtn = new Button
+            {
+                Name = "translateBtn",
+                Text = "Edit app: translate, icon, package",
+                Font = openZipApk.Font,
+                Location = new Point(rebuildApiLvl.Left, openZipApk.Top),
+                Size = new Size(Math.Max(selectApk.Right - rebuildApiLvl.Left, openZipApk.Width), openZipApk.Height),
+                UseVisualStyleBackColor = true
+            };
+            toolTip1.SetToolTip(translateBtn, "Translate the texts, rename the app, change its icon or package name.\nDecompile first, then press Compile after saving.");
+            translateBtn.Click += (sender, e) =>
+            {
+                string dir = "";
+                if (Directory.Exists(pathOfApk.Text) && File.Exists(Path.Combine(pathOfApk.Text, "AndroidManifest.xml")))
+                    dir = pathOfApk.Text;
+                else if (!String.IsNullOrEmpty(pathOfDec.Text) && !String.IsNullOrEmpty(decNameTextBox.Text))
+                    dir = Path.Combine(pathOfDec.Text, decNameTextBox.Text);
+                using (TranslateForm form = new TranslateForm(dir, Variables.GetPath() + "ai.xml"))
+                    form.ShowDialog(this);
+            };
+            tabMain.Controls.Add(translateBtn);
+            translateBtn.BringToFront();
+
+            // Split APK tools, in the place of the (Apktool 2 only) API level fields.
+            splitBtn = new Button
+            {
+                Name = "splitBtn",
+                Text = "Split APK (.apks/.xapk) ...",
+                Font = openZipApk.Font,
+                Location = new Point(rebuildApiLvl.Left, label96.Top),
+                Size = translateBtn.Size,
+                UseVisualStyleBackColor = true
+            };
+            toolTip1.SetToolTip(splitBtn, "Merge an .apks/.xapk/.apkm bundle into one APK, or install it on the phone.\nTip: dropping or browsing a bundle merges it automatically before Decompile.");
+            var menu = new ContextMenuStrip();
+            menu.Items.Add("Merge into one installable APK...", null, (s, e) => PickSplit(f => SplitApk.MergeToInstallable(this, f)));
+            menu.Items.Add("Install on phone (all parts + OBB data)...", null, (s, e) => PickSplit(f => SplitApk.Install(this, f)));
+            splitBtn.Click += (sender, e) => menu.Show(splitBtn, new Point(0, splitBtn.Height));
+            tabMain.Controls.Add(splitBtn);
+            splitBtn.BringToFront();
+        }
+
+        Button splitBtn;
+
+        void PickSplit(Func<string, System.Threading.Tasks.Task> action)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog { Filter = SplitApk.DialogFilter })
+                if (ofd.ShowDialog(this) == DialogResult.OK)
+                    _ = action(ofd.FileName);
         }
 
         #region MainForm

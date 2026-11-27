@@ -46,6 +46,9 @@
 
         public string DropDownApkTool { get; set; }
 
+        // 0 = written by v1.60 or older. 2 = v1.61+, where the Apktool choice was made with 3.x available.
+        public int ConfigVersion { get; set; }
+
         public string DropDownApkSign { get; set; }
 
         public string DropDownLogLevel { get; set; }
@@ -130,7 +133,11 @@
 
         public bool IsReset { get; set; }
 
+        // Old: Base64 only (readable). Read once for migration, then written empty.
         public string PassJks { get; set; }
+
+        // Keystore password protected with DPAPI for the current Windows user.
+        public string PassJksProtected { get; set; }
 
         public string DecApiLvl { get; set; }
 

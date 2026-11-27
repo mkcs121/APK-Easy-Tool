@@ -67,7 +67,15 @@ namespace APKEasyTool
 
             //get apktool version
             string[] filePaths = Directory.GetFiles(Variables.RealPath("Apktool"), "*.jar", SearchOption.AllDirectories);
-            var namesOnly = filePaths.Select(f => Path.GetFileName(f)).ToArray();
+            // Newest version first, so a fresh install defaults to the latest Apktool
+            var namesOnly = filePaths.Select(f => Path.GetFileName(f))
+                .OrderByDescending(n =>
+                {
+                    var m = System.Text.RegularExpressions.Regex.Match(n, @"(\d+(?:\.\d+)+)");
+                    Version v;
+                    return m.Success && Version.TryParse(m.Groups[1].Value, out v) ? v : new Version(0, 0);
+                })
+                .ToArray();
             main.apkToolComboBox.Items.AddRange(namesOnly);
 
             main.apkToolComboBox.SelectedIndex = 0;
@@ -319,6 +327,41 @@ namespace APKEasyTool
             Variables.InsCount = count.ToString();
         }
 
+        // Settings that work for modding current apps. Applied on a fresh install and once to
+        // configs from v1.61 or older (whose defaults left the APK unsigned, kept the original
+        // manifest with "Keep original signature", and didn't page-align native libraries).
+        private void ApplyRecommendedDefaults()
+        {
+            main.decFcheckBox.Checked = true;       // overwrite the decompile folder
+            main.comFcheckBox.Checked = true;       // always rebuild everything
+            main.comCcheckBox.Checked = false;      // --copy-original would throw away manifest edits
+            main.zipAfterSignChkBox.Checked = true; // zipalign, then sign
+            main.signApkCheckBox.Checked = true;
+            main.zipFcheckBox.Checked = true;
+            main.zipPcheckBox.Checked = true;       // page-align .so (16 KB, see Apktool.ZipAlign)
+        }
+
+        // The signing key path is absolute, so it breaks when the portable folder is moved or updated.
+        // Only the bundled test key (apkeasytool.pk8/.pem) is re-pointed at this copy. A missing custom
+        // key is NOT replaced: signing with another key would make the APK unable to update the
+        // installed app, so Sign stops with a clear message instead.
+        private void EnsureSigningKey()
+        {
+            string pk8 = main.pk8FileTxtBox.Text, pem = main.pemFileTxtBox.Text;
+            bool bundled = (pk8 == "" || Path.GetFileName(pk8).Equals("apkeasytool.pk8", StringComparison.OrdinalIgnoreCase))
+                && (pem == "" || Path.GetFileName(pem).Equals("apkeasytool.pem", StringComparison.OrdinalIgnoreCase));
+            if (bundled && (!File.Exists(pk8) || !File.Exists(pem)))
+            {
+                main.pk8FileTxtBox.Text = Variables.RealPath("Resources\\apkeasytool.pk8");
+                main.pemFileTxtBox.Text = Variables.RealPath("Resources\\apkeasytool.pem");
+            }
+            else if (!main.useJksCheckBox.Checked && (!File.Exists(pk8) || !File.Exists(pem)))
+            {
+                main.LogOutput("Your signing key was not found:\n" + pk8 + "\n" + pem +
+                    "\nChoose it again in Options > Signer. Signing will stop until then.", MainForm.Type.Warning);
+            }
+        }
+
         //Load Config
         private void LoadConfig()
         {
@@ -355,7 +398,11 @@ namespace APKEasyTool
                         main.comNameTextBox.Text = info.FileNameCom;
                         main.baksNameTxtBox.Text = info.FileNameDexOdexOat;
                         main.smaliNameTxtBox.Text = info.FileNameSmali;
-                        main.apkToolComboBox.Text = info.DropDownApkTool;
+                        // A config from v1.60 or older still points at Apktool 2.6.1, which cannot
+                        // decode current apps. Keep the newest bundled version in that case, and
+                        // also when the saved jar no longer exists.
+                        if (info.ConfigVersion >= 2 && main.apkToolComboBox.Items.Contains(info.DropDownApkTool))
+                            main.apkToolComboBox.Text = info.DropDownApkTool;
                         main.javaHeapSizeNum.Text = info.DwordXmx;
                         main.langComboBox.Text = info.Language;
                         main.decBcheckBox.Checked = info.CheckBoxDecB;
@@ -405,17 +452,29 @@ namespace APKEasyTool
                             main.Location = new System.Drawing.Point(formX, formY);
                         }
 
-                        byte[] bytes = Convert.FromBase64String(info.PassJks);
-                        main.jksPass.Text = Encoding.UTF8.GetString(bytes);
+                        main.jksPass.Text = KeystorePassword.Unprotect(info.PassJksProtected);
+                        if (main.jksPass.Text == "" && !String.IsNullOrEmpty(info.PassJks))
+                        {
+                            // migrate the old Base64 value; it is written empty on the next save
+                            try { main.jksPass.Text = Encoding.UTF8.GetString(Convert.FromBase64String(info.PassJks)); } catch { }
+                        }
 
 
                         read.Close();
+                        if (info.ConfigVersion < 3)
+                            ApplyRecommendedDefaults();
+                    }
+                    else
+                    {
+                        ApplyRecommendedDefaults();
                     }
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.ToString());
                 }
+                EnsureSigningKey();
+                main.UpdateApktoolUi();
 
                 try
                 {
@@ -493,6 +552,7 @@ namespace APKEasyTool
                 info.FileNameDexOdexOat = main.baksNameTxtBox.Text;
                 info.FileNameSmali = main.smaliNameTxtBox.Text;
                 info.DropDownApkTool = main.apkToolComboBox.Text;
+                info.ConfigVersion = 3;
                 // info.DropDownCmdMode = main.cmdModeChkBox.Text;
                 info.DwordX = main.Location.X;
                 info.DwordY = main.Location.Y;
@@ -534,8 +594,8 @@ namespace APKEasyTool
                 info.v4SigningEnabled = main.v4signComboBox.Text;
                 info.CheckBoxForceManifest = main.decForceManifestChkBox.Checked;
 
-                var enc = Encoding.UTF8.GetBytes(main.jksPass.Text);
-                info.PassJks = Convert.ToBase64String(enc);
+                info.PassJks = "";
+                info.PassJksProtected = KeystorePassword.Protect(main.jksPass.Text);
 
                 XMLSave.SaveData(info, Variables.GetPath() + "config.xml");
 

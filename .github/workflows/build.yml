@@ -1,0 +1,73 @@
+name: Build
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: microsoft/setup-msbuild@v2
+      - uses: nuget/setup-nuget@v2
+
+      # APKEditor (REAndroid, Apache-2.0) merges split APKs (.apks/.xapk/.apkm) into one APK.
+      # Fetched at build time and checked against the release digest.
+      - name: Fetch APKEditor
+        shell: pwsh
+        run: |
+          $out = "Resources/Resources/APKEditor.jar"
+          Invoke-WebRequest "https://github.com/REAndroid/APKEditor/releases/download/V1.4.9/APKEditor-1.4.9.jar" -OutFile $out
+          $hash = (Get-FileHash $out -Algorithm SHA256).Hash.ToLower()
+          if ($hash -ne "a9cd40df818845456be6d696de6110c89edf4b0a0580cb83438ed6b25a366e67") { throw "APKEditor checksum mismatch: $hash" }
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apkeditor
+          path: Resources/Resources/APKEditor.jar
+
+      # JSON/web translation, fonts and password storage rewrite user files: test them before building.
+      - name: Regression tests
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File tests/regression.ps1
+
+      - name: Restore NuGet packages
+        run: nuget restore APKEasyTool.sln
+
+      - name: Build (Release)
+        run: msbuild APKEasyTool.sln /m /p:Configuration=Release /p:Platform="Any CPU" /v:minimal
+
+      - name: Package portable zip
+        shell: pwsh
+        run: |
+          $out = "APKEasyTool/bin/Release"
+          Get-ChildItem $out -Include *.pdb,*.xml -File | Where-Object { $_.DirectoryName -eq (Resolve-Path $out).Path } | Remove-Item
+          $name = if ($env:GITHUB_REF_TYPE -eq 'tag') { "APK-Easy-Tool-$env:GITHUB_REF_NAME" } else { "APK-Easy-Tool-$($env:GITHUB_SHA.Substring(0,7))" }
+          "ZIP_NAME=$name" | Out-File -Append $env:GITHUB_ENV
+          Compress-Archive -Path "$out/*" -DestinationPath "$name.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ZIP_NAME }}
+          path: ${{ env.ZIP_NAME }}.zip
+
+      # Small artifact for quick testing: just the exe (dependencies are embedded by Costura).
+      # Drop it over an existing portable folder.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exe-only
+          path: APKEasyTool/bin/Release/apkeasytool.exe
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ZIP_NAME }}.zip
+          generate_release_notes: true

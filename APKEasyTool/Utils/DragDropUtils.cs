@@ -65,6 +65,11 @@ namespace APKEasyTool
             foreach (var file in files)
             {
                 var ext = Path.GetExtension(file);
+                if (SplitApk.IsSplit(file))
+                {
+                    _ = main.tabMainInstance.OpenSplit(file);
+                    continue;
+                }
                 if (ext.Equals(".apk", StringComparison.CurrentCultureIgnoreCase))
                 {
                     main.pathOfApk.Text = file.ToString();

@@ -1,0 +1,13 @@
+# Build output
+bin/
+obj/
+Debug/
+Release/
+*.tlog
+*.aps
+*.user
+.vs/
+
+# NuGet packages are restored at build time
+packages/
+!Resources/**

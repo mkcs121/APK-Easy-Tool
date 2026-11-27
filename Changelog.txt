@@ -1,3 +1,54 @@
+v1.65 (2026-11-27) - fixes from the external review
+- Keystore password: stored with DPAPI (old Base64 value migrated), passed to apksigner as env:, never in the command line or log
+- Cancel stops only the process of the current operation, not every java/adb/zipalign on the PC
+- Sign/ZipAlign work on a temporary file, sign is verified with apksigner verify, the output is replaced only on success; install uses the signed file
+- A missing custom signing key stops signing with a message instead of silently using the test key
+- Split APK install: entries checked before extraction (no paths outside the temp folder, valid OBB package/name, no duplicates); OBB result shows copied/failed
+- JSON: new language never overwrites the source file, region kept (pt-rBR -> pt-BR), translation memory per language
+- Web apps: strings used as object keys, in comparisons, case labels, o["x"], "x" in o or as key-API arguments are never changed
+- Auto-translate reports save failures instead of "(saved)"; final save checked
+- Font change copies first and keeps the old font if anything fails; non-font files refused
+- Tool output read without deadlock, timeout from start
+- CI runs tests/regression.ps1 before building
+
+-------------------------------------------------
+
+v1.64 (2026-11-25)
+- Split APKs (.apks/.xapk/.apkm): dropping or browsing one merges it into a single APK (APKEditor 1.4.9 by REAndroid, Apache-2.0) before Decompile
+- "Split APK" button: merge into an installable (zipaligned + signed) APK, or install all parts with adb install-multiple and copy XAPK OBB data
+- Translation: Android "quoted" strings no longer get visible quote marks in the translation, real line breaks show as 
+, HTML shown as text (&lt;b&gt;) stays text
+- Language list starts with the languages the app already has; "en" added; the window shows which languages exist
+- Texts from: Android strings, language JSON files (games such as Cocos2d, i18n folders) or web apps (Ionic/Capacitor/Cordova: JS and HTML in assets). Picked automatically when the app has no Android texts; files are rebuilt from a backup, so saving again or clearing a translation is safe; optional RTL layout for web apps
+
+-------------------------------------------------
+
+v1.63 (2026-11-25)
+- Fonts tab: lists font files and the fonts text styles use; replace one/all font files or set an app font (theme + text styles + layouts), with Restore
+- Recommended defaults, applied once to old configs: sign + zipalign after compile, no "Keep original signature" (it dropped manifest edits), 16 KB page alignment for native libs
+- Signing key falls back to the bundled one when the saved path no longer exists
+- Decode/Rebuild API level and other Apktool-2-only options are hidden/disabled with Apktool 3
+
+-------------------------------------------------
+
+v1.62 (2026-11-25)
+- New "Translate / Rename app" window: strings next to their translation, app name, Persian/RTL aware
+- Auto-translate with any OpenAI-compatible API (URL, key, model in AI settings). Batches, retry with backoff on rate limits, saves after every batch, stop/continue
+- Translation as a new language (values-xx) or replacing the app's own texts (original kept)
+- Change the app icon (all densities) and the package name (authorities and own permissions follow)
+- Remove ads: detects 17 ad SDKs (AdMob, AppLovin, Unity, Meta, ironSource, Tapsell, Adivery ...) and disables their load/show methods; original code backed up for Restore
+
+-------------------------------------------------
+
+v1.61 (2026-11-25)
+- Added Apktool 3.0.3 (default). Apktool 2.6.1 fails on apps built for Android 15 (Invalid chunk type)
+- Flags are translated for Apktool 3 (-b/-k/-m/-c/-d/-nc renamed; -api and --use-aapt2 removed)
+- Updated aapt, aapt2, zipalign, apksigner, adb to 37.0.0
+- Apktool list is sorted newest first
+- Builds on GitHub Actions; releases published from v* tags
+
+-------------------------------------------------
+
 v1.60 (Final) (2022-06-23)
 - Added Force manifest for decompiling
 - Removed unused checkbox "v4 no merkle tree" because it wasn't available for apksigner.jar
