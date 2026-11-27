@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -157,29 +158,17 @@ namespace APKEasyTool
 
                         launchableActivity = mat;
 
-                        if (Path.GetExtension(icon) == ".xml")
-                        {
-                            icon = icon.Replace(".xml", ".png");
-                        }
-
-                        string geticonfile = Variables.TempPathCache + PackageName + "\\" + icon;
-
-                        Debug.WriteLine("[i] icon: " + geticonfile);
-                        string getcachedir = Path.GetDirectoryName(geticonfile);
-                        Debug.WriteLine(getcachedir);
-                        // apk.apk/res/drawable-hdpi-v4/ic_launcher_android.png/
-                        if (icon.Contains("anydpi-v26"))
-                        {
-                            foreach (string Png in png)
-                            {
-                                string icon2 = icon.Replace("mipmap-anydpi-v26", Png).Replace("drawable-anydpi-v26", Png);
-                                CMD.ProcessStartWithOutput(Variables.RealPath("Resources\\7z.exe"), "e \"" + path + "\" \"" + icon2 + "\" -o\"" + getcachedir + "\" -aoa");
-                            }
-                        }
-                        else
-                        {
-                            CMD.ProcessStartWithOutput(Variables.RealPath("Resources\\7z.exe"), "e \"" + path + "\" \"" + icon + "\" -o\"" + getcachedir + "\" -aoa");
-                        }
+                        // All icon sizes aapt reports, largest first; ApkIcon also handles adaptive
+                        // (.xml) icons and WebP bitmaps, which the old PNG-only lookup missed.
+                        var iconPaths = System.Text.RegularExpressions.Regex.Matches(apkinfo, @"application-icon-(\d+):'([^']*)'")
+                            .Cast<System.Text.RegularExpressions.Match>()
+                            .OrderByDescending(m => int.Parse(m.Groups[1].Value))
+                            .Select(m => m.Groups[2].Value).ToList();
+                        if (iconPaths.Count == 0 && icon != "")
+                            iconPaths.Add(icon);
+                        Image apkIconImage = null;
+                        try { apkIconImage = ApkIcon.FromApk(path, iconPaths); }
+                        catch (Exception ex) { Debug.WriteLine(ex.ToString()); }
                         CMD.ProcessStartWithOutput(Variables.RealPath("Resources\\7z.exe"), "e \"" + path + "\" \"META-INF\" -o\"" + Variables.TempPathCache + PackageName + "\\META-INF\" -aoa");
                         string[] files = Directory.GetFiles(Variables.TempPathCache + PackageName + "\\META-INF", "*.SF");
                         if (!Directory.Exists(Variables.TempPathCache + PackageName + "\\META-INF"))
@@ -209,9 +198,7 @@ namespace APKEasyTool
                         {
                             try
                             {
-                                //Debug.WriteLine("[i] icon 2: " + geticonfile);
-                                Debug.WriteLine("load icon: " + geticonfile);
-                                main.apkicon.Image = Image.FromFile(geticonfile);
+                                main.apkicon.Image = apkIconImage ?? Properties.Resources.noicon;
                             }
                             catch (Exception ex)
                             {

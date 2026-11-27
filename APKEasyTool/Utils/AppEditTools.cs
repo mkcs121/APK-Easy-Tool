@@ -75,7 +75,7 @@ namespace APKEasyTool
             string[] order = { "xxxhdpi", "xxhdpi", "xhdpi", "hdpi", "mdpi", "" };
             foreach (string d in order)
                 foreach (string dir in Directory.GetDirectories(res).Where(x => (Path.GetFileName(x).StartsWith("mipmap") || Path.GetFileName(x).StartsWith("drawable")) && (d == "" || Path.GetFileName(x).Contains(d))))
-                    foreach (string ext in new[] { ".png", ".jpg" })
+                    foreach (string ext in new[] { ".png", ".webp", ".jpg" })
                     {
                         string f = Path.Combine(dir, name + ext);
                         if (File.Exists(f))
@@ -128,10 +128,8 @@ namespace APKEasyTool
 
         public static Image LoadImage(string file)
         {
-            // Copy into memory so the file isn't locked.
-            using (var fs = new MemoryStream(File.ReadAllBytes(file)))
-            using (var img = Image.FromStream(fs))
-                return new Bitmap(img);
+            // From memory, so the file isn't locked; WebP through Windows' codec.
+            return ApkIcon.FromFile(file);
         }
 
         static Bitmap Render(Image src, int size)

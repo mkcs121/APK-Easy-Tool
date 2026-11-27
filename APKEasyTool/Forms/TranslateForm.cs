@@ -61,7 +61,21 @@ namespace APKEasyTool
 
             folderBox.Text = decompiledDir ?? "";
             langBox.Text = "fa";
-            Shown += (s, e) => { if (Directory.Exists(folderBox.Text)) LoadProject(); };
+            Shown += (s, e) =>
+            {
+                if (Directory.Exists(folderBox.Text))
+                    LoadProject();
+                else
+                    MessageBox.Show(this, "This APK isn't decompiled yet, so there is nothing to edit.
+
+Close this window, press Decompile in the main window, then open Edit app again." +
+                        (folderBox.Text != "" ? "
+
+(Expected folder: " + folderBox.Text + ")" : "") + "
+
+Or choose an already decompiled folder with Browse.",
+                        Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
             FormClosing += TranslateForm_FormClosing;
         }
 

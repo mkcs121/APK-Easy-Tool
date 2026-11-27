@@ -349,6 +349,7 @@
     <Compile Include="Utils\FontTools.cs" />
     <Compile Include="Utils\SplitApk.cs" />
     <Compile Include="Utils\KeystorePassword.cs" />
+    <Compile Include="Utils\ApkIcon.cs" />
     <Compile Include="Forms\TranslateForm.Ads.cs">
       <SubType>Form</SubType>
     </Compile>
