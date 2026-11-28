@@ -23,15 +23,25 @@ namespace APKEasyTool
             public string[] Packages;          // smali package paths, e.g. "com/applovin"
             public string[] Exclude = new string[0];
             public int Files;                  // filled by Detect
+            public bool Disabled;              // filled by Detect: ads of this SDK were already removed
             public override string ToString()
             {
-                return Name + "  (" + Files + " classes)";
+                return Name + "  (" + Files + " classes)" + (Disabled ? "   \u2714 ads disabled" : "");
             }
         }
 
         public class Result
         {
-            public int Files, Methods;
+            public int Files, Methods, Layouts;
+            public int AlreadyDone; // SDK files patched by an earlier run
+        }
+
+        const string MarkerFile = "removed.txt"; // inside the backup folder: names of disabled SDKs
+
+        static HashSet<string> DisabledSdks(string projectDir)
+        {
+            string f = Path.Combine(projectDir, BackupDirName, MarkerFile);
+            return new HashSet<string>(File.Exists(f) ? File.ReadAllLines(f, Encoding.UTF8).Where(l => l.Trim() != "") : new string[0]);
         }
 
         static AdSdk Sdk(string name, string[] packages, params string[] exclude)
@@ -98,7 +108,10 @@ namespace APKEasyTool
             {
                 sdk.Files = SdkFiles(projectDir, sdk).Count();
                 if (sdk.Files > 0)
+                {
+                    sdk.Disabled = DisabledSdks(projectDir).Contains(sdk.Name);
                     found.Add(sdk);
+                }
             }
             return found;
         }
@@ -124,6 +137,12 @@ namespace APKEasyTool
                     status("Patching " + sdk.Name + "...");
                 foreach (string file in SdkFiles(projectDir, sdk).ToList())
                 {
+                    string rootDir = SmaliRoots(projectDir).First(r => file.StartsWith(r + Path.DirectorySeparatorChar));
+                    if (File.Exists(Path.Combine(backupRoot, Path.GetFileName(rootDir), file.Substring(rootDir.Length + 1))))
+                    {
+                        result.AlreadyDone++; // patched by an earlier run
+                        continue;
+                    }
                     string text = File.ReadAllText(file, Encoding.UTF8);
                     int count = 0;
                     string patched = MethodRe.Replace(text, m =>
@@ -159,7 +178,81 @@ namespace APKEasyTool
                     result.Methods += count;
                 }
             }
+            result.Layouts = HideAdLayouts(projectDir, sdks, backupRoot);
+
+            var marker = DisabledSdks(projectDir);
+            foreach (AdSdk sdk in sdks)
+                marker.Add(sdk.Name);
+            Directory.CreateDirectory(backupRoot);
+            File.WriteAllLines(Path.Combine(backupRoot, MarkerFile), marker.ToArray(), Encoding.UTF8);
             return result;
+        }
+
+        // Ad views in layouts (banner AdView, native ad cards). With no ad they still take their
+        // space and show an empty box with an "Ad" badge, so they are made gone with zero height.
+        static int HideAdLayouts(string projectDir, IEnumerable<AdSdk> sdks, string backupRoot)
+        {
+            string res = Path.Combine(projectDir, "res");
+            if (!Directory.Exists(res))
+                return 0;
+            var prefixes = sdks.SelectMany(x => x.Packages).Select(pk => pk.Replace('/', '.') + ".").ToList();
+            var tagRe = new Regex(@"<([A-Za-z_][\w.$]*)(\s[^>]*?)?(/?)>", RegexOptions.Singleline);
+            int count = 0;
+            foreach (string dir in Directory.GetDirectories(res, "layout*"))
+                foreach (string file in Directory.GetFiles(dir, "*.xml"))
+                {
+                    string text = File.ReadAllText(file, Encoding.UTF8);
+                    int n = 0;
+                    Func<string, bool> isAdClass = cls =>
+                    {
+                        string simple = cls.Substring(cls.LastIndexOf('.') + 1);
+                        return prefixes.Any(pr => cls.StartsWith(pr)) && Regex.IsMatch(simple, "(Ad|Banner|Native)\\w*(View|Layout)$|^Banner");
+                    };
+                    // A layout whose root is an ad view is a whole ad card (e.g. a list row inflated
+                    // without a parent, so its own height is ignored): hide everything inside it too,
+                    // then the row measures 0 high in any list.
+                    Match first = tagRe.Match(text);
+                    bool wholeAdLayout = first.Success && isAdClass(first.Groups[1].Value);
+                    string updated = tagRe.Replace(text, m =>
+                    {
+                        string cls = m.Groups[1].Value;
+                        bool ad = isAdClass(cls);
+                        if (!ad && !wholeAdLayout)
+                            return m.Value;
+                        string attrs = m.Groups[2].Value;
+                        if (!ad)
+                        {
+                            string hidden = SetAttr(attrs, "android:visibility", "gone");
+                            return hidden == attrs ? m.Value : "<" + cls + hidden + m.Groups[3].Value + ">";
+                        }
+                        string before = attrs;
+                        attrs = SetAttr(attrs, "android:visibility", "gone");
+                        attrs = SetAttr(attrs, "android:layout_height", "0.0dp");
+                        if (attrs == before)
+                            return m.Value;
+                        n++;
+                        return "<" + cls + attrs + m.Groups[3].Value + ">";
+                    });
+                    if (n == 0)
+                        continue;
+                    string backup = Path.Combine(backupRoot, file.Substring(projectDir.Length + 1));
+                    if (!File.Exists(backup))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(backup));
+                        File.Copy(file, backup);
+                    }
+                    File.WriteAllText(file, updated, new UTF8Encoding(false));
+                    count += n;
+                }
+            return count;
+        }
+
+        static string SetAttr(string attrs, string name, string value)
+        {
+            var re = new Regex("\\s" + Regex.Escape(name) + "=\"[^\"]*\"");
+            if (re.IsMatch(attrs))
+                return re.Replace(attrs, " " + name + "=\"" + value + "\"", 1);
+            return " " + name + "=\"" + value + "\"" + attrs;
         }
 
         /// <summary>Puts every backed-up smali file back and removes the backup.</summary>
@@ -169,8 +262,10 @@ namespace APKEasyTool
             if (!Directory.Exists(backupRoot))
                 return 0;
             int n = 0;
-            foreach (string f in Directory.EnumerateFiles(backupRoot, "*.smali", SearchOption.AllDirectories))
+            foreach (string f in Directory.EnumerateFiles(backupRoot, "*", SearchOption.AllDirectories))
             {
+                if (Path.GetFileName(f) == MarkerFile && Path.GetDirectoryName(f) == backupRoot)
+                    continue;
                 string dest = Path.Combine(projectDir, f.Substring(backupRoot.Length + 1));
                 Directory.CreateDirectory(Path.GetDirectoryName(dest));
                 File.Copy(f, dest, true);

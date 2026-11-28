@@ -93,11 +93,24 @@ namespace APKEasyTool
             if (dir != projectDir || IsDisposed)
                 return;
             foreach (var sdk in found)
-                adList.Items.Add(sdk, true);
-            bool patched = AdRemover.HasBackup(dir);
-            adStatus.Text = found.Count == 0 ? "No known ad SDK found in this app."
-                : found.Count + " ad SDK(s) found." + (patched ? " Ads were already removed (backup present)." : "");
+                adList.Items.Add(sdk, !sdk.Disabled);
+            int disabled = found.Count(x => x.Disabled);
+            if (found.Count == 0)
+                SetAdStatus("No known ad SDK found in this app.", false);
+            else if (disabled == found.Count)
+                SetAdStatus("✔ Ads are disabled in this project (" + disabled + " SDK). If you haven't yet, press Compile in the main window.", true);
+            else if (disabled > 0)
+                SetAdStatus(disabled + " of " + found.Count + " SDKs already disabled; the checked ones are not yet.", false);
+            else
+                SetAdStatus(found.Count + " ad SDK(s) found. Ads are still active: press \"Remove ads\".", false);
             SetAdButtons(true);
+        }
+
+        void SetAdStatus(string text, bool done)
+        {
+            adStatus.Text = text;
+            adStatus.ForeColor = done ? Color.FromArgb(0, 128, 0) : SystemColors.ControlText;
+            adStatus.Font = new Font(Font, done ? FontStyle.Bold : FontStyle.Regular);
         }
 
         void SetAdButtons(bool enabled)
@@ -123,9 +136,19 @@ namespace APKEasyTool
                 var progress = new Progress<string>(t => adStatus.Text = t);
                 IProgress<string> p = progress;
                 AdRemover.Result r = await Task.Run(() => AdRemover.Remove(dir, sdks, t => p.Report(t)));
-                adStatus.Text = "Done: " + r.Methods + " ad methods disabled in " + r.Files + " files.";
-                MessageBox.Show(this, (r.Methods == 0 ? "Nothing needed patching (already done?)." : r.Methods + " ad methods were disabled in " + r.Files + " files.") +
-                    "\n\nNow press Compile in the main window and test the app.",
+                var lines = new List<string>();
+                if (r.Methods > 0)
+                    lines.Add("• " + r.Methods + " ad methods disabled in " + r.Files + " code files (no ad is loaded or shown).");
+                if (r.AlreadyDone > 0)
+                    lines.Add("• " + r.AlreadyDone + " code files were already disabled by an earlier run (left as they are).");
+                if (r.Layouts > 0)
+                    lines.Add("• " + r.Layouts + " ad boxes in the layouts hidden, so no empty space is left where an ad was.");
+                if (lines.Count == 0)
+                    lines.Add("• Nothing left to change: ads were already disabled.");
+                ScanAds();
+                MessageBox.Show(this, "✔ Ads are disabled in this project.\n\n" + String.Join("\n", lines) +
+                    "\n\nNext: press Compile in the main window, then install and test the app." +
+                    "\n(Pressing \"Remove ads\" again is safe: nothing is changed twice.)",
                     Program.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -145,7 +168,7 @@ namespace APKEasyTool
             try
             {
                 int n = await Task.Run(() => AdRemover.Restore(dir));
-                adStatus.Text = n + " files restored. Ads are back after Compile.";
+                ScanAds(); // list shows the SDKs as active again; Compile to get the ads back
             }
             catch (Exception ex)
             {

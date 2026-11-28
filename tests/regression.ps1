@@ -108,5 +108,41 @@ $protected = [APKEasyTool.KeystorePassword]::Protect('s3cret!')
 Check 'password: not stored readable'      (-not $protected.Contains('s3cret') -and -not ([Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($protected)).Contains('s3cret')))
 Check 'password: round trip'               ([APKEasyTool.KeystorePassword]::Unprotect($protected) -eq 's3cret!')
 
+# ---------- Remove ads: code + layouts, repeatable, restorable ----------
+Add-Type -Path "$src\AdRemover.cs" -ReferencedAssemblies System.Core
+$p = NewProject
+$sm = Join-Path $p 'smali\com\google\android\gms\ads'
+New-Item -ItemType Directory -Path $sm | Out-Null
+$smali = ".class public Lcom/google/android/gms/ads/BaseAdView;`n.super Landroid/view/ViewGroup;`n`n" +
+         ".method public loadAd(Lcom/google/android/gms/ads/AdRequest;)V`n    .locals 2`n    invoke-virtual {p0}, Lx;->y()V`n    return-void`n.end method`n`n" +
+         ".method public isLoading()Z`n    .locals 1`n    const/4 v0, 0x1`n    return v0`n.end method`n"
+[IO.File]::WriteAllText("$sm\BaseAdView.smali", $smali, $utf8)
+$lay = Join-Path $p 'res\layout'
+New-Item -ItemType Directory -Path $lay | Out-Null
+$card = '<?xml version="1.0" encoding="utf-8"?>' + "`n" +
+        '<com.google.android.gms.ads.nativead.NativeAdView android:layout_width="match_parent" android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">' +
+        '<LinearLayout android:layout_width="match_parent" android:layout_height="100dp"><TextView android:text="Ad" android:layout_width="wrap_content" android:layout_height="wrap_content" /></LinearLayout>' +
+        '</com.google.android.gms.ads.nativead.NativeAdView>'
+[IO.File]::WriteAllText("$lay\ad_card.xml", $card, $utf8)
+$page = '<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"><TextView android:id="@id/title" /><com.google.android.gms.ads.AdView android:id="@id/adView" android:layout_width="match_parent" android:layout_height="wrap_content" /></LinearLayout>'
+[IO.File]::WriteAllText("$lay\page.xml", $page, $utf8)
+
+$sdks = [APKEasyTool.AdRemover]::Detect($p)
+Check 'ads: AdMob detected, not yet disabled' ($sdks.Count -eq 1 -and -not $sdks[0].Disabled)
+$r1 = [APKEasyTool.AdRemover]::Remove($p, $sdks, $null)
+$patched = [IO.File]::ReadAllText("$sm\BaseAdView.smali")
+Check 'ads: loadAd made a no-op' ($r1.Methods -ge 1 -and $patched -notmatch 'invoke-virtual \{p0\}, Lx;')
+Check 'ads: ad card and banner hidden' ($r1.Layouts -ge 2)
+$cardOut = [IO.File]::ReadAllText("$lay\ad_card.xml")
+Check 'ads: everything inside the ad card hidden' (([regex]::Matches($cardOut, 'visibility="gone"')).Count -eq 3)
+$pageOut = [IO.File]::ReadAllText("$lay\page.xml")
+Check 'ads: other views of the page untouched' ($pageOut.Contains('<TextView android:id="@id/title" />'))
+Check 'ads: SDK shown as disabled after removal' ([APKEasyTool.AdRemover]::Detect($p)[0].Disabled)
+$r2 = [APKEasyTool.AdRemover]::Remove($p, $sdks, $null)
+Check 'ads: second run changes nothing' ($r2.Methods -eq 0 -and $r2.Layouts -eq 0 -and $r2.AlreadyDone -ge 1)
+[APKEasyTool.AdRemover]::Restore($p) | Out-Null
+Check 'ads: restore brings code and layouts back' (([IO.File]::ReadAllText("$sm\BaseAdView.smali") -eq $smali) -and ([IO.File]::ReadAllText("$lay\ad_card.xml") -eq $card) -and ([IO.File]::ReadAllText("$lay\page.xml") -eq $page))
+Check 'ads: SDK active again after restore' (-not [APKEasyTool.AdRemover]::Detect($p)[0].Disabled)
+
 if ($script:failures -gt 0) { Write-Host "$script:failures test(s) failed" -ForegroundColor Red; exit 1 }
 Write-Host 'All regression tests passed'
